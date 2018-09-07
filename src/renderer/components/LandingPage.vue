@@ -2,14 +2,15 @@
   <div id="wrapper">
     <img id="logo" src="~@/assets/logo.png" alt="electron-vue">
     <main>
-      <div class="left-side">
+      <demo1></demo1>
+      <!--div class="left-side">
         <span class="title">
           Welcome to your new project!
         </span>
         <system-information></system-information>
-      </div>
+      </div-->
 
-      <div class="right-side">
+      <!--div class="right-side">
         <div class="doc">
           <div class="title">Getting Started</div>
           <p>
@@ -24,17 +25,18 @@
           <button class="alt" @click="open('https://electron.atom.io/docs/')">Electron</button>
           <button class="alt" @click="open('https://vuejs.org/v2/guide/')">Vue.js</button>
         </div>
-      </div>
+      </div-->
     </main>
   </div>
 </template>
 
 <script>
   import SystemInformation from './LandingPage/SystemInformation'
+  import Demo1 from './Demo1'
 
   export default {
     name: 'landing-page',
-    components: { SystemInformation },
+    components: { SystemInformation, Demo1 },
     methods: {
       open (link) {
         this.$electron.shell.openExternal(link)
