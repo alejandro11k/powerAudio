@@ -6,11 +6,21 @@
         <!-- button @click="times()"> times </button-->
         <!-- button @click="kicktimes()"> kick times </button-->
         <button @click="onOff()"> on/Off </button>
+        <br>
+        <br>
+        <md-switch v-model="boolean">kiCk/bEEp</md-switch>
+        <br>
+        <md-radio v-model="radio" value="slow">Slow</md-radio>
+        <br>
+        <md-radio v-model="radio" value="medium">Medium</md-radio>
+        <br>
+        <md-radio v-model="radio" value="fast">Fast</md-radio>
     </div>
 </template>
 
 <script>
     import Demo1 from '../modules/demo1'
+    import Data from '../modules/data'
     import Timer from 'easytimer.js'
 
     export default {
@@ -22,16 +32,18 @@
         let first = true
         let timer = new Timer()
         let count = 0
+        let boolean = false
+        let data = new Data()
+        let radio = 'medium'
         timer.addEventListener('secondTenthsUpdated', function (e) {
-          // timer.getTimeValues().toString(['hours', 'minutes', 'seconds', 'secondTenths'])
-          console.log(timer.getTimeValues())
+          console.log(timer.getTimeValues().toString(['hours', 'minutes', 'seconds', 'secondTenths']))
+          // console.log(timer.getTimeValues())
           count++
           if (count === 1) {
-            console.log('punch')
             Demo1.destroy()
-            Demo1.create(modo)
+            Demo1.create(data.getMode())
           }
-          if (count === intervalo) {
+          if (count === data.getIntervalo()) {
             count = 0
           }
         })
@@ -41,12 +53,14 @@
           timer: timer,
           count: count,
           modo: modo,
-          intervalo: intervalo
+          intervalo: intervalo,
+          boolean: boolean,
+          data: data,
+          radio: radio
         }
       },
       methods: {
         open () {
-          console.log('clicked!')
           if (this.first) {
             this.first = false
             Demo1.getOscillator().start()
@@ -64,6 +78,12 @@
           Demo1.kicktimes(10, 0.01)
         },
         onOff () {
+          if (!this.boolean) {
+            this.data.setMode('kick1')
+          } else {
+            this.data.setMode('beep1')
+          }
+          this.data.setIntervalo(this.radio)
           // if on false on true and start punch
           // if on true stop and on false
           // timer.start({precision: 'secondTenths'})

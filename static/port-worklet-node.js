@@ -25,4 +25,4 @@ class PortWorkletNode extends AudioWorkletNode {
     }
 }
 
-export default new PortWorkletNode;
+registerAudioWorkletNode('port-worklet-node', PortWorkletNode)
