@@ -129,6 +129,7 @@ Demo1.prototype.kick1 = function () {
 }
 
 Demo1.prototype.beep1 = function () {
+  // this.gainNode.value = 0.2
   this.currentTime = this.context.currentTime
   // console.log(this.currentTime)
   // this.gainNode.gain.setValueAtTime(0.3, this.currentTime)
