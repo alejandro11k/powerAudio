@@ -15,6 +15,9 @@
 
     export default {
       data () {
+        let intervalo = 6
+        let modo = 'kick1'
+        // let modo = 'beep1'
         let on = false
         let first = true
         let timer = new Timer()
@@ -26,9 +29,9 @@
           if (count === 1) {
             console.log('punch')
             Demo1.destroy()
-            Demo1.create()
+            Demo1.create(modo)
           }
-          if (count === 5) {
+          if (count === intervalo) {
             count = 0
           }
         })
@@ -36,7 +39,9 @@
           on: on,
           first: first,
           timer: timer,
-          count: count
+          count: count,
+          modo: modo,
+          intervalo: intervalo
         }
       },
       methods: {
