@@ -113,9 +113,9 @@ Demo1.prototype.kick1 = function () {
   this.oscillator.start(this.currentTime)
   this.oscillator.frequency.setValueAtTime(180, this.currentTime)
   this.gainNode.gain.setValueAtTime(0.9, this.currentTime)
-  this.oscillator.frequency.exponentialRampToValueAtTime(0.01, this.currentTime + 0.2)
-  this.gainNode.gain.exponentialRampToValueAtTime(0.01, this.currentTime + 0.2)
-  this.oscillator.stop(this.currentTime + 0.18)
+  this.oscillator.frequency.exponentialRampToValueAtTime(0.01, this.currentTime + 0.1)
+  this.gainNode.gain.exponentialRampToValueAtTime(0.01, this.currentTime + 0.1)
+  this.oscillator.stop(this.currentTime + 0.15)
 }
 
 Demo1.prototype.beep1 = function () {
