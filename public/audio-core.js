@@ -13,7 +13,8 @@ export function init() {
         let mainGain = new GainNode(context)
         portWorkletNode.connect(mainGain);
         mainGain.connect(context.destination)
-        mainGain.gain.value = 0.5
+        // min audible value 0.003
+        mainGain.gain.value = 0.09
 
         let param = portWorkletNode.parameters.get('periodicity')
         param.value = periodicity
