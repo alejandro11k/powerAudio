@@ -1,0 +1,35 @@
+<br>
+<button id="init"> init </button>
+<button id="stop"> stop </button>
+
+<br>
+<br>
+<input id="myRange" type="range" value="1" min="0.2" max="1.5" step="0.1" />
+<div id="demo"></div>
+
+<script type="module">
+    import { init, stop, setPeriodicity } from './audio-core.js'
+    //window.start = start
+    window.periodicity = setPeriodicity
+    document.querySelector('#init').addEventListener('click', init)
+    document.querySelector('#stop').addEventListener('click', stop)
+</script>
+
+<script>
+    console.log(window)
+
+    var slider = document.getElementById("myRange");
+    var output = document.getElementById("demo");
+    output.innerHTML = sec2Bpm(slider.value); // Display the default slider value
+
+    // Update the current slider value (each time you drag the slider handle)
+    slider.oninput = function () {
+        output.innerHTML = sec2Bpm(this.value);
+        periodicity(this.value)
+    }
+    console.log(slider.value);
+
+    function sec2Bpm(sec) {
+        return 60000 / (sec * 1000)
+    }
+</script>
