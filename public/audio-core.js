@@ -2,7 +2,7 @@ import { PortWorkletNode } from './port-worklet-node.js'
 
 let context = new AudioContext();
 let periodicity = 1
-let mainGainValue = 0.1
+// let mainGainValue = 0.1
 let gainNode = context.createGain();
 
 export function init() {
@@ -54,5 +54,5 @@ export function setPeriodicity(value) {
 }
 
 export function setMainGain(value) {
-
+    gainNode.gain.value = value
 }

@@ -1,47 +1,11 @@
-import { PunchLib } from './punch-lib.js'
-
-export class PortWorkletNode extends AudioWorkletNode {
+export class PunchLib {
     constructor(context) {
-        super(context, 'processor');
-        this.counter = 0;
-        this.port.onmessage = this.handleMessage.bind(this);
-        this.port.postMessage({
-        message: 'Are you ready?',
-        timeStamp: this.context.currentTime
-        });
-        
-        this.currentPunch = new PunchLib().current
-        // add
-        /*
         this.oscillator = new OscillatorNode(context)
         this.gainNode = new GainNode(context)
         this.oscillator.connect(this.gainNode)
         this.gainNode.connect(this)
-        */
-        //this.oscillator.start()
     }
-    handleMessage(event) {
-        this.counter++;
-        console.log('[Node:Received] "' + event.data.message +
-                    '" (' + event.data.timeStamp + ')');
-        
-        // Notify the processor when the node gets 10 messages. Then reset the
-        // counter.
-        //this.trigger()
-        //this.beep1()
-        //this.kick1()
-        this.currentPunch()
 
-        if (this.counter > 10) {
-        this.port.postMessage({
-            message: '10 messages!',
-            timeStamp: this.context.currentTime
-        });
-        this.counter = 0;
-        }
-    }
-    
-    /*
     trigger() {
         const time = this.context.currentTime;
         this.oscillator.frequency.setValueAtTime(150, time);
@@ -79,7 +43,4 @@ export class PortWorkletNode extends AudioWorkletNode {
         this.oscillator = new OscillatorNode(this.context)
         this.oscillator.connect(this.gainNode)
     }
-    */
 }
-
-// registerAudioWorkletNode('port-worklet-node', PortWorkletNode)
