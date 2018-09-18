@@ -10,8 +10,8 @@ export function init() {
         let portWorkletNode = new PortWorkletNode(context);
         //portWorkletNode.connect(context.destination);
 
-        mainGain(portWorkletNode)
-        //contextGainNode(portWorkletNode) // glitch?
+        // mainGain(portWorkletNode)
+        contextGainNode(portWorkletNode) // glitch?
 
         let paramAmp = portWorkletNode.parameters.get('amplitude');
         portWorkletNode.connect(paramAmp)
@@ -37,10 +37,15 @@ function contextGainNode(portWorkletNode) {
     gainNode.gain.value = 0.09
 }
 
+async function createNewContext() {
+    context = new AudioContext();
+}
+
 export function stop() {
     context.close()
-    context = new AudioContext();
-    gainNode = context.createGain();
+    createNewContext().then(()=>{
+        gainNode = context.createGain();
+    })
 }
 
 export function setPeriodicity(value) {
