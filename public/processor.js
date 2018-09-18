@@ -2,7 +2,8 @@ class PortProcessor extends AudioWorkletProcessor {
     static get parameterDescriptors() {
         return [
             {name: 'amplitude', defaultValue: 0.25, minValue: 0, maxValue: 1},
-            {name: 'periodicity', defaultValue: 1, minValue: 0.2, maxValue: 2}
+            {name: 'periodicity', defaultValue: 1, minValue: 0.2, maxValue: 2},
+            {name: 'amplitude', defaultValue: 0.25, minValue: 0, maxValue: 1}
         ];
       }
 
@@ -32,9 +33,22 @@ class PortProcessor extends AudioWorkletProcessor {
         /* process audio */
         let input = inputs[0];
         let output = outputs[0];
+        let amplitude = parameters.amplitude;
+        
         for (let channel = 0; channel < input.length; ++channel){
             output[channel].set(input[channel]);
         }
+        
+
+        /*
+        for (let channel = 0; channel < output.length; ++channel) {
+            let outputChannel = output[channel];
+            for (let i = 0; i < outputChannel.length; ++i) {
+              // outputChannel[i] = 2 * (Math.random() - 0.5) * amplitude[i];
+              outputChannel[i] = amplitude[i];
+            }
+        }
+        */
         return true;
     }
 }
