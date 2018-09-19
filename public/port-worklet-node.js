@@ -9,9 +9,12 @@ export class PortWorkletNode extends AudioWorkletNode {
         message: 'Are you ready?',
         timeStamp: this.context.currentTime
         });
-        
-        this.currentPunch = new PunchLib().current
+
+        // this.currentPunch = ''
+        this.currentPunch = new PunchLib(context, this)
+        this.currentPunch.gainNode.connect(this) // FIX
         // add
+        
         /*
         this.oscillator = new OscillatorNode(context)
         this.gainNode = new GainNode(context)
@@ -20,6 +23,7 @@ export class PortWorkletNode extends AudioWorkletNode {
         */
         //this.oscillator.start()
     }
+
     handleMessage(event) {
         this.counter++;
         console.log('[Node:Received] "' + event.data.message +
@@ -30,7 +34,9 @@ export class PortWorkletNode extends AudioWorkletNode {
         //this.trigger()
         //this.beep1()
         //this.kick1()
-        this.currentPunch()
+        //console.log(this.currentPunch)
+        //this.currentPunch.beep1()
+        this.currentPunch.kick1()
 
         if (this.counter > 10) {
         this.port.postMessage({
@@ -40,8 +46,12 @@ export class PortWorkletNode extends AudioWorkletNode {
         this.counter = 0;
         }
     }
+
+    getPunch(sound) {
+        this.currentPunch = sound
+    }
     
-    /*
+    
     trigger() {
         const time = this.context.currentTime;
         this.oscillator.frequency.setValueAtTime(150, time);
@@ -79,7 +89,7 @@ export class PortWorkletNode extends AudioWorkletNode {
         this.oscillator = new OscillatorNode(this.context)
         this.oscillator.connect(this.gainNode)
     }
-    */
+    
 }
 
 // registerAudioWorkletNode('port-worklet-node', PortWorkletNode)

@@ -1,9 +1,14 @@
 export class PunchLib {
-    constructor(context) {
-        this.oscillator = new OscillatorNode(context)
-        this.gainNode = new GainNode(context)
+    constructor(context, audioNode) {
+        
+        this.context = context
+        // this.audioNode = audioNode
+        this.oscillator = new OscillatorNode(this.context)
+        this.gainNode = new GainNode(this.context)
         this.oscillator.connect(this.gainNode)
-        this.gainNode.connect(this)
+        
+        //this.gainNode.connect(this.audioNode)
+
     }
 
     trigger() {
@@ -14,9 +19,10 @@ export class PunchLib {
         this.oscillator.frequency.exponentialRampToValueAtTime(0.1, time + 0.5);
         this.gainNode.gain.exponentialRampToValueAtTime(0.1, time + 0.5);
     }
+
     kick1 () {
+        console.log('kick')
         this.currentTime = this.context.currentTime
-        console.log(this.currentTime)
         
         // prevent cannot call start more that once
         this.destroyOsc()

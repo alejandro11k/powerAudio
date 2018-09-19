@@ -1,4 +1,5 @@
 import { PortWorkletNode } from './port-worklet-node.js'
+// import { PunchLib } from './punch-lib.js'
 
 let context = new AudioContext();
 let periodicity = 1
@@ -9,6 +10,9 @@ export function init() {
     context.audioWorklet.addModule('./processor.js').then(() => {
         let portWorkletNode = new PortWorkletNode(context);
         //portWorkletNode.connect(context.destination);
+
+        //this.currentPunch = new PunchLib(context, portWorkletNode)
+        //portWorkletNode.getPunch(this.currentPunch.default)
 
         // mainGain(portWorkletNode)
         contextGainNode(portWorkletNode) // glitch?
@@ -39,6 +43,14 @@ function contextGainNode(portWorkletNode) {
 
 async function createNewContext() {
     context = new AudioContext();
+}
+
+export function pause() {
+    context.pause()
+}
+
+export function resume() {
+    context.resume()
 }
 
 export function stop() {
