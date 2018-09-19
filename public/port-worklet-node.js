@@ -51,7 +51,7 @@ export class PortWorkletNode extends AudioWorkletNode {
         this.currentPunch = sound
     }
     
-    
+    /*
     trigger() {
         const time = this.context.currentTime;
         this.oscillator.frequency.setValueAtTime(150, time);
@@ -89,7 +89,7 @@ export class PortWorkletNode extends AudioWorkletNode {
         this.oscillator = new OscillatorNode(this.context)
         this.oscillator.connect(this.gainNode)
     }
-    
+    */
 }
 
 // registerAudioWorkletNode('port-worklet-node', PortWorkletNode)
