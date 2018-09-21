@@ -12,7 +12,7 @@ export class PortWorkletNode extends AudioWorkletNode {
 
         // this.currentPunch = ''
         this.currentPunch = new PunchLib(context, this)
-        this.currentPunch.gainNode.connect(this) // FIX
+        //this.currentPunch.gainNode.connect(this) // FIX
         // add
         
         /*

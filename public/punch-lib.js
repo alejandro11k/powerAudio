@@ -7,7 +7,7 @@ export class PunchLib {
         this.gainNode = new GainNode(this.context)
         this.oscillator.connect(this.gainNode)
         
-        //this.gainNode.connect(this.audioNode)
+        this.gainNode.connect(audioNode)
 
     }
 

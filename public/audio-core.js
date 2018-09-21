@@ -5,6 +5,7 @@ let context = new AudioContext();
 let periodicity = 1
 // let mainGainValue = 0.1
 let gainNode = context.createGain();
+let lastGainNodeValue = 1
 
 export function init() {
     context.audioWorklet.addModule('./processor.js').then(() => {
@@ -15,7 +16,7 @@ export function init() {
         //portWorkletNode.getPunch(this.currentPunch.default)
 
         // mainGain(portWorkletNode)
-        contextGainNode(portWorkletNode) // glitch?
+        contextGainNode(portWorkletNode, lastGainNodeValue) // glitch?
 
         let paramAmp = portWorkletNode.parameters.get('amplitude');
         portWorkletNode.connect(paramAmp)
@@ -35,22 +36,14 @@ function mainGain(portWorkletNode) {
 }
 
 // Using context.createGain()
-function contextGainNode(portWorkletNode) {
+function contextGainNode(portWorkletNode, lastGainNodeValue) {
     portWorkletNode.connect(gainNode);
     gainNode.connect(context.destination);
-    gainNode.gain.value = 0.09
+    gainNode.gain.value = lastGainNodeValue //0.09
 }
 
 async function createNewContext() {
     context = new AudioContext();
-}
-
-export function pause() {
-    context.pause()
-}
-
-export function resume() {
-    context.resume()
 }
 
 export function stop() {
@@ -67,4 +60,16 @@ export function setPeriodicity(value) {
 
 export function setMainGain(value) {
     gainNode.gain.value = value
+    lastGainNodeValue = value
+    console.log(value)
 }
+
+/*
+export function pause() {
+    context.pause()
+}
+
+export function resume() {
+    context.resume()
+}
+*/
