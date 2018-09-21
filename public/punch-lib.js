@@ -37,10 +37,12 @@ export class PunchLib {
     }
     beep1 () {
         const currentTime = this.context.currentTime
-        // this.gainNode.gain.setValueAtTime(0.3, this.currentTime)
+        
         // prevent cannot call start more that once
         this.destroyOsc()
+
         this.oscillator.start(currentTime)
+        this.gainNode.gain.value = 0.2
         this.oscillator.stop(currentTime + 0.1)
     }
     destroyOsc () {

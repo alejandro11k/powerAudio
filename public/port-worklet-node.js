@@ -1,7 +1,7 @@
 import { PunchLib } from './punch-lib.js'
 
 export class PortWorkletNode extends AudioWorkletNode {
-    constructor(context) {
+    constructor(context, click) {
         super(context, 'processor');
         this.counter = 0;
         this.port.onmessage = this.handleMessage.bind(this);
@@ -12,6 +12,7 @@ export class PortWorkletNode extends AudioWorkletNode {
 
         // this.currentPunch = ''
         this.currentPunch = new PunchLib(context, this)
+        this.click = click
         //this.currentPunch.gainNode.connect(this) // FIX
         // add
         
@@ -36,7 +37,17 @@ export class PortWorkletNode extends AudioWorkletNode {
         //this.kick1()
         //console.log(this.currentPunch)
         //this.currentPunch.beep1()
-        this.currentPunch.kick1()
+        switch(this.click) {
+            case 'kick':
+            this.currentPunch.kick1()
+            break
+            case 'beep':
+            this.currentPunch.beep1()
+            break
+            default:
+
+            break
+        }
 
         if (this.counter > 10) {
         this.port.postMessage({

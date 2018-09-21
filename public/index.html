@@ -15,11 +15,35 @@
 
 <br>
 
+<!-- take the value from audio-core!, this value is ignored, se sobreescribe mas abajo -->
 <input id="volumeSlider" type="range" value="1" min="0.03" max="1.5" step="0.01" />
 <div> vol: </div><div id="volume"></div>
 
+<br>
+<br>
+
+
+<!--fieldset>
+    <legend>Select a maintenance drone</legend>
+
+    <div>
+        <input type="radio" id="huey" 
+                name="drone" value="huey" checked />
+        <label for="huey">Huey</label>
+    </div>
+
+    <div>
+        <input type="radio" id="dewey" 
+                name="drone" value="dewey" />
+        <label for="dewey">Dewey</label>
+    </div>
+
+</fieldset-->
+
+    
+
 <script type="module">
-    import { init, stop, setPeriodicity, setMainGain } from './audio-core.js'
+    import { init, stop, setPeriodicity, setMainGain, setClick } from './audio-core.js'
     //window.start = start
     window.periodicity = setPeriodicity
     document.querySelector('#init').addEventListener('click', init)
@@ -29,6 +53,10 @@
     document.querySelector('#resume').addEventListener('click', resume)
 
     window.setMainGain = setMainGain
+
+    // document.querySelector('#huey').addEventListener('click', setClick)
+    // document.querySelector('#dewey').addEventListener('click', setClick)
+
 </script>
 
 <script>
@@ -51,6 +79,7 @@
 
     var volumeSlider = document.getElementById("volumeSlider");
     var volumeValue = document.getElementById("volume");
+    // este es el 1er valor q esta tomando!
     volumeValue.innerHTML = 1 //sec2Bpm(slider.value); // Display the default slider value
 
     // Update the current slider value (each time you drag the slider handle)

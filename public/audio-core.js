@@ -6,10 +6,12 @@ let periodicity = 1
 // let mainGainValue = 0.1
 let gainNode = context.createGain();
 let lastGainNodeValue = 1
+let click = 'beep'
+click = 'kick'
 
 export function init() {
     context.audioWorklet.addModule('./processor.js').then(() => {
-        let portWorkletNode = new PortWorkletNode(context);
+        let portWorkletNode = new PortWorkletNode(context, click);
         //portWorkletNode.connect(context.destination);
 
         //this.currentPunch = new PunchLib(context, portWorkletNode)
@@ -18,8 +20,10 @@ export function init() {
         // mainGain(portWorkletNode)
         contextGainNode(portWorkletNode, lastGainNodeValue) // glitch?
 
+        /* 
         let paramAmp = portWorkletNode.parameters.get('amplitude');
         portWorkletNode.connect(paramAmp)
+        */
 
         let param = portWorkletNode.parameters.get('periodicity')
         param.value = periodicity
@@ -40,6 +44,7 @@ function contextGainNode(portWorkletNode, lastGainNodeValue) {
     portWorkletNode.connect(gainNode);
     gainNode.connect(context.destination);
     gainNode.gain.value = lastGainNodeValue //0.09
+    console.log(lastGainNodeValue)
 }
 
 async function createNewContext() {
@@ -61,6 +66,10 @@ export function setPeriodicity(value) {
 export function setMainGain(value) {
     gainNode.gain.value = value
     lastGainNodeValue = value
+    console.log(value)
+}
+
+export function setClick(value) {
     console.log(value)
 }
 
