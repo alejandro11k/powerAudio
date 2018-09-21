@@ -11,7 +11,7 @@
 <br>
 
 <input id="myRange" type="range" value="1" min="0.2" max="1.5" step="0.1" />
-<div> bpm: (set after init)</div><div id="demo"></div>
+<div> bpm: (set before init)</div><div id="demo"></div>
 
 <br>
 
@@ -22,40 +22,45 @@
 <br>
 <br>
 
+<legend>sound: (set before init)</legend-->
 
-<!--fieldset>
-    <legend>Select a maintenance drone</legend>
+<div>
+    <input type="radio" id="beep" 
+            name="click" value="beep" checked />
+    <label for="beep">Beep</label>
+</div>
 
-    <div>
-        <input type="radio" id="huey" 
-                name="drone" value="huey" checked />
-        <label for="huey">Huey</label>
-    </div>
-
-    <div>
-        <input type="radio" id="dewey" 
-                name="drone" value="dewey" />
-        <label for="dewey">Dewey</label>
-    </div>
-
-</fieldset-->
-
-    
+<div>
+    <input type="radio" id="kick" 
+            name="click" value="kick" />
+    <label for="kick">Kick</label>
+</div>
 
 <script type="module">
     import { init, stop, setPeriodicity, setMainGain, setClick } from './audio-core.js'
     //window.start = start
     window.periodicity = setPeriodicity
-    document.querySelector('#init').addEventListener('click', init)
-    document.querySelector('#stop').addEventListener('click', stop)
+    document.querySelector('#init').addEventListener('click', () => {
+        document.querySelector('#init').setAttribute("disabled",true)
+        init()
+    })
+
+    document.querySelector('#stop').addEventListener('click', () => {
+        document.querySelector('#init').removeAttribute("disabled")
+        stop()
+    })
 
     document.querySelector('#pause').addEventListener('click', pause)
     document.querySelector('#resume').addEventListener('click', resume)
 
     window.setMainGain = setMainGain
 
-    // document.querySelector('#huey').addEventListener('click', setClick)
-    // document.querySelector('#dewey').addEventListener('click', setClick)
+    document.querySelector('#beep').addEventListener('click', getValueFromEvent)
+    document.querySelector('#kick').addEventListener('click', getValueFromEvent)
+
+    function getValueFromEvent(event) {
+        setClick(event.target.value)
+    }
 
 </script>
 

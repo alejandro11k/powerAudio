@@ -11,13 +11,14 @@ export class PunchLib {
 
     }
 
-    trigger() {
-        const time = this.context.currentTime;
-        this.oscillator.frequency.setValueAtTime(150, time);
-        this.gainNode.gain.setValueAtTime(0.8, time);
-    
-        this.oscillator.frequency.exponentialRampToValueAtTime(0.1, time + 0.5);
-        this.gainNode.gain.exponentialRampToValueAtTime(0.1, time + 0.5);
+    beep1 () {
+        const currentTime = this.context.currentTime   
+        // prevent cannot call start more that once
+        this.destroyOsc()
+
+        this.oscillator.start(currentTime)
+        this.gainNode.gain.value = 0.2
+        this.oscillator.stop(currentTime + 0.1)
     }
 
     kick1 () {
@@ -35,20 +36,23 @@ export class PunchLib {
         this.oscillator.stop(this.currentTime + 0.15)
         
     }
-    beep1 () {
-        const currentTime = this.context.currentTime
-        
-        // prevent cannot call start more that once
-        this.destroyOsc()
 
-        this.oscillator.start(currentTime)
-        this.gainNode.gain.value = 0.2
-        this.oscillator.stop(currentTime + 0.1)
-    }
     destroyOsc () {
         // fix sound glitch
         this.oscillator = null
         this.oscillator = new OscillatorNode(this.context)
         this.oscillator.connect(this.gainNode)
     }
+
+    /*
+    trigger() {
+        const time = this.context.currentTime;
+        this.oscillator.frequency.setValueAtTime(150, time);
+        this.gainNode.gain.setValueAtTime(0.8, time);
+    
+        this.oscillator.frequency.exponentialRampToValueAtTime(0.1, time + 0.5);
+        this.gainNode.gain.exponentialRampToValueAtTime(0.1, time + 0.5);
+    }
+    */
+
 }

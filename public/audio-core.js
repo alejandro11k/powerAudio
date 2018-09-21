@@ -7,7 +7,6 @@ let periodicity = 1
 let gainNode = context.createGain();
 let lastGainNodeValue = 1
 let click = 'beep'
-click = 'kick'
 
 export function init() {
     context.audioWorklet.addModule('./processor.js').then(() => {
@@ -71,6 +70,8 @@ export function setMainGain(value) {
 
 export function setClick(value) {
     console.log(value)
+    click = value
+
 }
 
 /*
