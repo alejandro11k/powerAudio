@@ -9,8 +9,14 @@
 
 <br>
 <br>
+
 <input id="myRange" type="range" value="1" min="0.2" max="1.5" step="0.1" />
-<div id="demo"></div>
+<div> bpm: (set after init)</div><div id="demo"></div>
+
+<br>
+
+<input id="volumeSlider" type="range" value="1" min="0.03" max="1.5" step="0.01" />
+<div> vol: </div><div id="volume"></div>
 
 <script type="module">
     import { init, stop, setPeriodicity, setMainGain } from './audio-core.js'
@@ -42,4 +48,16 @@
     function sec2Bpm(sec) {
         return 60000 / (sec * 1000)
     }
+
+    var volumeSlider = document.getElementById("volumeSlider");
+    var volumeValue = document.getElementById("volume");
+    volumeValue.innerHTML = 1 //sec2Bpm(slider.value); // Display the default slider value
+
+    // Update the current slider value (each time you drag the slider handle)
+    volumeSlider.oninput = function () {
+        volumeValue.innerHTML = this.value;
+        setMainGain(this.value)
+    }
+    console.log(volumeSlider.value);
+
 </script>
