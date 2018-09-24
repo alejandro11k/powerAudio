@@ -1,0 +1,97 @@
+<br>
+<button id="init"> init </button>
+<button id="stop"> stop </button>
+
+<br>
+<br>
+<button id="pause" hidden> pause </button>
+<button id="resume" hidden> resume </button>
+
+<br>
+<br>
+
+<input id="myRange" type="range" value="1" min="0.2" max="1.5" step="0.1" />
+<div> bpm: (set before init)</div><div id="demo"></div>
+
+<br>
+
+<!-- take the value from audio-core!, this value is ignored, se sobreescribe mas abajo -->
+<input id="volumeSlider" type="range" value="1" min="0.03" max="1.5" step="0.01" />
+<div> vol: </div><div id="volume"></div>
+
+<br>
+<br>
+
+<legend>sound: (set before init)</legend-->
+
+<div>
+    <input type="radio" id="beep" 
+            name="click" value="beep" checked />
+    <label for="beep">Beep</label>
+</div>
+
+<div>
+    <input type="radio" id="kick" 
+            name="click" value="kick" />
+    <label for="kick">Kick</label>
+</div>
+
+<script type="module">
+    import { init, stop, setPeriodicity, setMainGain, setClick } from './audio-core.js'
+    //window.start = start
+    window.periodicity = setPeriodicity
+    document.querySelector('#init').addEventListener('click', () => {
+        document.querySelector('#init').setAttribute("disabled",true)
+        init()
+    })
+
+    document.querySelector('#stop').addEventListener('click', () => {
+        document.querySelector('#init').removeAttribute("disabled")
+        stop()
+    })
+
+    document.querySelector('#pause').addEventListener('click', pause)
+    document.querySelector('#resume').addEventListener('click', resume)
+
+    window.setMainGain = setMainGain
+
+    document.querySelector('#beep').addEventListener('click', getValueFromEvent)
+    document.querySelector('#kick').addEventListener('click', getValueFromEvent)
+
+    function getValueFromEvent(event) {
+        setClick(event.target.value)
+    }
+
+</script>
+
+<script>
+    console.log(window)
+
+    var slider = document.getElementById("myRange");
+    var output = document.getElementById("demo");
+    output.innerHTML = sec2Bpm(slider.value); // Display the default slider value
+
+    // Update the current slider value (each time you drag the slider handle)
+    slider.oninput = function () {
+        output.innerHTML = sec2Bpm(this.value);
+        periodicity(this.value)
+    }
+    console.log(slider.value);
+
+    function sec2Bpm(sec) {
+        return 60000 / (sec * 1000)
+    }
+
+    var volumeSlider = document.getElementById("volumeSlider");
+    var volumeValue = document.getElementById("volume");
+    // este es el 1er valor q esta tomando!
+    volumeValue.innerHTML = 1 //sec2Bpm(slider.value); // Display the default slider value
+
+    // Update the current slider value (each time you drag the slider handle)
+    volumeSlider.oninput = function () {
+        volumeValue.innerHTML = this.value;
+        setMainGain(this.value)
+    }
+    console.log(volumeSlider.value);
+
+</script>
