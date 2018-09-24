@@ -16,3 +16,13 @@ https://github.com/alejandro11k/powerAudio/wiki/Prueba-de-concepto
 https://github.com/alejandro11k/powerAudio/wiki/Entrega1
 
 Demo: https://alejandro11k.github.io/
+
+## to use
+
+npm install
+
+node app.js
+
+localhost:300/index.html
+
+(only for chromium >66)
