@@ -1,4 +1,5 @@
 import { PunchLib } from './punch-lib.js'
+import { Beeper } from "./beeper.js"
 
 export class PortWorkletNode extends AudioWorkletNode {
     constructor(context, click) {
@@ -11,7 +12,7 @@ export class PortWorkletNode extends AudioWorkletNode {
         });
 
         // this.currentPunch = ''
-        this.currentPunch = new click(context, this) //new PunchLib(context, this)
+        this.currentPunch = new Beeper(context, this) //new PunchLib(context, this)
         //this.click = click
         //this.currentPunch.gainNode.connect(this) // FIX
         // add

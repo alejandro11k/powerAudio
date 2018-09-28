@@ -12,7 +12,7 @@ export class Sound {
 
     createOscillator () {
         // fix sound glitch
-        const oscillator = null
+        let oscillator = null
         oscillator = new OscillatorNode(this.context)
         oscillator.connect(this.gainNode)
 

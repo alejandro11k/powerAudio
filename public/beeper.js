@@ -1,8 +1,8 @@
 import { Sound } from './sound.js'
 
 export class Beeper extends Sound {
-    constructor() {
-        super()
+    constructor(context, audioNode) {
+        super(context, audioNode)
     }
     
     execute() {
