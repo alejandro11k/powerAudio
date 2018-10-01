@@ -10,8 +10,15 @@ export class PortWorkletNode extends AudioWorkletNode {
         timeStamp: this.context.currentTime
         });
 
-        //this.click = new Beeper(new Sound(context, this)) //new PunchLib(context, this)
-        this.click = new Kicker(new Sound(context, this))
+        const beeper = new Beeper(new Sound(context, this))
+        const kicker = new Kicker(new Sound(context, this))
+
+        this.sounds = new Map()
+        this.sounds.set('beeper',beeper)
+        this.sounds.set('kicker',kicker)
+        this.click = this.sounds.get('beeper')
+        //this.click = new Beeper(new Sound(context, this))
+
     }
 
     handleMessage(event) {
@@ -32,8 +39,12 @@ export class PortWorkletNode extends AudioWorkletNode {
         }
     }
 
-    getPunch(sound) {
-        this.currentPunch = sound
+    getSounds() {
+        return this.sounds
+    }
+
+    setSound(sound) {
+        this.click = sound 
     }
     
 }

@@ -1,17 +1,16 @@
 import { PortWorkletNode } from './port-worklet-node.js'
 // import { PunchLib } from './punch-lib.js'
-import { Beeper } from './beeper.js'
 
 let context = new AudioContext();
 let periodicity = 1
 // let mainGainValue = 0.1
 let gainNode = context.createGain();
 let lastGainNodeValue = 1
-let click = Beeper
+let portWorkletNode = null
 
 export function init() {
     context.audioWorklet.addModule('./processor.js').then(() => {
-        let portWorkletNode = new PortWorkletNode(context, click);
+        portWorkletNode = new PortWorkletNode(context);
         //portWorkletNode.connect(context.destination);
 
         //this.currentPunch = new PunchLib(context, portWorkletNode)
@@ -69,10 +68,14 @@ export function setMainGain(value) {
     console.log(value)
 }
 
-export function setClick(value) {
+export function setSound(value) {
     console.log(value)
     click = value
 
+}
+
+export function getSounds() {
+    portWorkletNode.getSounds()
 }
 
 /*
