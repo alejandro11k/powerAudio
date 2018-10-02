@@ -1,5 +1,3 @@
-import { Sound, Beeper, Kicker } from "./sound.js"
-
 export class PortWorkletNode extends AudioWorkletNode {
     constructor(context) {
         super(context, 'processor');
@@ -10,15 +8,6 @@ export class PortWorkletNode extends AudioWorkletNode {
         timeStamp: this.context.currentTime
         });
 
-        // const beeper = new Beeper(new Sound(context, this))
-        // const kicker = new Kicker(new Sound(context, this))
-        const beeper = new Beeper(new Sound(context))
-        const kicker = new Kicker(new Sound(context))
-
-        this.sounds = new Map()
-        this.sounds.set('beeper',beeper)
-        this.sounds.set('kicker',kicker)
-        this.click = this.sounds.get('beeper')
         // this.click = new Beeper(new Sound(context, this))
 
     }
@@ -39,10 +28,6 @@ export class PortWorkletNode extends AudioWorkletNode {
         });
         this.counter = 0;
         }
-    }
-
-    getSounds() {
-        return this.sounds
     }
 
     setSound(sound) {

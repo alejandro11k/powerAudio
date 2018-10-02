@@ -3,48 +3,32 @@ import { Sound, Beeper, Kicker } from "./sound.js"
 
 let context = new AudioContext();
 let periodicity = 1
-// let mainGainValue = 0.1
 let gainNode = context.createGain();
 let lastGainNodeValue = 1
 let portWorkletNode = null
 
 let sounds = new Map()
 initSounds()
-let click = sounds.get('beeper') 
 
 export function init() {
     context.audioWorklet.addModule('./processor.js').then(() => {
         portWorkletNode = new PortWorkletNode(context);
-        //portWorkletNode.connect(context.destination);
+        contextGainNode(portWorkletNode, lastGainNodeValue)
 
-        //this.currentPunch = new PunchLib(context, portWorkletNode)
-        //portWorkletNode.getPunch(this.currentPunch.default)
-
-        // mainGain(portWorkletNode)
-        contextGainNode(portWorkletNode, lastGainNodeValue) // glitch?
-
-        /* 
-        let paramAmp = portWorkletNode.parameters.get('amplitude');
-        portWorkletNode.connect(paramAmp)
-        */
-
-        portWorkletNode.setSound(click)
+        portWorkletNode.setSound(sounds.get('beeper'))
         let param = portWorkletNode.parameters.get('periodicity')
         param.value = periodicity
+
     });
 }
 
-// LOST CONTEXT in 2nd inid !!! error
 function initSounds() {
-
     const beeper = new Beeper(new Sound(context))
     const kicker = new Kicker(new Sound(context))
-
     sounds.set('beeper',beeper)
     sounds.set('kicker',kicker)
 }
 
-// Using context.createGain()
 function contextGainNode(portWorkletNode, lastGainNodeValue) {
     portWorkletNode.connect(gainNode);
     gainNode.connect(context.destination);
@@ -52,26 +36,18 @@ function contextGainNode(portWorkletNode, lastGainNodeValue) {
     console.log(lastGainNodeValue)
 }
 
-async function createNewContext() {
-    context = new AudioContext();
-}
-
 export function start() {
     context.resume()
 }
 export function stop() {
     context.suspend()
-    // context.close()
-    /*
-    createNewContext().then(()=>{
-        gainNode = context.createGain();
-    })
-    */
 }
 
 export function setPeriodicity(value) {
+    let param = portWorkletNode.parameters.get('periodicity')
+    param.value = value
+
     periodicity = value
-    console.log(value)
 }
 
 export function setMainGain(value) {
@@ -81,22 +57,9 @@ export function setMainGain(value) {
 }
 
 export function setSound(value) {
-    console.log(value)
     portWorkletNode.setSound(value)
-    click = value
 }
 
 export function getSounds() {
     return sounds
-    // portWorkletNode.getSounds()
 }
-
-/*
-export function pause() {
-    context.pause()
-}
-
-export function resume() {
-    context.resume()
-}
-*/
