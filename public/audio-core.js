@@ -56,11 +56,17 @@ async function createNewContext() {
     context = new AudioContext();
 }
 
+export function start() {
+    context.resume()
+}
 export function stop() {
-    context.close()
+    context.suspend()
+    // context.close()
+    /*
     createNewContext().then(()=>{
         gainNode = context.createGain();
     })
+    */
 }
 
 export function setPeriodicity(value) {
@@ -76,7 +82,7 @@ export function setMainGain(value) {
 
 export function setSound(value) {
     console.log(value)
-    
+    portWorkletNode.setSound(value)
     click = value
 }
 

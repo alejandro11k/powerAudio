@@ -1,5 +1,6 @@
 <br>
 <button id="init"> init </button>
+<button id="start"> start </button>
 <button id="stop"> stop </button>
 
 <br>
@@ -37,7 +38,7 @@
 </div>
 
 <script type="module">
-    import { init, stop, setPeriodicity, setMainGain, setSound, getSounds } from './audio-core.js'
+    import { init, stop, setPeriodicity, setMainGain, setSound, getSounds, start } from './audio-core.js'
     //window.start = start
     window.periodicity = setPeriodicity
 
@@ -46,8 +47,13 @@
         init()
     })
 
+    document.querySelector('#start').addEventListener('click', () => {
+        // document.querySelector('#init').setAttribute("disabled",true)
+        start()
+    })
+
     document.querySelector('#stop').addEventListener('click', () => {
-        document.querySelector('#init').removeAttribute("disabled")
+        // document.querySelector('#init').removeAttribute("disabled")
         stop()
     })
 
