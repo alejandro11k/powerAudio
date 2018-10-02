@@ -62,25 +62,11 @@
 
     window.setMainGain = setMainGain
 
-    const beeper = getSounds().get('beeper')
-    const kicker = getSounds().get('kicker')
-
-    // document.querySelector('#beep').addEventListener('click', test(beeper)) //getValueFromEvent)
-    // document.querySelector('#kick').addEventListener('click', test(kicker)) //getValueFromEvent)
-
     document.querySelector('#beep').addEventListener('click', getValueFromEvent)
     document.querySelector('#kick').addEventListener('click', getValueFromEvent)
 
     function getValueFromEvent(event) {
-        console.log(event)
-        console.log(event.target)
-        console.log(event.target.value)
         setSound(getSounds().get(event.target.value))
-    }
-
-    function test(value) {
-        console.log(value)
-        setSound(value)
     }
 
 </script>

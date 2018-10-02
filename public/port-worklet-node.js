@@ -7,9 +7,6 @@ export class PortWorkletNode extends AudioWorkletNode {
         message: 'Are you ready?',
         timeStamp: this.context.currentTime
         });
-
-        // this.click = new Beeper(new Sound(context, this))
-
     }
 
     handleMessage(event) {
