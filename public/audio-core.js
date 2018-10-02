@@ -27,13 +27,16 @@ export function init() {
         let paramAmp = portWorkletNode.parameters.get('amplitude');
         portWorkletNode.connect(paramAmp)
         */
+
         portWorkletNode.setSound(click)
         let param = portWorkletNode.parameters.get('periodicity')
         param.value = periodicity
     });
 }
 
+// LOST CONTEXT in 2nd inid !!! error
 function initSounds() {
+
     const beeper = new Beeper(new Sound(context))
     const kicker = new Kicker(new Sound(context))
 
