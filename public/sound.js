@@ -3,15 +3,16 @@ export class Sound {
         
         this.context = context
         // this.oscillator = new OscillatorNode(context)
-        console.log(this.context)
         this.gainNode = new GainNode(this.context)
         // this.oscillator.connect(this.gainNode)
-        this.gainNode.connect(audioNode)
+        // this.gainNode.connect(audioNode)
 
     }
 
-    createOscillator () {
+    createOscillator (audioNode) {
         // fix sound glitch
+        console.log(audioNode)
+        this.gainNode.connect(audioNode)
         let oscillator = null
         oscillator = new OscillatorNode(this.context)
         oscillator.connect(this.gainNode)
@@ -26,10 +27,10 @@ export class Beeper{
         this.sound = sound
     }
     
-    execute() {
+    execute(audioNode) {
         const currentTime = this.sound.context.currentTime   
         // prevent cannot call start more that once
-        const oscillator = this.sound.createOscillator()
+        const oscillator = this.sound.createOscillator(audioNode)
 
         oscillator.start(currentTime)
         this.sound.gainNode.gain.value = 0.2
@@ -42,9 +43,9 @@ export class Kicker {
         this.sound = sound
     }
     
-    execute() {
+    execute(audioNode) {
         let currentTime = this.sound.context.currentTime
-        const oscillator = this.sound.createOscillator()
+        const oscillator = this.sound.createOscillator(audioNode)
         oscillator.start(this.currentTime)
         oscillator.frequency.setValueAtTime(180, currentTime)
         this.sound.gainNode.gain.setValueAtTime(0.9, currentTime)

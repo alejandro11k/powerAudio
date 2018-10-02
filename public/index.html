@@ -26,13 +26,13 @@
 
 <div>
     <input type="radio" id="beep" 
-            name="click" value="beep" checked />
+            name="click" value="beeper" checked />
     <label for="beep">Beep</label>
 </div>
 
 <div>
     <input type="radio" id="kick" 
-            name="click" value="kick" />
+            name="click" value="kicker" />
     <label for="kick">Kick</label>
 </div>
 
@@ -40,12 +40,10 @@
     import { init, stop, setPeriodicity, setMainGain, setSound, getSounds } from './audio-core.js'
     //window.start = start
     window.periodicity = setPeriodicity
+
     document.querySelector('#init').addEventListener('click', () => {
         document.querySelector('#init').setAttribute("disabled",true)
         init()
-        //document.querySelector('#beep').addEventListener('click', getSounds().get('beeper')) //getValueFromEvent)
-        //document.querySelector('#kick').addEventListener('click', getSounds().get('kicker')) //getValueFromEvent)
-
     })
 
     document.querySelector('#stop').addEventListener('click', () => {
@@ -58,12 +56,25 @@
 
     window.setMainGain = setMainGain
 
-    //document.querySelector('#beep').addEventListener('click', getSounds().get('beeper')) //getValueFromEvent)
-    //document.querySelector('#kick').addEventListener('click', getSounds().get('kicker')) //getValueFromEvent)
+    const beeper = getSounds().get('beeper')
+    const kicker = getSounds().get('kicker')
+
+    // document.querySelector('#beep').addEventListener('click', test(beeper)) //getValueFromEvent)
+    // document.querySelector('#kick').addEventListener('click', test(kicker)) //getValueFromEvent)
+
+    document.querySelector('#beep').addEventListener('click', getValueFromEvent)
+    document.querySelector('#kick').addEventListener('click', getValueFromEvent)
 
     function getValueFromEvent(event) {
-        console.log(evet.target.value)
-        setSound(event.target.value)
+        console.log(event)
+        console.log(event.target)
+        console.log(event.target.value)
+        setSound(getSounds().get(event.target.value))
+    }
+
+    function test(value) {
+        console.log(value)
+        setSound(value)
     }
 
 </script>
