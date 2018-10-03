@@ -1,16 +1,31 @@
 import { PortWorkletNode } from './port-worklet-node.js'
 import { Sound, Beeper, Kicker } from "./sound.js"
 
-let context = new AudioContext();
+
 let periodicity = 1
-let gainNode = context.createGain();
 let lastGainNodeValue = 1
+
+let gainNode = null
+let context = null
 let portWorkletNode = null
 
-let sounds = new Map()
-initSounds()
+function createContextAndGainNode() {
+    context = new AudioContext()
+    gainNode = context.createGain()
+}
 
-export function init() {
+export async function setContext(context) {
+    context = context
+}
+
+export function getContext() {
+    return context
+}
+
+let sounds = new Map()
+// initSounds()
+
+export async function init() {
     context.audioWorklet.addModule('./processor.js').then(() => {
         portWorkletNode = new PortWorkletNode(context);
         contextGainNode(portWorkletNode, lastGainNodeValue)
@@ -22,7 +37,7 @@ export function init() {
     });
 }
 
-function initSounds() {
+export function initSounds() {
     const beeper = new Beeper(new Sound(context))
     const kicker = new Kicker(new Sound(context))
     sounds.set('beeper',beeper)
@@ -41,6 +56,18 @@ export function start() {
 }
 export function stop() {
     context.suspend()
+}
+
+export function suspendResume() {
+    if(context.state === 'running') {
+        context.suspend().then(function() {
+            return 'Resume context';
+      });
+    } else if(context.state === 'suspended') {
+        context.resume().then(function() {
+            return 'Suspend context';
+      });  
+    }
 }
 
 export function setPeriodicity(value) {

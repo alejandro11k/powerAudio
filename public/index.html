@@ -1,12 +1,11 @@
 <br>
 <button id="init"> init </button>
-<button id="start"> start </button>
-<button id="stop"> stop </button>
+<button id="start" disabled> start </button>
+<button id="stop" disabled> stop </button>
 
 <br>
 <br>
-<button id="pause" hidden> pause </button>
-<button id="resume" hidden> resume </button>
+<button id="suspendResume"> on/off </button>
 
 <br>
 <br>
@@ -38,29 +37,36 @@
 </div>
 
 <script type="module">
-    import { init, stop, setPeriodicity, setMainGain, setSound, getSounds, start } from './audio-core.js'
+    // import { init, stop, setPeriodicity, setMainGain, setSound, getSounds, start, suspendResume } from './audio-core.js'
+    //  import { setBpm, setGain, setSound, getSounds, onOff } from './audio-nodes.js'
+    import { StateNodes } from './audio-nodes.js'
+    let stateNodes = new StateNodes()
     //window.start = start
-    window.periodicity = setPeriodicity
+    // window.periodicity = setPeriodicity
+    window.setBpm = stateNodes.setBpm
 
     document.querySelector('#init').addEventListener('click', () => {
         document.querySelector('#init').setAttribute("disabled",true)
+        document.querySelector('#start').removeAttribute("disabled")
+        document.querySelector('#stop').removeAttribute("disabled")
         init()
     })
 
     document.querySelector('#start').addEventListener('click', () => {
-        // document.querySelector('#init').setAttribute("disabled",true)
         start()
     })
 
     document.querySelector('#stop').addEventListener('click', () => {
-        // document.querySelector('#init').removeAttribute("disabled")
         stop()
     })
 
-    document.querySelector('#pause').addEventListener('click', pause)
-    document.querySelector('#resume').addEventListener('click', resume)
+    document.querySelector('#suspendResume').addEventListener('click', () => {
+        //suspendResume()
+        stateNode.onOff()
+    })
 
-    window.setMainGain = setMainGain
+    // window.setMainGain = setMainGain
+    window.setGain = stateNodes.setGain
 
     document.querySelector('#beep').addEventListener('click', getValueFromEvent)
     document.querySelector('#kick').addEventListener('click', getValueFromEvent)
@@ -81,7 +87,8 @@
     // Update the current slider value (each time you drag the slider handle)
     slider.oninput = function () {
         output.innerHTML = sec2Bpm(this.value);
-        periodicity(this.value)
+        // periodicity(this.value)
+        setBpm(this.value)
     }
     console.log(slider.value);
 
@@ -97,7 +104,8 @@
     // Update the current slider value (each time you drag the slider handle)
     volumeSlider.oninput = function () {
         volumeValue.innerHTML = this.value;
-        setMainGain(this.value)
+        // setMainGain(this.value)
+        setGain(this.value)
     }
     console.log(volumeSlider.value);
 
