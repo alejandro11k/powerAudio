@@ -34,14 +34,12 @@ export function initSounds() {
     const kicker = new Kicker(new Sound(context))
     sounds.set('beeper',beeper)
     sounds.set('kicker',kicker)
-    console.log(sounds)
 }
 
 function contextGainNode(portWorkletNode, lastGainNodeValue) {
     portWorkletNode.connect(gainNode);
     gainNode.connect(context.destination);
     gainNode.gain.value = lastGainNodeValue //0.09
-    console.log(lastGainNodeValue)
 }
 
 export function start() {
@@ -73,7 +71,6 @@ export function setPeriodicity(value) {
 export function setMainGain(value) {
     gainNode.gain.value = value
     lastGainNodeValue = value
-    console.log(value)
 }
 
 export function setSound(value) {
@@ -81,6 +78,5 @@ export function setSound(value) {
 }
 
 export function getSounds() {
-    console.log(sounds)
     return sounds
 }

@@ -1,7 +1,9 @@
 <br>
-<button id="init"> init </button>
-<button id="start" disabled> start </button>
-<button id="stop" disabled> stop </button>
+<div hidden>
+    <button id="init"> init </button>
+    <button id="start" disabled> start </button>
+    <button id="stop" disabled> stop </button>
+</div>
 
 <br>
 <br>
@@ -73,7 +75,6 @@
 </script>
 
 <script>
-    console.log(window)
 
     var slider = document.getElementById("myRange");
     var output = document.getElementById("demo");
@@ -84,8 +85,7 @@
         output.innerHTML = sec2Bpm(this.value);
         stateNodes.setBpm(this.value)
     }
-    console.log(slider.value);
-
+    
     function sec2Bpm(sec) {
         return 60000 / (sec * 1000)
     }
@@ -99,8 +99,7 @@
     volumeSlider.oninput = function () {
         volumeValue.innerHTML = this.value;
         // setMainGain(this.value)
-        setGain(this.value)
+        stateNodes.setGain(this.value)
     }
-    console.log(volumeSlider.value);
 
 </script>

@@ -14,9 +14,6 @@ export class StateNodes {
     }
 
     setBpm(value) {
-        console.log(this)
-        console.log(this.state)
-        console.log(value)
         this.state.setBpm(value)
     }
 
@@ -73,12 +70,10 @@ class ContextAndGainNodes {
 
     setBpm(value) {
         // guardar el valor para darselo al proximo estado
-        console.log(value)
     }
 
     setSound(value) {
         // guardar el valor para darselo al proximo estado
-        console.log('setSound')
     }
 
     setGain(value) {
@@ -86,7 +81,6 @@ class ContextAndGainNodes {
     }
 
     getSounds() {
-        console.log(AudioCore.getSounds())
         return AudioCore.getSounds()
     }
     
