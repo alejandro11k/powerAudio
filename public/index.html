@@ -37,15 +37,11 @@
 </div>
 
 <script type="module">
-    import { setPeriodicity, setMainGain, setSound, getSounds } from './audio-core.js'
+    // import { setPeriodicity, setMainGain, setSound, getSounds } from './audio-core.js'
+    import { getSounds } from './audio-core.js' // FIX
     import { StateNodes } from './audio-nodes.js'
     let stateNodes = new StateNodes()
-    //window.start = start
-    // window.periodicity = setPeriodicity
-    window.setBpm = stateNodes.setBpm
-
-    // window.setMainGain = setMainGain
-    window.setGain = stateNodes.setGain
+    window.stateNodes = stateNodes
 
     document.querySelector('#init').addEventListener('click', () => {
         document.querySelector('#init').setAttribute("disabled",true)
@@ -71,9 +67,6 @@
     document.querySelector('#kick').addEventListener('click', getValueFromEvent)
 
     function getValueFromEvent(event) {
-        // stateNodes.setSound(stateNodes.getSounds().get(event.target.value))
-        // console.log(stateNodes)
-        // console.log(getSounds())
         stateNodes.setSound(getSounds().get(event.target.value))
     }
 
@@ -89,8 +82,7 @@
     // Update the current slider value (each time you drag the slider handle)
     slider.oninput = function () {
         output.innerHTML = sec2Bpm(this.value);
-        // periodicity(this.value)
-        setBpm(this.value)
+        stateNodes.setBpm(this.value)
     }
     console.log(slider.value);
 

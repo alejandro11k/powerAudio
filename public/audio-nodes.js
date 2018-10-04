@@ -13,8 +13,11 @@ export class StateNodes {
         this.state = newState
     }
 
-    setBmp(value) {
-        this.state.setBmp(value)
+    setBpm(value) {
+        console.log(this)
+        console.log(this.state)
+        console.log(value)
+        this.state.setBpm(value)
     }
 
     setSound(value) {
@@ -39,7 +42,7 @@ class NullNodes {
        //SetNewState
     }
 
-    setBmp(value) {
+    setBpm(value) {
         // guardar el valor para darselo al proximo estado
     }
 
@@ -68,8 +71,9 @@ class ContextAndGainNodes {
         //setNewState
     }
 
-    setBmp(value) {
+    setBpm(value) {
         // guardar el valor para darselo al proximo estado
+        console.log(value)
     }
 
     setSound(value) {
@@ -97,7 +101,7 @@ class AllNodes {
         AudioCore.suspendResume()
     }
 
-    setBmp(value) {
+    setBpm (value) {
         AudioCore.setPeriodicity(value)
     }
 
