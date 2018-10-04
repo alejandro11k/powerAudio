@@ -45,6 +45,9 @@
     // window.periodicity = setPeriodicity
     window.setBpm = stateNodes.setBpm
 
+    // window.setMainGain = setMainGain
+    window.setGain = stateNodes.setGain
+
     document.querySelector('#init').addEventListener('click', () => {
         document.querySelector('#init').setAttribute("disabled",true)
         document.querySelector('#start').removeAttribute("disabled")
@@ -62,17 +65,16 @@
 
     document.querySelector('#suspendResume').addEventListener('click', () => {
         //suspendResume()
-        stateNode.onOff()
+        stateNodes.onOff()
     })
-
-    // window.setMainGain = setMainGain
-    window.setGain = stateNodes.setGain
 
     document.querySelector('#beep').addEventListener('click', getValueFromEvent)
     document.querySelector('#kick').addEventListener('click', getValueFromEvent)
 
     function getValueFromEvent(event) {
-        setSound(getSounds().get(event.target.value))
+        //stateNodes.setSound(stateNodes.getSounds().get(event.target.value))
+        console.log(stateNodes)
+        console.log(stateNodes.getSounds())
     }
 
 </script>

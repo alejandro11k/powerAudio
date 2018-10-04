@@ -6,7 +6,7 @@ export class StateNodes {
     }
     
     onOff() {
-        state.onOff(this)
+        this.state.onOff(this)
     }
 
     setState(newState) {
@@ -59,13 +59,8 @@ class NullNodes {
 
 class ContextAndGainNodes {
     constructor() {
-        //AudioCore.context = new AudioContext()
-        //AudioCore.gainNode = AudioCore.context.createGain()
-        AudioCore.setContext(new AudioContext())
-        AudioCore.setGainNode(AudioCore.getContext().createGain())
+        AudioCore.createContextAndGainNode()
         AudioCore.initSounds()
-        
-        
     }
 
     onOff(context) {
@@ -79,6 +74,7 @@ class ContextAndGainNodes {
 
     setSound(value) {
         // guardar el valor para darselo al proximo estado
+        console.log('setSound')
     }
 
     setGain(value) {
@@ -86,7 +82,7 @@ class ContextAndGainNodes {
     }
 
     getSounds() {
-        AudioCore.getSounds()
+        console.log(AudioCore.getSounds())
     }
     
 }

@@ -9,17 +9,9 @@ let gainNode = null
 let context = null
 let portWorkletNode = null
 
-function createContextAndGainNode() {
+export function createContextAndGainNode() {
     context = new AudioContext()
     gainNode = context.createGain()
-}
-
-export async function setContext(context) {
-    context = context
-}
-
-export function getContext() {
-    return context
 }
 
 let sounds = new Map()
