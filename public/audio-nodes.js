@@ -26,7 +26,7 @@ export class StateNodes {
     }
 
     getSounds() {
-        // ??
+        this.state.getSounds()
     }
 }
 
@@ -83,6 +83,7 @@ class ContextAndGainNodes {
 
     getSounds() {
         console.log(AudioCore.getSounds())
+        return AudioCore.getSounds()
     }
     
 }

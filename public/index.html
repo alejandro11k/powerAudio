@@ -37,8 +37,7 @@
 </div>
 
 <script type="module">
-    // import { init, stop, setPeriodicity, setMainGain, setSound, getSounds, start, suspendResume } from './audio-core.js'
-    //  import { setBpm, setGain, setSound, getSounds, onOff } from './audio-nodes.js'
+    import { setPeriodicity, setMainGain, setSound, getSounds } from './audio-core.js'
     import { StateNodes } from './audio-nodes.js'
     let stateNodes = new StateNodes()
     //window.start = start
@@ -72,9 +71,10 @@
     document.querySelector('#kick').addEventListener('click', getValueFromEvent)
 
     function getValueFromEvent(event) {
-        //stateNodes.setSound(stateNodes.getSounds().get(event.target.value))
-        console.log(stateNodes)
-        console.log(stateNodes.getSounds())
+        // stateNodes.setSound(stateNodes.getSounds().get(event.target.value))
+        // console.log(stateNodes)
+        // console.log(getSounds())
+        stateNodes.setSound(getSounds().get(event.target.value))
     }
 
 </script>

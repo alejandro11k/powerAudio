@@ -34,6 +34,7 @@ export function initSounds() {
     const kicker = new Kicker(new Sound(context))
     sounds.set('beeper',beeper)
     sounds.set('kicker',kicker)
+    console.log(sounds)
 }
 
 function contextGainNode(portWorkletNode, lastGainNodeValue) {
@@ -80,5 +81,6 @@ export function setSound(value) {
 }
 
 export function getSounds() {
+    console.log(sounds)
     return sounds
 }
