@@ -26,6 +26,7 @@ export async function init() {
         let param = portWorkletNode.parameters.get('periodicity')
         param.value = periodicity
 
+        // suspendResume()
     });
 }
 
@@ -50,6 +51,7 @@ export function stop() {
 }
 
 export function suspendResume() {
+    console.log(context.state)
     if(context.state === 'running') {
         context.suspend().then(function() {
             return 'Resume context';
@@ -65,6 +67,10 @@ export function setPeriodicity(value) {
     let param = portWorkletNode.parameters.get('periodicity')
     param.value = value
 
+    periodicity = value
+}
+
+export function storePeriodicity(value) {
     periodicity = value
 }
 
