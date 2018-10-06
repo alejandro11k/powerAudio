@@ -76,8 +76,7 @@ class ContextAndGainNodes {
 
     setSound(value) {
         // guardar el valor para darselo al proximo estado
-        console.log(value)
-        this.selectedSound = value
+        AudioCore.storeSelectedSound(value)
     }
 
     setGain(value) {
@@ -93,7 +92,6 @@ class ContextAndGainNodes {
 class AllNodes {
     constructor() {
         AudioCore.init()
-        // AudioCore.setSound(context.selectedSound) <-- don t work
     }
 
     onOff() {
