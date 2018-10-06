@@ -103,3 +103,24 @@
     }
 
 </script>
+
+<br>
+<br>
+<script src="./lib/audio-worklet-helper.js"></script> 
+<!--link rel="stylesheet" href="./resources/base-v2.css"-->
+<div class="float-right">
+    <div id="div-worklet-indicator" class="worklet-status-pending">
+    Checking...
+    </div>
+</div>
+
+<script>
+    AudioWorkletHelper.initializeDemo({
+        title: 'Hello AudioWorklet!',
+        description: `A simple AudioWorkletNode that bypasses the incoming audio 
+          stream to its output. The sound source a sine oscillator at 440Hz.`,
+        htmlSource: 'audio-worklet/basic/hello-audio-worklet.html',
+        jsSource: 'audio-worklet/basic/js/bypass-processor.js',
+        // demoFunction: runDemo
+    });
+</script>
