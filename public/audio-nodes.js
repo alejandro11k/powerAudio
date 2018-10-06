@@ -3,6 +3,7 @@ import * as AudioCore from './audio-core.js'
 export class StateNodes {
     constructor() {
         this.state = new ContextAndGainNodes()
+        this.selectedSound = null
     }
     
     onOff() {
@@ -35,8 +36,9 @@ class NullNodes {
 
     }
 
-    onOff() {
-       //SetNewState
+    onOff(context) {
+       // SetNewState
+       // context.setState(new ContextAndGainNodes())
     }
 
     setBpm(value) {
@@ -65,15 +67,17 @@ class ContextAndGainNodes {
 
     onOff(context) {
        context.setState(new AllNodes())
-        //setNewState
     }
 
     setBpm(value) {
         // guardar el valor para darselo al proximo estado
+        AudioCore.storePeriodicity(value)
     }
 
     setSound(value) {
         // guardar el valor para darselo al proximo estado
+        console.log(value)
+        this.selectedSound = value
     }
 
     setGain(value) {
@@ -89,6 +93,7 @@ class ContextAndGainNodes {
 class AllNodes {
     constructor() {
         AudioCore.init()
+        // AudioCore.setSound(context.selectedSound) <-- don t work
     }
 
     onOff() {
