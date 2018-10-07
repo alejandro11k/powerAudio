@@ -2,7 +2,7 @@ import { PortWorkletNode } from './port-worklet-node.js'
 import { Sound, Beeper, Kicker } from "./sound.js"
 
 
-let periodicity = 1
+let bpm = 60
 let lastGainNodeValue = 1
 
 let gainNode = null
@@ -29,8 +29,8 @@ export function init() {
 
         let sound = selectedSound || sounds.get('beeper')
         portWorkletNode.setSound(sound)
-        let param = portWorkletNode.parameters.get('periodicity')
-        param.value = periodicity
+        let param = portWorkletNode.parameters.get('bpm')
+        param.value = bpm
     });
 }
 
@@ -59,15 +59,14 @@ export function suspendResume() {
     }
 }
 
-export function setPeriodicity(value) {
-    storePeriodicity(value)
-
-    let param = portWorkletNode.parameters.get('periodicity')
-    param.value = value
+export function setBpm(value) {
+    bpm = value
+    let param = portWorkletNode.parameters.get('bpm')
+    param.value = bpm
 }
 
-export function storePeriodicity(value) {
-    periodicity = value
+export function storeBpm(value) {
+    bpm = value
 }
 
 export function setMainGain(value) {

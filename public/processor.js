@@ -1,7 +1,7 @@
 class PortProcessor extends AudioWorkletProcessor {
     static get parameterDescriptors() {
         return [
-            {name: 'periodicity', defaultValue: 1, minValue: 0.2, maxValue: 2}
+            {name: 'bpm', defaultValue: 60, minValue: 40, maxValue: 300}
         ];
       }
 
@@ -18,8 +18,8 @@ class PortProcessor extends AudioWorkletProcessor {
 
     process(inputs, outputs, parameters){
         // Post a message to the node for every 1 second.
-        let periodicity = parameters.periodicity[0];
-        if (currentTime - this._lastUpdate > periodicity) {
+        let second = (60 / parameters.bpm[0]);
+        if (currentTime - this._lastUpdate > second) {
             this.port.postMessage({
             message: 'Process is called.',
             timeStamp: currentTime,

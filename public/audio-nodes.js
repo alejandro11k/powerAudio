@@ -71,7 +71,7 @@ class ContextAndGainNodes {
 
     setBpm(value) {
         // guardar el valor para darselo al proximo estado
-        AudioCore.storePeriodicity(value)
+        AudioCore.storeBpm(value)
     }
 
     setSound(value) {
@@ -99,7 +99,7 @@ class AllNodes {
     }
 
     setBpm (value) {
-        AudioCore.setPeriodicity(value)
+        AudioCore.setBpm(value)
     }
 
     setSound(value) {
