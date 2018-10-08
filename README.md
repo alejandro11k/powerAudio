@@ -15,7 +15,7 @@ https://github.com/alejandro11k/powerAudio/wiki/Prueba-de-concepto
 
 https://github.com/alejandro11k/powerAudio/wiki/Entrega1
 
-Demo: https://alejandro11k.github.io/
+Demo: https://power-audio.netlify.com/
 
 ## to use
 

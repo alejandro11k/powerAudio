@@ -1,85 +1,83 @@
 import { PortWorkletNode } from './port-worklet-node.js'
-// import { PunchLib } from './punch-lib.js'
+import { Sound, Beeper, Kicker } from "./sound.js"
 
-let context = new AudioContext();
-let periodicity = 1
-// let mainGainValue = 0.1
-let gainNode = context.createGain();
+
+let bpm = 60
 let lastGainNodeValue = 1
-let click = 'beep'
+
+let gainNode = null
+let context = null
+let portWorkletNode = null
+
+export function createContextAndGainNode() {
+    context = new AudioContext()
+    gainNode = context.createGain()
+}
+
+let sounds = new Map()
+let selectedSound = null
+
+export function storeSelectedSound(value) {
+    selectedSound = value
+    console.log(selectedSound)
+}
 
 export function init() {
     context.audioWorklet.addModule('./processor.js').then(() => {
-        let portWorkletNode = new PortWorkletNode(context, click);
-        //portWorkletNode.connect(context.destination);
+        portWorkletNode = new PortWorkletNode(context);
+        contextGainNode(portWorkletNode, lastGainNodeValue)
 
-        //this.currentPunch = new PunchLib(context, portWorkletNode)
-        //portWorkletNode.getPunch(this.currentPunch.default)
-
-        // mainGain(portWorkletNode)
-        contextGainNode(portWorkletNode, lastGainNodeValue) // glitch?
-
-        /* 
-        let paramAmp = portWorkletNode.parameters.get('amplitude');
-        portWorkletNode.connect(paramAmp)
-        */
-
-        let param = portWorkletNode.parameters.get('periodicity')
-        param.value = periodicity
+        let sound = selectedSound || sounds.get('beeper')
+        portWorkletNode.setSound(sound)
+        let param = portWorkletNode.parameters.get('bpm')
+        param.value = bpm
     });
 }
 
-// Using a new gainNode on the top of the chain
-function mainGain(portWorkletNode) {
-    let mainGain = new GainNode(context)
-    portWorkletNode.connect(mainGain);
-    mainGain.connect(context.destination)
-    // min audible value 0.003
-    mainGain.gain.value = 0.09
+export function initSounds() {
+    const beeper = new Beeper(new Sound(context))
+    const kicker = new Kicker(new Sound(context))
+    sounds.set('beeper',beeper)
+    sounds.set('kicker',kicker)
 }
 
-// Using context.createGain()
 function contextGainNode(portWorkletNode, lastGainNodeValue) {
     portWorkletNode.connect(gainNode);
     gainNode.connect(context.destination);
     gainNode.gain.value = lastGainNodeValue //0.09
-    console.log(lastGainNodeValue)
 }
 
-async function createNewContext() {
-    context = new AudioContext();
+export function suspendResume() {
+    if(context.state === 'running') {
+        context.suspend().then(function() {
+            return 'Resume context';
+      });
+    } else if(context.state === 'suspended') {
+        context.resume().then(function() {
+            return 'Suspend context';
+      });  
+    }
 }
 
-export function stop() {
-    context.close()
-    createNewContext().then(()=>{
-        gainNode = context.createGain();
-    })
+export function setBpm(value) {
+    bpm = value
+    let param = portWorkletNode.parameters.get('bpm')
+    param.value = bpm
 }
 
-export function setPeriodicity(value) {
-    periodicity = value
-    console.log(value)
+export function storeBpm(value) {
+    bpm = value
 }
 
 export function setMainGain(value) {
     gainNode.gain.value = value
     lastGainNodeValue = value
-    console.log(value)
 }
 
-export function setClick(value) {
-    console.log(value)
-    click = value
-
+export function setSound(value) {
+    portWorkletNode.setSound(value)
 }
 
-/*
-export function pause() {
-    context.pause()
+export function getSounds() {
+    return sounds
 }
-
-export function resume() {
-    context.resume()
-}
-*/
