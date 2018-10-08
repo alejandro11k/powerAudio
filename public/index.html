@@ -12,8 +12,8 @@
 <br>
 <br>
 
-<input id="myRange" type="range" value="1" min="0.2" max="1.5" step="0.1" />
-<div> bpm:</div><div id="demo"></div>
+<input id="bpmSlider" type="range" value="60" min="40" max="300" step="1" />
+<div> bpm:</div><div id="bpm"></div>
 
 <br>
 
@@ -39,12 +39,11 @@
 </div>
 
 <script type="module">
-    // import { setPeriodicity, setMainGain, setSound, getSounds } from './audio-core.js'
     import { getSounds } from './audio-core.js' // FIX
     import { StateNodes } from './audio-nodes.js'
     let stateNodes = new StateNodes()
     window.stateNodes = stateNodes
-
+    
     document.querySelector('#init').addEventListener('click', () => {
         document.querySelector('#init').setAttribute("disabled",true)
         document.querySelector('#start').removeAttribute("disabled")
@@ -76,18 +75,14 @@
 
 <script>
 
-    var slider = document.getElementById("myRange");
-    var output = document.getElementById("demo");
-    output.innerHTML = sec2Bpm(slider.value); // Display the default slider value
+    var slider = document.getElementById("bpmSlider");
+    var output = document.getElementById("bpm");
+    output.innerHTML = slider.value; // Display the default slider value
 
     // Update the current slider value (each time you drag the slider handle)
     slider.oninput = function () {
-        output.innerHTML = sec2Bpm(this.value);
+        output.innerHTML = this.value;
         stateNodes.setBpm(this.value)
-    }
-    
-    function sec2Bpm(sec) {
-        return 60000 / (sec * 1000)
     }
 
     var volumeSlider = document.getElementById("volumeSlider");
@@ -102,4 +97,25 @@
         stateNodes.setGain(this.value)
     }
 
+</script>
+
+<br>
+<br>
+<script src="./lib/audio-worklet-helper.js"></script> 
+<!--link rel="stylesheet" href="./resources/base-v2.css"-->
+<div class="float-right">
+    <div id="div-worklet-indicator" class="worklet-status-pending">
+    Checking...
+    </div>
+</div>
+
+<script>
+    AudioWorkletHelper.initializeDemo({
+        title: 'Hello AudioWorklet!',
+        description: `A simple AudioWorkletNode that bypasses the incoming audio 
+          stream to its output. The sound source a sine oscillator at 440Hz.`,
+        htmlSource: 'audio-worklet/basic/hello-audio-worklet.html',
+        jsSource: 'audio-worklet/basic/js/bypass-processor.js',
+        // demoFunction: runDemo
+    });
 </script>

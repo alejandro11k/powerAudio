@@ -71,13 +71,12 @@ class ContextAndGainNodes {
 
     setBpm(value) {
         // guardar el valor para darselo al proximo estado
-        AudioCore.storePeriodicity(value)
+        AudioCore.storeBpm(value)
     }
 
     setSound(value) {
         // guardar el valor para darselo al proximo estado
-        console.log(value)
-        this.selectedSound = value
+        AudioCore.storeSelectedSound(value)
     }
 
     setGain(value) {
@@ -93,7 +92,6 @@ class ContextAndGainNodes {
 class AllNodes {
     constructor() {
         AudioCore.init()
-        // AudioCore.setSound(context.selectedSound) <-- don t work
     }
 
     onOff() {
@@ -101,7 +99,7 @@ class AllNodes {
     }
 
     setBpm (value) {
-        AudioCore.setPeriodicity(value)
+        AudioCore.setBpm(value)
     }
 
     setSound(value) {
