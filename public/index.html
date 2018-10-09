@@ -41,6 +41,10 @@
 <script type="module">
     import { getSounds } from './audio-core.js' // FIX
     import { StateNodes } from './audio-nodes.js'
+
+    import { ScheduleMetronome } from './schedule-metronome.js' //testing
+    window.s = new ScheduleMetronome()
+
     let stateNodes = new StateNodes()
     window.stateNodes = stateNodes
     
@@ -111,11 +115,11 @@
 
 <script>
     AudioWorkletHelper.initializeDemo({
-        title: 'Hello AudioWorklet!',
+        title: 'powerAudio!'/*,
         description: `A simple AudioWorkletNode that bypasses the incoming audio 
           stream to its output. The sound source a sine oscillator at 440Hz.`,
         htmlSource: 'audio-worklet/basic/hello-audio-worklet.html',
         jsSource: 'audio-worklet/basic/js/bypass-processor.js',
-        // demoFunction: runDemo
+        demoFunction: runDemo */
     });
 </script>
