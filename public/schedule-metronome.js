@@ -2,6 +2,18 @@ export class ScheduleMetronome {
     constructor() {
         // threeTimesAt60bpm()
         let audioContext = null
+        let lista = []
+        lista.push('sarasa')
+        console.log(lista)
+        
+    }
+
+    setLista() {
+        this.lista = []
+    }
+
+    getLista() {
+        return this.lista
     }
 
     threeTimesAt60bpm() {
@@ -17,6 +29,22 @@ export class ScheduleMetronome {
         let audioContext = new AudioContext()
         audioContext.audioWorklet.addModule('./processor.js').then(() => {
             this.inputMinutes(bpm, minutes, audioContext)
+        })
+    }
+
+    add(bpm, minutes) {
+        // this.inputMinutes(bpm, minutes, this.audioContext)
+        console.log(this.getLista())
+        this.lista.push({ 'bpm':bpm, 'minutes':minutes})
+    }
+
+    playList() {
+        let audioContext = new AudioContext()
+        console.log(this.getLista())
+        audioContext.audioWorklet.addModule('./processor.js').then(() => {
+            this.getLista().forEach(element => {
+                this.inputMinutes(element.bpm, element.minutes, audioContext)
+            });
         })
     }
     
