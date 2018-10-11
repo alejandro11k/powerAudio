@@ -8,6 +8,14 @@ export class ScheduleMetronome {
         
     }
 
+    test() {
+        this.setLista()
+        this.add(90,0.1)
+        this.add(120,0.1)
+        this.add(180,0.1)
+        this.playList()
+    }
+
     setLista() {
         this.lista = []
     }
@@ -41,6 +49,7 @@ export class ScheduleMetronome {
     playList() {
         let audioContext = new AudioContext()
         console.log(this.getLista())
+        let playListFix = null
         audioContext.audioWorklet.addModule('./processor.js').then(() => {
             this.getLista().forEach(element => {
                 this.inputMinutes(element.bpm, element.minutes, audioContext)
@@ -61,21 +70,21 @@ export class ScheduleMetronome {
       oscillator.stop(endTime)
     }
 
-    inputMinutes(bpm, minutes, audioContext) {
+    async inputMinutes(bpm, minutes, audioContext) {
         const delay = this.bpm2seg(bpm)
         let beats = this.minutes2Beats(minutes, delay)
 
         console.log('delay', delay, 'beats', beats)
-        let beat = 0
-        // for (let beat = 0; beat < beats; beat = beat + delay) {
+        let beat = this.playListFix || 0
+        this.playListFix = beat
         for (let times = 1; times < beats+1; times++) {
             beat = beat + delay
             this.play(beat, 3, 0.1, audioContext)
             console.log('pulso: ', beat, 'iteracion: ', times)
         }
-
+        this.playListFix = this.playListFix + beats + 1
         this.audioContext = audioContext
-
+        
     }
 
     stop() {
