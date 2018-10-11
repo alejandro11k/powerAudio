@@ -5,11 +5,16 @@ export class ScheduleMetronome {
         let lista = []
         lista.push('sarasa')
         console.log(lista)
-        
+        let lastBeat = 0
+    }
+
+    setLastBeat() {
+        this.lastBeat = 0
     }
 
     test() {
         this.setLista()
+        this.setLastBeat()
         this.add(90,0.1)
         this.add(120,0.1)
         this.add(180,0.1)
@@ -49,11 +54,11 @@ export class ScheduleMetronome {
     playList() {
         let audioContext = new AudioContext()
         console.log(this.getLista())
-        let playListFix = null
         audioContext.audioWorklet.addModule('./processor.js').then(() => {
             this.getLista().forEach(element => {
                 this.inputMinutes(element.bpm, element.minutes, audioContext)
             });
+            this.lastBeat = 0
         })
     }
     
@@ -70,21 +75,38 @@ export class ScheduleMetronome {
       oscillator.stop(endTime)
     }
 
-    async inputMinutes(bpm, minutes, audioContext) {
+    inputMinutes(bpm, minutes, audioContext) {
         const delay = this.bpm2seg(bpm)
         let beats = this.minutes2Beats(minutes, delay)
 
         console.log('delay', delay, 'beats', beats)
-        let beat = this.playListFix || 0
-        this.playListFix = beat
+        let beat = this.lastBeat
+        console.log('beat', beat)
         for (let times = 1; times < beats+1; times++) {
             beat = beat + delay
             this.play(beat, 3, 0.1, audioContext)
-            console.log('pulso: ', beat, 'iteracion: ', times)
+            // console.log('pulso: ', beat, 'iteracion: ', times)
         }
-        this.playListFix = this.playListFix + beats + 1
+        this.lastBeat = beat + 1
         this.audioContext = audioContext
         
+    }
+
+    newPlayer() {
+        audioContext = this.audioContext
+        this.lastBeat = 0
+        bmp
+        minutes
+        
+        const delay = this.bpm2seg(bpm)
+        let beats = this.minutes2Beats(minutes, delay)
+        let beat = 0
+        for (let times = 1; times < beats+1; times++) {
+            beat = beat + delay
+            this.play(beat, 3, 0.1, audioContext)
+        }
+        this.audioContext = audioContext
+        lastBeat = beat
     }
 
     stop() {
