@@ -39,11 +39,12 @@
 </div>
 
 <script type="module">
-    import { getSounds } from './audio-core.js' // FIX
+    import { getSounds, setBeats } from './audio-core.js' // FIX
     import { StateNodes } from './audio-nodes.js'
 
     import { ScheduleMetronome } from './schedule-metronome.js' //testing
     window.s = new ScheduleMetronome()
+    window.b = setBeats
 
     let stateNodes = new StateNodes()
     window.stateNodes = stateNodes
