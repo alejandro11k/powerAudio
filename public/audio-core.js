@@ -4,6 +4,7 @@ import { Sound, Beeper, Kicker } from "./sound.js"
 
 let bpm = 60
 let lastGainNodeValue = 1
+let beats = 0
 
 let gainNode = null
 let context = null
@@ -81,3 +82,16 @@ export function setSound(value) {
 export function getSounds() {
     return sounds
 }
+
+export function getCurrentTime() {
+    return context.currentTime
+}
+
+export function getBeats() {
+    return beats
+}
+
+export function setBeats(value) {
+    beats = value
+}
+

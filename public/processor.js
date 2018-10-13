@@ -30,7 +30,6 @@ class PortProcessor extends AudioWorkletProcessor {
         /* process audio */
         let input = inputs[0];
         let output = outputs[0];
-        let amplitude = parameters.amplitude;
         
         for (let channel = 0; channel < input.length; ++channel){
             output[channel].set(input[channel]);

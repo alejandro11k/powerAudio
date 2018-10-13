@@ -92,10 +92,12 @@ class ContextAndGainNodes {
 class AllNodes {
     constructor() {
         AudioCore.init()
+        console.log('start', AudioCore.getCurrentTime())
     }
 
     onOff() {
         AudioCore.suspendResume()
+        console.log('start/end', AudioCore.getCurrentTime())
     }
 
     setBpm (value) {
