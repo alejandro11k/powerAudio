@@ -6,6 +6,7 @@ Es un metronomo que utiliza la API de webAudio + audioWorklet
 WIP:
 
 Permite crear rutinas de estudio ajustando la velocidad y la duracion en el tiempo del mismo.
+
 Permite crear listas de rutinas (de metronomos con velocidad y duracion)
 
 TODO:
