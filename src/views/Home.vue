@@ -1,23 +1,30 @@
 <template>
   <div class="home">
-    <button @click="onOff">onOff</button>
+    <!--button @click="onOff">onOff</button-->
+    <md-button class="md-fab" @click="onOff">
+        <md-icon>></md-icon>
+    </md-button>
     <!--img alt="Vue logo" src="../assets/logo.png"-->
     <!--HelloWorld msg="Welcome to Your Vue.js App"/-->
+    <knob-control v-model="someValue"></knob-control>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
 // import HelloWorld from '@/components/HelloWorld.vue'
+import VueKnobControl from 'vue-knob-control'
 
 export default {
   name: 'home',
   components: {
     // HelloWorld
+    'knob-control': VueKnobControl,
   },
   data() {
     return {
       // StateNodes: window.StateNodes
+      someValue: 20
     }
   },
   mounted() {
