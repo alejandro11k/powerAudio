@@ -17,7 +17,7 @@ export default {
   },
   data() {
     return {
-      StateNodes: window.StateNodes
+      // StateNodes: window.StateNodes
     }
   },
   mounted() {
@@ -33,6 +33,8 @@ export default {
   methods: {
     onOff () {
       //console.log(this.$store.state, this.$store.getters)
+      
+      // eslint-disable-next-line
       StateNodes.onOff()
     },
   }
