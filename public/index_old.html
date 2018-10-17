@@ -1,11 +1,4 @@
 <br>
-<div hidden>
-    <button id="init"> init </button>
-    <button id="start" disabled> start </button>
-    <button id="stop" disabled> stop </button>
-</div>
-
-<br>
 <br>
 <button id="suspendResume"> on/off </button>
 
@@ -49,21 +42,6 @@
     let stateNodes = new StateNodes()
     window.stateNodes = stateNodes
     
-    document.querySelector('#init').addEventListener('click', () => {
-        document.querySelector('#init').setAttribute("disabled",true)
-        document.querySelector('#start').removeAttribute("disabled")
-        document.querySelector('#stop').removeAttribute("disabled")
-        init()
-    })
-
-    document.querySelector('#start').addEventListener('click', () => {
-        start()
-    })
-
-    document.querySelector('#stop').addEventListener('click', () => {
-        stop()
-    })
-
     document.querySelector('#suspendResume').addEventListener('click', () => {
         //suspendResume()
         stateNodes.onOff()
