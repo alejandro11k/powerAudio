@@ -1,126 +1,25 @@
-<br>
-<div hidden>
-    <button id="init"> init </button>
-    <button id="start" disabled> start </button>
-    <button id="stop" disabled> stop </button>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <title>power-audio</title>
 
-<br>
-<br>
-<button id="suspendResume"> on/off </button>
-
-<br>
-<br>
-
-<input id="bpmSlider" type="range" value="60" min="40" max="300" step="1" />
-<div> bpm:</div><div id="bpm"></div>
-
-<br>
-
-<!-- take the value from audio-core!, this value is ignored, se sobreescribe mas abajo -->
-<input id="volumeSlider" type="range" value="1" min="0.03" max="1.5" step="0.01" />
-<div> vol: </div><div id="volume"></div>
-
-<br>
-<br>
-
-<legend>sound:</legend-->
-
-<div>
-    <input type="radio" id="beep" 
-            name="click" value="beeper" checked />
-    <label for="beep">Beep</label>
-</div>
-
-<div>
-    <input type="radio" id="kick" 
-            name="click" value="kicker" />
-    <label for="kick">Kick</label>
-</div>
-
-<script type="module">
-    import { getSounds, setBeats } from './audio-core.js' // FIX
-    import { StateNodes } from './audio-nodes.js'
-
-    import { ScheduleMetronome } from './schedule-metronome.js' //testing
-    window.s = new ScheduleMetronome()
-    window.b = setBeats
-
-    let stateNodes = new StateNodes()
-    window.stateNodes = stateNodes
-    
-    document.querySelector('#init').addEventListener('click', () => {
-        document.querySelector('#init').setAttribute("disabled",true)
-        document.querySelector('#start').removeAttribute("disabled")
-        document.querySelector('#stop').removeAttribute("disabled")
-        init()
-    })
-
-    document.querySelector('#start').addEventListener('click', () => {
-        start()
-    })
-
-    document.querySelector('#stop').addEventListener('click', () => {
-        stop()
-    })
-
-    document.querySelector('#suspendResume').addEventListener('click', () => {
-        //suspendResume()
-        stateNodes.onOff()
-    })
-
-    document.querySelector('#beep').addEventListener('click', getValueFromEvent)
-    document.querySelector('#kick').addEventListener('click', getValueFromEvent)
-
-    function getValueFromEvent(event) {
-        stateNodes.setSound(getSounds().get(event.target.value))
-    }
-
-</script>
-
-<script>
-
-    var slider = document.getElementById("bpmSlider");
-    var output = document.getElementById("bpm");
-    output.innerHTML = slider.value; // Display the default slider value
-
-    // Update the current slider value (each time you drag the slider handle)
-    slider.oninput = function () {
-        output.innerHTML = this.value;
-        stateNodes.setBpm(this.value)
-    }
-
-    var volumeSlider = document.getElementById("volumeSlider");
-    var volumeValue = document.getElementById("volume");
-    // este es el 1er valor q esta tomando!
-    volumeValue.innerHTML = 1 //sec2Bpm(slider.value); // Display the default slider value
-
-    // Update the current slider value (each time you drag the slider handle)
-    volumeSlider.oninput = function () {
-        volumeValue.innerHTML = this.value;
-        // setMainGain(this.value)
-        stateNodes.setGain(this.value)
-    }
-
-</script>
-
-<br>
-<br>
-<script src="./lib/audio-worklet-helper.js"></script> 
-<!--link rel="stylesheet" href="./resources/base-v2.css"-->
-<div class="float-right">
-    <div id="div-worklet-indicator" class="worklet-status-pending">
-    Checking...
-    </div>
-</div>
-
-<script>
-    AudioWorkletHelper.initializeDemo({
-        title: 'powerAudio!'/*,
-        description: `A simple AudioWorkletNode that bypasses the incoming audio 
-          stream to its output. The sound source a sine oscillator at 440Hz.`,
-        htmlSource: 'audio-worklet/basic/hello-audio-worklet.html',
-        jsSource: 'audio-worklet/basic/js/bypass-processor.js',
-        demoFunction: runDemo */
-    });
-</script>
+    <script type="module">
+      import { getSounds, setBeats } from './audio-core.js' // FIX
+      import { StateNodes} from './audio-nodes.js'
+      window.getSounds = getSounds
+      window.setBeats = setBeats
+      window.StateNodes = new StateNodes()
+    </script>
+  </head>
+  <body>
+    <noscript>
+      <strong>We're sorry but power-audio doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+    </noscript>
+    <div id="app"></div>
+    <!-- built files will be auto injected -->
+  </body>
+</html>

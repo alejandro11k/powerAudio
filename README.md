@@ -19,12 +19,39 @@ https://github.com/alejandro11k/powerAudio/wiki/Entrega1
 
 Demo: https://power-audio.netlify.com/
 
-## to use
+## to use (deprecated)
 
 npm install
 
 node app.js
 
-localhost:300/index.html
+localhost:300/index_old.html
 
 (only for chromium >66)
+
+# power-audio
+
+## Project setup
+```
+npm install
+```
+
+### Compiles and hot-reloads for development
+```
+npm run serve
+```
+
+### Compiles and minifies for production
+```
+npm run build
+```
+
+### Run your tests
+```
+npm run test
+```
+
+### Lints and fixes files
+```
+npm run lint
+```

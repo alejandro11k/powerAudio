@@ -3,7 +3,7 @@ import { Sound, Beeper, Kicker } from "./sound.js"
 
 
 let bpm = 60
-let lastGainNodeValue = 1
+let lastGainNodeValue = 80
 let beats = 0
 
 let gainNode = null
@@ -45,7 +45,13 @@ export function initSounds() {
 function contextGainNode(portWorkletNode, lastGainNodeValue) {
     portWorkletNode.connect(gainNode);
     gainNode.connect(context.destination);
-    gainNode.gain.value = lastGainNodeValue //0.09
+    gainNode.gain.value = input2GainValue(lastGainNodeValue) //0.09
+}
+
+function input2GainValue(value) {
+    const gainValue = (value * 1.2) / 100
+    console.log('input', value, 'gainValue', gainValue)
+    return gainValue
 }
 
 export function suspendResume() {
@@ -71,7 +77,7 @@ export function storeBpm(value) {
 }
 
 export function setMainGain(value) {
-    gainNode.gain.value = value
+    gainNode.gain.value = input2GainValue(value)
     lastGainNodeValue = value
 }
 
