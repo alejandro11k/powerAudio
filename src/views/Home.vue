@@ -1,19 +1,26 @@
 <template>
   <div class="home">
-    <!--button @click="onOff">onOff</button-->
+
     <md-button class="md-fab" @click="onOff">
-        <md-icon>></md-icon>
+        <md-icon> > </md-icon>
     </md-button>
+
     <!--img alt="Vue logo" src="../assets/logo.png"-->
     <!--HelloWorld msg="Welcome to Your Vue.js App"/-->
     <knob-control 
       v-model="bpm"
+      :size="220"
       :min="40"
       :max="300">
     </knob-control>
     <md-radio v-model="soundSelect" value="beeper">Beeper</md-radio>
     <md-radio v-model="soundSelect" value="kicker">Kicker</md-radio>
-    <vue-slide-bar v-model="simpleValue"/>
+
+    <div>
+      <br>
+      <input type="range" v-model.number="volume"> {{ volume }}%
+    </div>
+
   </div>
 </template>
 
@@ -21,26 +28,24 @@
 // @ is an alias to /src
 // import HelloWorld from '@/components/HelloWorld.vue'
 import VueKnobControl from 'vue-knob-control'
-import VueSlideBar from 'vue-slide-bar'
 
 export default {
   name: 'home',
   components: {
     // HelloWorld
     'knob-control': VueKnobControl,
-    'vue-slide-bar': VueSlideBar
   },
   data() {
     return {
       bpm: this.$store.state.bpm,
       soundSelect: 'beeper',
-      simpleValue: 80
+      volume: 60
     }
   },
   watch: {
     bpm: function (value) { this.setBpm(value) },
-    soundSelect: function (value) { console.log(value) },
-    
+    soundSelect: function (value) { this.setSound(value) },
+    volume: function (value) { this.setGain(value) }
   },
   methods: {
     setBpm (value) {
@@ -51,6 +56,13 @@ export default {
     onOff () {
       // eslint-disable-next-line
       StateNodes.onOff()
+    },
+    setSound(value) {
+      // eslint-disable-next-line
+      StateNodes.setSound(getSounds().get(value))
+    },
+    setGain(value) {
+      StateNodes.setGain(value)
     },
     consoleLog () {
       console.log(this.$store.state.bpm)
@@ -78,5 +90,14 @@ export default {
     display: inline-flex;
     justify-content: center;
     align-items: center;
+  }
+
+  .viewport {
+    width: 320px;
+    max-width: 80%;
+    display: inline-block;
+    vertical-align: top;
+    overflow: auto;
+    border: 1px solid rgba(#000, .12);
   }
 </style>
