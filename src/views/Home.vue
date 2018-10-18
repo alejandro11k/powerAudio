@@ -6,7 +6,11 @@
     </md-button>
     <!--img alt="Vue logo" src="../assets/logo.png"-->
     <!--HelloWorld msg="Welcome to Your Vue.js App"/-->
-    <knob-control v-model="someValue"></knob-control>
+    <knob-control 
+      v-model="bpm"
+      :min="40"
+      :max="300">
+    </knob-control>
   </div>
 </template>
 
@@ -24,8 +28,14 @@ export default {
   data() {
     return {
       // StateNodes: window.StateNodes
-      someValue: 20
+      bpm: this.$store.state.bpm
     }
+  },
+  watch: {
+    bpm: function (value) { this.setBpm(value) }
+  },
+  computed: {
+
   },
   mounted() {
 
@@ -38,12 +48,19 @@ export default {
     
   },
   methods: {
+    setBpm (value) {
+      this.$store.commit('setBpm', value)
+      StateNodes.setBpm(this.$store.state.bpm)
+    },
     onOff () {
       //console.log(this.$store.state, this.$store.getters)
       
       // eslint-disable-next-line
       StateNodes.onOff()
     },
+    consoleLog () {
+      console.log(this.$store.state.bpm)
+    }
   }
 }
 </script>

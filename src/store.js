@@ -6,10 +6,12 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    stateNodes: null
+    stateNodes: null,
+    bpm: 60
   },
   mutations: {
-    // setStateNodes: (state, obj) => state.stateNodes = obj
+    // setBpm: function (value) { this.state.bpm = value }
+    setBpm (state, n) { state.bpm = n }
   },
   actions: {
 
