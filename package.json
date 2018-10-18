@@ -13,12 +13,15 @@
     "vue-knob-control": "^1.2.1",
     "vue-material": "^1.0.0-beta-10.2",
     "vue-router": "^3.0.1",
+    "vue-slide-bar": "^1.1.6",
     "vuex": "^3.0.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.0.4",
     "@vue/cli-plugin-eslint": "^3.0.4",
     "@vue/cli-service": "^3.0.4",
+    "node-sass": "^4.9.4",
+    "sass-loader": "^7.1.0",
     "vue-template-compiler": "^2.5.17"
   }
 }

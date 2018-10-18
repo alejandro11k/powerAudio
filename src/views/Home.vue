@@ -11,6 +11,9 @@
       :min="40"
       :max="300">
     </knob-control>
+    <md-radio v-model="soundSelect" value="beeper">Beeper</md-radio>
+    <md-radio v-model="soundSelect" value="kicker">Kicker</md-radio>
+    <vue-slide-bar v-model="simpleValue"/>
   </div>
 </template>
 
@@ -18,21 +21,40 @@
 // @ is an alias to /src
 // import HelloWorld from '@/components/HelloWorld.vue'
 import VueKnobControl from 'vue-knob-control'
+import VueSlideBar from 'vue-slide-bar'
 
 export default {
   name: 'home',
   components: {
     // HelloWorld
     'knob-control': VueKnobControl,
+    'vue-slide-bar': VueSlideBar
   },
   data() {
     return {
-      // StateNodes: window.StateNodes
-      bpm: this.$store.state.bpm
+      bpm: this.$store.state.bpm,
+      soundSelect: 'beeper',
+      simpleValue: 80
     }
   },
   watch: {
-    bpm: function (value) { this.setBpm(value) }
+    bpm: function (value) { this.setBpm(value) },
+    soundSelect: function (value) { console.log(value) },
+    
+  },
+  methods: {
+    setBpm (value) {
+      this.$store.commit('setBpm', value)
+      // eslint-disable-next-line
+      StateNodes.setBpm(this.$store.state.bpm)
+    },
+    onOff () {
+      // eslint-disable-next-line
+      StateNodes.onOff()
+    },
+    consoleLog () {
+      console.log(this.$store.state.bpm)
+    }
   },
   computed: {
 
@@ -41,26 +63,20 @@ export default {
 
   },
   beforeUpdate() {
-    // this.$store.state.commit("setStateNodes", "window")
     
   },
   updated() {
     
   },
-  methods: {
-    setBpm (value) {
-      this.$store.commit('setBpm', value)
-      StateNodes.setBpm(this.$store.state.bpm)
-    },
-    onOff () {
-      //console.log(this.$store.state, this.$store.getters)
-      
-      // eslint-disable-next-line
-      StateNodes.onOff()
-    },
-    consoleLog () {
-      console.log(this.$store.state.bpm)
-    }
-  }
 }
 </script>
+
+<style lang="scss" scoped>
+  .md-content {
+    width: 400px;
+    height: 400px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+  }
+</style>
