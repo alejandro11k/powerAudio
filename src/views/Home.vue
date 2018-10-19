@@ -38,8 +38,8 @@ export default {
   data() {
     return {
       bpm: this.$store.state.bpm,
-      soundSelect: 'beeper',
-      volume: 60
+      soundSelect: this.$store.state.soundSelect, //'beeper',
+      volume: this.$store.state.volume //60
     }
   },
   watch: {
@@ -58,11 +58,14 @@ export default {
       StateNodes.onOff()
     },
     setSound(value) {
+      this.$store.commit('setSoundSelect', value)
       // eslint-disable-next-line
-      StateNodes.setSound(getSounds().get(value))
+      StateNodes.setSound(getSounds().get(this.$store.state.soundSelect))
     },
     setGain(value) {
-      StateNodes.setGain(value)
+      this.$store.commit('setVolume', value)
+      // eslint-disable-next-line
+      StateNodes.setGain(this.$store.state.volume)
     },
     consoleLog () {
       console.log(this.$store.state.bpm)

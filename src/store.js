@@ -7,11 +7,14 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     stateNodes: null,
-    bpm: 60
+    bpm: 60,
+    volume: 60,
+    soundSelect: 'beeper'
   },
   mutations: {
-    // setBpm: function (value) { this.state.bpm = value }
-    setBpm (state, n) { state.bpm = n }
+    setBpm (state, value) { state.bpm = value },
+    setVolume (state, value) { state.volume = value },
+    setSoundSelect (state, value) { state.soundSelect = value },
   },
   actions: {
 
