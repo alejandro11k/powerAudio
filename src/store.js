@@ -8,7 +8,7 @@ export default new Vuex.Store({
   state: {
     stateNodes: null,
     bpm: 60,
-    volume: 60,
+    volume: 80,
     soundSelect: 'beeper'
   },
   mutations: {

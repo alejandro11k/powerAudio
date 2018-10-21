@@ -16,9 +16,18 @@
     <md-radio v-model="soundSelect" value="beeper">Beeper</md-radio>
     <md-radio v-model="soundSelect" value="kicker">Kicker</md-radio>
 
+    
+    <br>
+    <range-slider
+      class="slider"
+      min="0"
+      max="100"
+      step="1"
+      v-model="volume">
+    </range-slider>
+
     <div>
-      <br>
-      <input type="range" v-model.number="volume"> {{ volume }}%
+      Volume: {{ volume }}%
     </div>
 
   </div>
@@ -28,12 +37,16 @@
 // @ is an alias to /src
 // import HelloWorld from '@/components/HelloWorld.vue'
 import VueKnobControl from 'vue-knob-control'
+import RangeSlider from 'vue-range-slider'
+// you probably need to import built-in style
+import 'vue-range-slider/dist/vue-range-slider.css'
 
 export default {
   name: 'home',
   components: {
     // HelloWorld
     'knob-control': VueKnobControl,
+    'range-slider': RangeSlider
   },
   data() {
     return {
@@ -87,6 +100,25 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "~vue-material/dist/theme/engine";
+
+  .slider {
+  /* overwrite slider styles */
+  width: 200px;
+  }
+
+  .md-layout-item {
+    height: 40px;
+
+    &:after {
+      width: 100%;
+      height: 100%;
+      display: block;
+      background: md-get-palette-color(blue, 200);
+      content: " ";
+    }
+  }
+
   .md-content {
     width: 400px;
     height: 400px;
