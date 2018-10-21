@@ -5,6 +5,9 @@ import { Sound, Beeper, Kicker } from "./sound.js"
 let bpm = 60
 let lastGainNodeValue = 80
 let beats = 0
+let timeLimit = 0
+let timeLimitEnable = false
+let counter = 1
 
 let gainNode = null
 let context = null
@@ -32,6 +35,9 @@ export function init() {
         portWorkletNode.setSound(sound)
         let param = portWorkletNode.parameters.get('bpm')
         param.value = bpm
+
+        setBeats()
+        beats++ // Fix
     });
 }
 
@@ -60,6 +66,10 @@ export function suspendResume() {
             return 'Resume context';
       });
     } else if(context.state === 'suspended') {
+        
+        setBeats()
+        resetCounter()
+
         context.resume().then(function() {
             return 'Suspend context';
       });  
@@ -97,7 +107,35 @@ export function getBeats() {
     return beats
 }
 
-export function setBeats(value) {
-    beats = value
+export function setTimeLimit (segundos) {
+    timeLimit = segundos
 }
+
+export function setBeats() {
+    let intervaloEnSegundos = 60 / bpm
+    let cantidadDeBeats = timeLimit / intervaloEnSegundos
+    
+    beats = cantidadDeBeats
+}
+
+export function setTimeLimitEnable (value) {
+    timeLimitEnable = value
+}
+
+export function getTimeLimitEnable () {
+    return timeLimitEnable
+}
+
+export function getCounter() {
+    return counter
+}
+
+export function stepCounter() {
+    counter++
+}
+
+export function resetCounter() {
+    counter = 1
+}
+
 

@@ -16,7 +16,6 @@
     <md-radio v-model="soundSelect" value="beeper">Beeper</md-radio>
     <md-radio v-model="soundSelect" value="kicker">Kicker</md-radio>
 
-    
     <br>
     <range-slider
       class="slider"
@@ -28,6 +27,25 @@
 
     <div>
       Volume: {{ volume }}%
+    </div>
+
+    <div>
+      <br>
+      {{ timeLimitInMinutes() }}
+      {{ timeLimit }} {{ unit }}
+      <br>
+      <md-button class="md-fab md-mini md-primary" @click="add10">
+        <md-icon> + </md-icon>
+      </md-button>
+      <md-button class="md-fab md-mini md-plain" @click="sub10">
+        <md-icon> - </md-icon>
+      </md-button>
+
+      <md-switch v-model="timeLimitEnable" class="md-primary"></md-switch>
+      <div> Time Limit:
+      <div v-if="timeLimitEnable">On</div>
+      <div v-else>Off</div>
+      </div>
     </div>
 
   </div>
@@ -51,14 +69,19 @@ export default {
   data() {
     return {
       bpm: this.$store.state.bpm,
-      soundSelect: this.$store.state.soundSelect, //'beeper',
-      volume: this.$store.state.volume //60
+      soundSelect: this.$store.state.soundSelect,
+      volume: this.$store.state.volume,
+      timeLimit: this.$store.state.timeLimit,
+      timeLimitEnable: this.$store.state.timeLimitEnable,
+      unit: 'seg.'
     }
   },
   watch: {
     bpm: function (value) { this.setBpm(value) },
     soundSelect: function (value) { this.setSound(value) },
-    volume: function (value) { this.setGain(value) }
+    volume: function (value) { this.setGain(value) },
+    timeLimit: function (value) { this.setTimeLimit(value) },
+    timeLimitEnable: function (value) { this.setTimeLimitEnable(value) },
   },
   methods: {
     setBpm (value) {
@@ -70,18 +93,53 @@ export default {
       // eslint-disable-next-line
       StateNodes.onOff()
     },
-    setSound(value) {
+    setSound (value) {
       this.$store.commit('setSoundSelect', value)
       // eslint-disable-next-line
       StateNodes.setSound(getSounds().get(this.$store.state.soundSelect))
     },
-    setGain(value) {
+    setGain (value) {
       this.$store.commit('setVolume', value)
       // eslint-disable-next-line
       StateNodes.setGain(this.$store.state.volume)
     },
+    add10 () {
+      this.timeLimit = this.timeLimit + 10
+    },
+    sub10 () {
+      this.timeLimit = this.timeLimit - 10
+    },
+    setTimeLimit (value) {
+      this.$store.commit('setTimeLimit', value)
+      console.log('after', this.$store.state.timeLimit)
+      // eslint-disable-next-line
+      setTimeLimit(this.$store.state.timeLimit)
+    },
+    setTimeLimitEnable (value) {
+      this.$store.commit('setTimeLimitEnable', value)
+      // eslint-disable-next-line
+      setTimeLimitEnable(this.$store.state.timeLimitEnable)
+    },
+    timeLimitInMinutes () {
+      let actualLimit = this.$store.state.timeLimit
+      let value = 0
+      if (actualLimit < 60) {
+        value = actualLimit + ' seg.'
+      } else {
+        let minutos = Math.floor(actualLimit / 60)
+        console.log('minutos', minutos)
+        let segundos = actualLimit - (minutos * 60)
+        if (segundos==0) {
+          segundos = ''
+        } else {
+          segundos = ':' + segundos
+        }
+        value = minutos + segundos + ' minutes'
+      }
+      return value
+    },
     consoleLog () {
-      console.log(this.$store.state.bpm)
+      // console.log(this.$store.state.bpm)
     }
   },
   computed: {

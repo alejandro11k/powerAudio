@@ -87,6 +87,14 @@ class ContextAndGainNodes {
         return AudioCore.getSounds()
     }
     
+    setTimeLimit(value) {
+        AudioCore.setBeats(value)
+    }
+
+    seconds2Beats(value) {
+        return value / 60
+    }
+
 }
 
 class AllNodes {
@@ -114,6 +122,14 @@ class AllNodes {
 
     getSounds() {
         AudioCore.getSounds()
+    }
+
+    setTimeLimit(value) {
+        AudioCore.setBeats(value)
+    }
+
+    seconds2Beats(value) {
+        return value / 60
     }
 
 }
