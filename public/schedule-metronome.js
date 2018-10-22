@@ -1,3 +1,5 @@
+import { Sound, Beeper, Kicker } from "./sound.js"
+
 export class ScheduleMetronome {
     constructor() {
         let audioContext = null
@@ -82,4 +84,107 @@ export class ScheduleMetronome {
         return times 
     }
 
+}
+
+export class ScheduleModule {
+    constructor() {
+        this.context = null
+        this.gainNode = null
+        this.beeper = null
+        this.kicker = null
+    }
+
+    script() {
+        this.createContextAndGainNode()
+        this.initSounds()
+        
+        let s1 = new Schedule(90, 0.1, this.beeper)
+        let s2 = new Schedule(120, 0.1, this.beeper)
+
+        console.log(s1, s2)
+        this.context.audioWorklet.addModule('./processor.js').then(() => {
+            // s1.execute(this.context)
+            s2.execute(this.context)
+        })
+        
+    }
+
+    initSounds() {
+        this.beeper = new Beeper(new Sound(this.context))
+        this.kicker = new Kicker(new Sound(this.context))
+    }
+
+    createContextAndGainNode() {
+        this.context = new AudioContext()
+        this.gainNode = this.context.createGain()
+    }
+}
+
+export class Schedule {
+    constructor(bpm, minutes, sound) {
+        this.bpm = bpm
+        this.minutes = minutes
+        this.sound = sound
+        this.timeList = []
+        this.lastBeat = 0
+        this.calculateTimeList(bpm, minutes)
+    }
+
+    execute(audioNode) {
+        this.timeList.forEach(element => {
+            this.playBeat(element,audioNode)
+        });
+    }
+
+    playBeat(time,audioNode) {
+        this.sound.executeAt(time,audioNode)
+    }
+
+    calculateTimeList(bpm, minutes) {
+        // let interval = 1
+        const delay = this.bpm2seg(bpm)
+        let beats = this.minutes2Beats(minutes, delay)
+        let beat = this.lastBeat
+        console.log('delay', delay, 'beats', beats, 'beat', beat)
+        
+        for (let times = 1; times < beats+1; times++) {
+            beat = beat + delay
+            // this.playBeat(beat, 3, 0.1, audioContext)
+            // console.log('pulso: ', beat, 'iteracion: ', times)
+            this.timeList.push(beat)
+        }
+
+        this.lastBeat = beat // + interval
+    }
+
+    bpm2seg(bpm) {
+        const second = (60 / bpm);
+        return second
+    }
+
+    minutes2Beats(minutes, delay) {
+        const seconds = minutes * 60
+        const times = seconds / delay
+        return times 
+    }
+}
+
+export class ScheduleList {
+    constructor() {
+        schedules = []
+    }
+
+    add(schedule) {
+        this.schedule.push(schedule)
+    }
+
+    remove() {
+        //
+    }
+
+    execute() {
+        schedule.array.forEach(element => {
+            element.execute()
+        });
+    }
 }

@@ -9,11 +9,20 @@
 
     <script type="module">
       import { getSounds, setTimeLimit, setTimeLimitEnable } from './audio-core.js' // FIX
-      import { StateNodes} from './audio-nodes.js'
+      import { StateNodes } from './audio-nodes.js'
+      
       window.getSounds = getSounds
       window.setTimeLimit = setTimeLimit
       window.setTimeLimitEnable = setTimeLimitEnable
       window.StateNodes = new StateNodes()
+
+    </script>
+
+    <script type="module">
+      import { ScheduleModule, Schedule } from './schedule-metronome.js'
+
+      window.Schedule = Schedule
+      window.ScheduleModule = new ScheduleModule()
     </script>
   </head>
   <body>

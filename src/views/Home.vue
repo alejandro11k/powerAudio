@@ -32,7 +32,6 @@
     <div>
       <br>
       {{ timeLimitInMinutes() }}
-      {{ timeLimit }} {{ unit }}
       <br>
       <md-button class="md-fab md-mini md-primary" @click="add10">
         <md-icon> + </md-icon>
@@ -134,7 +133,7 @@ export default {
         } else {
           segundos = ':' + segundos
         }
-        value = minutos + segundos + ' minutes'
+        value = minutos + segundos + ' minute'
       }
       return value
     },

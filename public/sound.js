@@ -32,6 +32,14 @@ export class SoundType {
         oscillator.stop(currentTime + this.stopDelta())
     }
 
+    executeAt(time, audioNode) {
+        const currentTime = time
+        const oscillator = this.sound.createOscillator(audioNode.destination)
+        oscillator.start(currentTime)
+        this.doExecute(oscillator, currentTime)
+        oscillator.stop(currentTime + this.stopDelta())
+    }
+
 }
 
 export class Beeper extends SoundType {
