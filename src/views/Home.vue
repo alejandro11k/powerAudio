@@ -158,15 +158,19 @@ export default {
   mounted() {
     const timer = this.$store.state.timer
     timer.start();
-    /*
+    
     timer.addEventListener('secondsUpdated', function (e) {
       // $('#basicUsage').html(timer.getTimeValues().toString());
+      console.log(e)
     });
-    */
+    
+   /*
     this.$listen(timer, 'secondsUpdated', function (e) {
-        console.log(e.detail.timer.getTimeValues().toString())
-    }),
-    this.$listen(timer, 'secondsUpdated', this.consoleLog())
+        //console.log(e.detail.timer.getTimeValues().toString())
+    }),*/
+    this.$listen(timer, 'secondsUpdated', () => {
+        this.consoleLog()
+    })
   },
   beforeUpdate() {
     
