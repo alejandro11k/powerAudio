@@ -44,6 +44,13 @@
       <div> Time Limit:
       <div v-if="timeLimitEnable">On</div>
       <div v-else>Off</div>
+
+      <div> {{ timer }} </div>
+      <md-button class="md-fab md-mini md-plain" @click="test">
+        <md-icon> ? </md-icon>
+      </md-button>
+
+
       </div>
     </div>
 
@@ -72,7 +79,8 @@ export default {
       volume: this.$store.state.volume,
       timeLimit: this.$store.state.timeLimit,
       timeLimitEnable: this.$store.state.timeLimitEnable,
-      unit: 'seg.'
+      unit: 'seg.',
+      timer: this.$store.state.timer.getTimeValues().toString()
     }
   },
   watch: {
@@ -137,6 +145,9 @@ export default {
       }
       return value
     },
+    test () {
+      this.timer = this.$store.state.timer.getTimeValues().toString()
+    },
     consoleLog () {
       // console.log(this.$store.state.bpm)
     }
@@ -145,6 +156,16 @@ export default {
 
   },
   mounted() {
+    const timer = this.$store.state.timer
+    timer.start();
+    /*
+    timer.addEventListener('secondsUpdated', function (e) {
+      // $('#basicUsage').html(timer.getTimeValues().toString());
+    });
+    */
+   this.$listen(timer, 'secondsUpdated', function (e) {
+        console.log(e.detail.timer.getTimeValues().toString())
+    })
 
   },
   beforeUpdate() {

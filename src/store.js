@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 // import { StateNodes } from '../public/audio-nodes';
+import Timer from 'easytimer.js/dist/easytimer.min.js'
+const timer = new Timer()
 
 Vue.use(Vuex)
 
@@ -11,7 +13,8 @@ export default new Vuex.Store({
     volume: 80,
     soundSelect: 'beeper',
     timeLimit: 0,
-    timeLimitEnable: false
+    timeLimitEnable: false,
+    timer: timer
   },
   mutations: {
     setBpm (state, value) { state.bpm = value },
