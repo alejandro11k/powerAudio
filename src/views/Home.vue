@@ -149,7 +149,7 @@ export default {
       this.timer = this.$store.state.timer.getTimeValues().toString()
     },
     consoleLog () {
-      // console.log(this.$store.state.bpm)
+      console.log('console.log')
     }
   },
   computed: {
@@ -163,10 +163,10 @@ export default {
       // $('#basicUsage').html(timer.getTimeValues().toString());
     });
     */
-   this.$listen(timer, 'secondsUpdated', function (e) {
+    this.$listen(timer, 'secondsUpdated', function (e) {
         console.log(e.detail.timer.getTimeValues().toString())
-    })
-
+    }),
+    this.$listen(timer, 'secondsUpdated', this.consoleLog())
   },
   beforeUpdate() {
     
