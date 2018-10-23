@@ -98,12 +98,13 @@ export class ScheduleModule {
         this.createContextAndGainNode()
         this.initSounds()
         
-        let s1 = new Schedule(90, 0.1, this.beeper)
-        let s2 = new Schedule(120, 0.1, this.beeper)
+        const start = 0
+        let s1 = new Schedule(60, 30, start, this.beeper)
+        let s2 = new Schedule(120, 30, s1.getLatsBeat(), this.beeper)
 
         console.log(s1, s2)
         this.context.audioWorklet.addModule('./processor.js').then(() => {
-            // s1.execute(this.context)
+            s1.execute(this.context)
             s2.execute(this.context)
         })
         
@@ -121,13 +122,18 @@ export class ScheduleModule {
 }
 
 export class Schedule {
-    constructor(bpm, minutes, sound) {
+    constructor(bpm, seconds, start, sound) {
         this.bpm = bpm
-        this.minutes = minutes
+        this.seconds = seconds
         this.sound = sound
         this.timeList = []
         this.lastBeat = 0
-        this.calculateTimeList(bpm, minutes)
+        this.start = start
+        this.calculateTimeList(bpm, seconds, start)
+    }
+
+    getLatsBeat() {
+        return this.lastBeat
     }
 
     execute(audioNode) {
@@ -140,21 +146,17 @@ export class Schedule {
         this.sound.executeAt(time,audioNode)
     }
 
-    calculateTimeList(bpm, minutes) {
-        // let interval = 1
+    calculateTimeList(bpm, seconds) {
         const delay = this.bpm2seg(bpm)
-        let beats = this.minutes2Beats(minutes, delay)
-        let beat = this.lastBeat
-        console.log('delay', delay, 'beats', beats, 'beat', beat)
+        const beats = this.seconds2Beats(seconds, delay)
+        let beat = this.start - delay
         
         for (let times = 1; times < beats+1; times++) {
             beat = beat + delay
-            // this.playBeat(beat, 3, 0.1, audioContext)
-            // console.log('pulso: ', beat, 'iteracion: ', times)
             this.timeList.push(beat)
         }
 
-        this.lastBeat = beat // + interval
+        this.lastBeat = beat + delay
     }
 
     bpm2seg(bpm) {
@@ -164,6 +166,11 @@ export class Schedule {
 
     minutes2Beats(minutes, delay) {
         const seconds = minutes * 60
+        const times = seconds / delay
+        return times 
+    }
+
+    seconds2Beats(seconds, delay) {
         const times = seconds / delay
         return times 
     }
