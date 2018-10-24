@@ -1,6 +1,8 @@
 <template>
   <div class="home">
 
+    <div> {{ timerValue }} </div>
+
     <md-button class="md-fab" @click="onOff">
         <md-icon> > </md-icon>
     </md-button>
@@ -45,12 +47,6 @@
       <div v-if="timeLimitEnable">On</div>
       <div v-else>Off</div>
 
-      <div> {{ timer }} </div>
-      <md-button class="md-fab md-mini md-plain" @click="test">
-        <md-icon> ? </md-icon>
-      </md-button>
-
-
       </div>
     </div>
 
@@ -80,7 +76,7 @@ export default {
       timeLimit: this.$store.state.timeLimit,
       timeLimitEnable: this.$store.state.timeLimitEnable,
       unit: 'seg.',
-      timer: this.$store.state.timer.getTimeValues().toString()
+      timerValue: this.$store.state.timer.getTimeValues().toString()
     }
   },
   watch: {
@@ -97,8 +93,26 @@ export default {
       StateNodes.setBpm(this.$store.state.bpm)
     },
     onOff () {
+      const timer = this.$store.state.timer
       // eslint-disable-next-line
       StateNodes.onOff()
+      
+      if (!timer.isRunning()) {
+        if (this.timeLimitEnable) {
+          timer.start({countdown: true, startValues: {seconds: this.timeLimit}});
+          timer.addEventListener('targetAchieved', () => {
+            this.timerValue = 'Well Done!'
+          });
+        } else {
+          timer.start();
+        }
+        timer.addEventListener('secondsUpdated', (e) => {
+          this.timerValue = e.detail.timer.getTimeValues().toString()
+        });
+      } else {
+        timer.stop();
+      }
+      
     },
     setSound (value) {
       this.$store.commit('setSoundSelect', value)
@@ -134,7 +148,6 @@ export default {
         value = actualLimit + ' seg.'
       } else {
         let minutos = Math.floor(actualLimit / 60)
-        console.log('minutos', minutos)
         let segundos = actualLimit - (minutos * 60)
         if (segundos==0) {
           segundos = ''
@@ -156,21 +169,7 @@ export default {
 
   },
   mounted() {
-    const timer = this.$store.state.timer
-    timer.start();
     
-    timer.addEventListener('secondsUpdated', function (e) {
-      // $('#basicUsage').html(timer.getTimeValues().toString());
-      console.log(e)
-    });
-    
-   /*
-    this.$listen(timer, 'secondsUpdated', function (e) {
-        //console.log(e.detail.timer.getTimeValues().toString())
-    }),*/
-    this.$listen(timer, 'secondsUpdated', () => {
-        this.consoleLog()
-    })
   },
   beforeUpdate() {
     

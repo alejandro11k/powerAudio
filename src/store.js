@@ -22,6 +22,7 @@ export default new Vuex.Store({
     setSoundSelect (state, value) { state.soundSelect = value },
     setTimeLimit (state, value) { state.timeLimit = value },
     setTimeLimitEnable (state, value) { state.timeLimitEnable = value },
+    setTimer (state, value) { state.timer = value },
   },
   actions: {
 
