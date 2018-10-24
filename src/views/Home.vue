@@ -79,9 +79,7 @@ export default {
       timeLimitEnable: this.$store.state.timeLimitEnable,
       timerValue: this.$store.state.timer.getTimeValues().toString(),
       click: false,
-		  bgc: {
-			  backgroundColor: ''
-		  }
+      bgc: { backgroundColor: '' }
     }
   },
   watch: {
@@ -119,7 +117,7 @@ export default {
         timer.stop();
       }
       
-      window.addEventListener('SoundExecute', (e) => { 
+      window.addEventListener('SoundExecute', () => { 
         this.bgc.backgroundColor = this.getRandomColor()
       }, false);
       
