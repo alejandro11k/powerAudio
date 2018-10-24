@@ -1,6 +1,8 @@
 <template>
   <div class="home">
 
+    <div v-bind:style="bgc" v-on:input="bgc.backgroundColor = $event.target.value">.</div>
+    
     <div> {{ timerValue }} </div>
 
     <md-button class="md-fab" @click="onOff">
@@ -75,8 +77,11 @@ export default {
       volume: this.$store.state.volume,
       timeLimit: this.$store.state.timeLimit,
       timeLimitEnable: this.$store.state.timeLimitEnable,
-      unit: 'seg.',
-      timerValue: this.$store.state.timer.getTimeValues().toString()
+      timerValue: this.$store.state.timer.getTimeValues().toString(),
+      click: false,
+		  bgc: {
+			  backgroundColor: ''
+		  }
     }
   },
   watch: {
@@ -93,10 +98,10 @@ export default {
       StateNodes.setBpm(this.$store.state.bpm)
     },
     onOff () {
-      const timer = this.$store.state.timer
       // eslint-disable-next-line
       StateNodes.onOff()
       
+      const timer = this.$store.state.timer
       if (!timer.isRunning()) {
         if (this.timeLimitEnable) {
           timer.start({countdown: true, startValues: {seconds: this.timeLimit}});
@@ -106,6 +111,7 @@ export default {
         } else {
           timer.start();
         }
+        this.timerValue = timer.getTimeValues().toString()
         timer.addEventListener('secondsUpdated', (e) => {
           this.timerValue = e.detail.timer.getTimeValues().toString()
         });
@@ -113,6 +119,18 @@ export default {
         timer.stop();
       }
       
+      window.addEventListener('SoundExecute', (e) => { 
+        this.bgc.backgroundColor = this.getRandomColor()
+      }, false);
+      
+    },
+    getRandomColor() {
+      var letters = '0123456789ABCDEF';
+      var color = '#';
+      for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
     },
     setSound (value) {
       this.$store.commit('setSoundSelect', value)
@@ -157,19 +175,13 @@ export default {
         value = minutos + segundos + ' minute'
       }
       return value
-    },
-    test () {
-      this.timer = this.$store.state.timer.getTimeValues().toString()
-    },
-    consoleLog () {
-      console.log('console.log')
     }
   },
   computed: {
 
   },
   mounted() {
-    
+
   },
   beforeUpdate() {
     
@@ -188,32 +200,4 @@ export default {
   width: 200px;
   }
 
-  .md-layout-item {
-    height: 40px;
-
-    &:after {
-      width: 100%;
-      height: 100%;
-      display: block;
-      background: md-get-palette-color(blue, 200);
-      content: " ";
-    }
-  }
-
-  .md-content {
-    width: 400px;
-    height: 400px;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .viewport {
-    width: 320px;
-    max-width: 80%;
-    display: inline-block;
-    vertical-align: top;
-    overflow: auto;
-    border: 1px solid rgba(#000, .12);
-  }
 </style>

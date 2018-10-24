@@ -22,6 +22,7 @@ export class SoundType {
 
     constructor(sound) {
         this.sound = sound
+        this.event = new Event('SoundExecute');
     }
 
     execute(audioNode) {
@@ -30,6 +31,7 @@ export class SoundType {
         oscillator.start(currentTime)
         this.doExecute(oscillator, currentTime)
         oscillator.stop(currentTime + this.stopDelta())
+        dispatchEvent(this.event)
     }
 
     executeAt(time, audioNode) {
