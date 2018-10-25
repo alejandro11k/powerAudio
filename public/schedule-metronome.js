@@ -1,5 +1,4 @@
 import { Sound, Beeper, Kicker } from "./sound.js"
-import List from "../node_modules/collections/list.js";
 
 export class ScheduleMetronome {
     constructor() {
@@ -44,7 +43,7 @@ export class ScheduleMetronome {
         const delay = this.bpm2seg(bpm)
         let beats = this.minutes2Beats(minutes, delay)
         let beat = this.lastBeat
-        console.log('delay', delay, 'beats', beats, 'beat', beat)
+        // console.log('delay', delay, 'beats', beats, 'beat', beat)
         
         for (let times = 1; times < beats+1; times++) {
             beat = beat + delay
@@ -98,15 +97,24 @@ export class ScheduleModule {
     script() {
         this.createContextAndGainNode()
         this.initSounds()
-        
-        const start = 0
-        let s1 = new Schedule(60, 30, start, this.beeper)
-        let s2 = new Schedule(120, 30, s1.getLatsBeat(), this.beeper)
+        // const start = 0
 
-        console.log(s1, s2)
+        // let s1 = new Schedule(60, 30, start, this.beeper)
+        // let s2 = new Schedule(120, 30, s1.getLatsBeat(), this.beeper)
+
+        let s1 = new Schedule(60, 30, this.beeper)
+        let s2 = new Schedule(120, 30, this.beeper)
+
+        console.log(s1)
+        console.log(s2)
+
+        let sl1 = new ScheduleList(s1)
+        sl1.addNext(s2)
+
         this.context.audioWorklet.addModule('./processor.js').then(() => {
-            s1.execute(this.context)
-            s2.execute(this.context)
+            // s1.execute(this.context)
+            // s2.execute(this.context)
+            sl1.execute(this.context)
         })
         
     }
@@ -131,15 +139,14 @@ export class Schedule {
         this.bpm = bpm
         this.seconds = seconds
         this.sound = sound
-        this.timeList = []
         this.lastBeat = 0
         this.start = 0
-        // this.calculateTimeList(bpm, seconds, start)
+        this.timeList = this.calculateTimeList(bpm, seconds, this.start)
     }
 
-    initialize(start) {
-        setStart(start)
-        this.calculateTimeList()
+    reInitialize(start) {
+        this.setStart(start)
+        this.timeList = this.calculateTimeList(this.bpm, this.seconds, start)
     }
 
     setStart(start) {
@@ -161,16 +168,20 @@ export class Schedule {
     }
 
     calculateTimeList(bpm, seconds) {
+        const timeList = []
+
         const delay = this.bpm2seg(bpm)
         const beats = this.seconds2Beats(seconds, delay)
         let beat = this.start - delay
         
         for (let times = 1; times < beats+1; times++) {
             beat = beat + delay
-            this.timeList.push(beat)
+            timeList.push(beat)
         }
 
         this.lastBeat = beat + delay
+
+        return timeList
     }
 
     bpm2seg(bpm) {
@@ -190,27 +201,28 @@ export class Schedule {
     }
 }
 
+
 export class ScheduleList {
-    constructor() {
-        schedules = []
+    constructor(schedule) {
+        this.schedule = schedule
+        this.nextSchedule = null
     }
 
-    add(schedule) {
-        this.schedule.push(schedule)
+    addNext(schedule) {
+        this.nextSchedule = new ScheduleList(schedule)
     }
 
     remove() {
         //
     }
 
-    execute() {
-        
-        this.getMapOfSchedules().entries().forEach(element => {
-            element.initialize()
-        })
-        schedules.forEach(element => {
-            element.execute()
-        });
+    execute(audioNode) {
+        this.schedule.execute(audioNode)
+        if(this.nextSchedule!==null){
+            console.log(this.nextSchedule)
+            this.nextSchedule.schedule.reInitialize(this.schedule.getLatsBeat())
+            this.nextSchedule.execute(audioNode)
+        }
     }
 
     getMapOfSchedules() {
@@ -220,6 +232,6 @@ export class ScheduleList {
                 m_schedules.set(i, e)
             }
         }
-        return m_schedules
+        return m_schedules //entries()
     }
 }
