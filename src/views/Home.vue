@@ -179,7 +179,10 @@ export default {
 
   },
   mounted() {
-
+    window.addEventListener('keyup', (e) => {
+      console.log(`keyup event. key property value is "${e.key}"`);
+      this.onOff()
+    });
   },
   beforeUpdate() {
     

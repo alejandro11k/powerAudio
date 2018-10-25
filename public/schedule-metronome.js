@@ -1,4 +1,5 @@
 import { Sound, Beeper, Kicker } from "./sound.js"
+import List from "../node_modules/collections/list.js";
 
 export class ScheduleMetronome {
     constructor() {
@@ -119,17 +120,30 @@ export class ScheduleModule {
         this.context = new AudioContext()
         this.gainNode = this.context.createGain()
     }
+
+    stop() {
+        this.audioContext.suspend()
+    }
 }
 
 export class Schedule {
-    constructor(bpm, seconds, start, sound) {
+    constructor(bpm, seconds, sound) {
         this.bpm = bpm
         this.seconds = seconds
         this.sound = sound
         this.timeList = []
         this.lastBeat = 0
+        this.start = 0
+        // this.calculateTimeList(bpm, seconds, start)
+    }
+
+    initialize(start) {
+        setStart(start)
+        this.calculateTimeList()
+    }
+
+    setStart(start) {
         this.start = start
-        this.calculateTimeList(bpm, seconds, start)
     }
 
     getLatsBeat() {
@@ -190,8 +204,22 @@ export class ScheduleList {
     }
 
     execute() {
-        schedule.array.forEach(element => {
+        
+        this.getMapOfSchedules().entries().forEach(element => {
+            element.initialize()
+        })
+        schedules.forEach(element => {
             element.execute()
         });
+    }
+
+    getMapOfSchedules() {
+        m_schedules = new Map() 
+        for (let i in this.schedule) {
+            for (let e of this.shcedule) {
+                m_schedules.set(i, e)
+            }
+        }
+        return m_schedules
     }
 }
