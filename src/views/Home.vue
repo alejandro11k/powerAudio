@@ -17,8 +17,11 @@
       :min="40"
       :max="300">
     </knob-control>
-    <md-radio v-model="soundSelect" value="beeper">Beeper</md-radio>
-    <md-radio v-model="soundSelect" value="kicker">Kicker</md-radio>
+
+    <sound-selector soundSelect="soundSelect"></sound-selector>
+
+    <!--md-radio v-model="soundSelect" value="beeper">Beeper</md-radio>
+    <md-radio v-model="soundSelect" value="kicker">Kicker</md-radio-->
 
     <br>
     <range-slider
@@ -58,6 +61,7 @@
 <script>
 // @ is an alias to /src
 // import HelloWorld from '@/components/HelloWorld.vue'
+import SoundSelector from '@/components/SoundSelector.vue'
 import VueKnobControl from 'vue-knob-control'
 import RangeSlider from 'vue-range-slider'
 // you probably need to import built-in style
@@ -68,12 +72,13 @@ export default {
   components: {
     // HelloWorld
     'knob-control': VueKnobControl,
-    'range-slider': RangeSlider
+    'range-slider': RangeSlider,
+    'sound-selector': SoundSelector
   },
   data() {
     return {
       bpm: this.$store.state.bpm,
-      soundSelect: this.$store.state.soundSelect,
+      // soundSelect: 'beeper',
       volume: this.$store.state.volume,
       timeLimit: this.$store.state.timeLimit,
       timeLimitEnable: this.$store.state.timeLimitEnable,
@@ -82,9 +87,16 @@ export default {
       bgc: { backgroundColor: '' }
     }
   },
+  computed: {
+    soundSelect: function (value) { 
+        // this.setSound(value) 
+        console.log(value)
+        return 'kicker';
+      }
+  },
   watch: {
     bpm: function (value) { this.setBpm(value) },
-    soundSelect: function (value) { this.setSound(value) },
+    // soundSelect: function (value) { this.setSound(value) },
     volume: function (value) { this.setGain(value) },
     timeLimit: function (value) { this.setTimeLimit(value) },
     timeLimitEnable: function (value) { this.setTimeLimitEnable(value) },
@@ -181,7 +193,7 @@ export default {
   mounted() {
     window.addEventListener('keyup', (e) => {
       console.log(`keyup event. key property value is "${e.key}"`);
-      this.onOff()
+      // this.onOff()
     });
   },
   beforeUpdate() {
