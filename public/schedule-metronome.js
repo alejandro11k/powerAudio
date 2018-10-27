@@ -6,17 +6,17 @@ export class ScheduleModule {
         this.gainNode = null
         this.beeper = null
         this.kicker = null
+        this.sounds = new Map()
+        this.sl = null
+        this.played = false
     }
 
     script() {
         this.createContextAndGainNode()
         this.initSounds()
 
-        let s1 = new Schedule(60, 30, this.beeper)
-        let s2 = new Schedule(120, 30, this.beeper)
-
-        console.log(s1)
-        console.log(s2)
+        let s1 = new Schedule(60, 5, this.beeper)
+        let s2 = new Schedule(120, 5, this.beeper)
 
         let sl1 = new ScheduleList(s1)
         sl1.addNext(s2)
@@ -27,9 +27,35 @@ export class ScheduleModule {
         
     }
 
+    add(bpm, time, sound) {
+        if (this.sl===null) {
+            this.createContextAndGainNode()
+            this.initSounds()
+            let s = new Schedule(bpm, time, this.sounds.get(sound))
+            this.sl = new ScheduleList(s)
+        } else {
+            let s = new Schedule(bpm, time, this.sounds.get(sound))
+            this.sl.addNext(s)
+        }
+    }
+
+    play() {
+        if (!this.played) {
+            this.context.audioWorklet.addModule('./processor.js').then(() => {
+                this.sl.execute(this.context)
+                this.played = true
+            })
+        } else {
+            this.sl.execute(this.context)
+        }
+        
+    }
+
     initSounds() {
         this.beeper = new Beeper(new Sound(this.context))
         this.kicker = new Kicker(new Sound(this.context))
+        this.sounds.set('beeper', this.beeper)
+        this.sounds.set('kicker', this.kicker)
     }
 
     createContextAndGainNode() {
@@ -126,6 +152,7 @@ export class ScheduleList {
 
     execute(audioNode) {
         this.schedule.execute(audioNode)
+        console.log(this.schedule)
         if(!this.lastSchedule()){
             this.nextSchedule.schedule.reInitialize(this.schedule.getLatsBeat())
             this.nextSchedule.execute(audioNode)

@@ -18,7 +18,7 @@ export default {
   name: 'TimeSelector',
   data() {
       return {
-          timeLimit: 0
+          timeLimit: 10
       }
   },
   watch: {
