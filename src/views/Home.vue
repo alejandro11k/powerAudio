@@ -18,10 +18,7 @@
       :max="300">
     </knob-control>
 
-    <sound-selector soundSelect="soundSelect"></sound-selector>
-
-    <!--md-radio v-model="soundSelect" value="beeper">Beeper</md-radio>
-    <md-radio v-model="soundSelect" value="kicker">Kicker</md-radio-->
+    <sound-selector @soundSelect="setSound($event)"></sound-selector>
 
     <br>
     <range-slider
@@ -78,7 +75,7 @@ export default {
   data() {
     return {
       bpm: this.$store.state.bpm,
-      // soundSelect: 'beeper',
+      soundSelect: this.$store.state.soundSelect,
       volume: this.$store.state.volume,
       timeLimit: this.$store.state.timeLimit,
       timeLimitEnable: this.$store.state.timeLimitEnable,
@@ -87,16 +84,9 @@ export default {
       bgc: { backgroundColor: '' }
     }
   },
-  computed: {
-    soundSelect: function (value) { 
-        // this.setSound(value) 
-        console.log(value)
-        return 'kicker';
-      }
-  },
   watch: {
     bpm: function (value) { this.setBpm(value) },
-    // soundSelect: function (value) { this.setSound(value) },
+    soundSelect: function (value) { this.setSound(value) },
     volume: function (value) { this.setGain(value) },
     timeLimit: function (value) { this.setTimeLimit(value) },
     timeLimitEnable: function (value) { this.setTimeLimitEnable(value) },
@@ -143,6 +133,7 @@ export default {
       return color;
     },
     setSound (value) {
+      console.log(value)
       this.$store.commit('setSoundSelect', value)
       // eslint-disable-next-line
       StateNodes.setSound(getSounds().get(this.$store.state.soundSelect))

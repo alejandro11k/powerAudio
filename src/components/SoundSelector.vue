@@ -8,11 +8,13 @@
 <script>
 export default {
   name: 'SoundSelector',
-  props: {
-    soundSelect: {
-        type: String,
-        default: 'beeper'
-    }
+  data() {
+      return {
+          soundSelect: 'beeper'
+      }
   },
+  watch: {
+      soundSelect: function (value) { this.$emit('soundSelect', value) }
+  }
 }
 </script>
