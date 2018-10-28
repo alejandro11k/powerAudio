@@ -60,10 +60,11 @@ export default {
       play() {
           // eslint-disable-next-line
           ScheduleModule.play()
-
+      /*
           window.addEventListener('SoundExecute', (e) => { 
             console.log(e)
       }, false);
+      */
       }
   }
 }
