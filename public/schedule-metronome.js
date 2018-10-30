@@ -22,11 +22,13 @@ export class ScheduleModule {
     }
 
     script2() {
-       //  this.createContextAndGainNode()
-       // this.initSounds()
+       this.createContextAndGainNode()
+       //this.initSounds()
 
-        let s1 = new Schedule(60, 5, this.sounds.get('beeper'))//new Beeper(new Sound(this.context)))
-        let s2 = new Schedule(120, 5, this.sounds.get('beeper'))//new Beeper(new Sound(this.context)))
+        // let s1 = new Schedule(60, 5, this.sounds.get('beeper'))//new Beeper(new Sound(this.context)))
+        // let s2 = new Schedule(120, 5, this.sounds.get('beeper'))//new Beeper(new Sound(this.context)))
+        let s1 = new Schedule(60, 5)
+        let s2 = new Schedule(120, 5)
 
         // this.add(s1) // don t work
         // this.add(s2) //
@@ -34,7 +36,7 @@ export class ScheduleModule {
         this.sl = new ScheduleList(s1)
         this.sl.addNext(s2)
 
-       // this.play() here work
+       this.play()
 
     }
 
@@ -124,8 +126,22 @@ export class Schedule {
         });
     }
 
-    playBeat(time,audioNode) {
+    _playBeat(time,audioNode) {
         this.sound.executeAt(time,audioNode)
+    }
+
+    playBeat (time, audioContext) {
+        var startTime = time //audioContext.currentTime + delay
+        var endTime = time + 0.1
+        var pitch = 2
+        
+        var oscillator = audioContext.createOscillator()
+        oscillator.connect(audioContext.destination)
+        
+        oscillator.frequency.setValueAtTime(pitch * 220, startTime)
+        
+        oscillator.start(startTime)
+        oscillator.stop(endTime)
     }
 
     calculateTimeList(bpm, seconds) {
