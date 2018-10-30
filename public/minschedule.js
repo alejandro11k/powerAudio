@@ -62,10 +62,8 @@ export class ScheduleList {
 
     addNext(schedule) {
         if(this.lastSchedule()) {
-            console.log(true)
             this.nextSchedule = new ScheduleList(schedule)
         } else {
-            console.log(false)
             this.nextSchedule.addNext(schedule)
         }
         

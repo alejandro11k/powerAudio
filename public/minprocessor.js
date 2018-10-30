@@ -1,10 +1,9 @@
 class Processor extends AudioWorkletProcessor {
     constructor() {
         super();
-        this._lastUpdate = currentTime;
     }
 
-    process(inputs, outputs, parameters){
+    process(inputs, outputs){
         /* process audio */
         let input = inputs[0];
         let output = outputs[0];
