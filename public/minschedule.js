@@ -61,7 +61,14 @@ export class ScheduleList {
     }
 
     addNext(schedule) {
-        this.nextSchedule = new ScheduleList(schedule)
+        if(this.lastSchedule()) {
+            console.log(true)
+            this.nextSchedule = new ScheduleList(schedule)
+        } else {
+            console.log(false)
+            this.nextSchedule.addNext(schedule)
+        }
+        
     }
 
     execute(audioNode) {
