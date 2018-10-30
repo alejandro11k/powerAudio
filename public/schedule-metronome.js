@@ -11,9 +11,36 @@ export class ScheduleModule {
         this.played = false
     }
 
-    script() {
+    script3() {
+        this.play() // this broke 
+    }
+
+    script1() {
         this.createContextAndGainNode()
         this.initSounds()
+
+    }
+
+    script2() {
+       //  this.createContextAndGainNode()
+       // this.initSounds()
+
+        let s1 = new Schedule(60, 5, this.sounds.get('beeper'))//new Beeper(new Sound(this.context)))
+        let s2 = new Schedule(120, 5, this.sounds.get('beeper'))//new Beeper(new Sound(this.context)))
+
+        // this.add(s1) // don t work
+        // this.add(s2) //
+
+        this.sl = new ScheduleList(s1)
+        this.sl.addNext(s2)
+
+       // this.play() here work
+
+    }
+
+    script() {
+        //this.createContextAndGainNode()
+        //this.initSounds()
 
         let s1 = new Schedule(60, 5, this.beeper)
         let s2 = new Schedule(120, 5, this.beeper)

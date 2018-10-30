@@ -18,6 +18,16 @@
     </md-button>
     <br>
     {{ list }}
+    <br>
+    <md-button @click="newScheduleModule">
+        <md-icon> init </md-icon>
+    </md-button>   
+    <md-button @click="newSchedule">
+        <md-icon> sch </md-icon>
+    </md-button>   
+    <md-button @click="playSchedule">
+        <md-icon> playS </md-icon>
+    </md-button>   
   </div>
 </template>
 
@@ -42,10 +52,24 @@ export default {
         bpm: 60,
         timeLimit: 10,
         soundSelected: 'beeper',
-        list: []
+        list: [],
+        scheduleList: null,
+        schedule: null
     }
   },
   methods: {
+      newScheduleModule(){
+        // ScheduleModule.createContextAndGainNode()
+        // ScheduleModule.initSounds()
+        ScheduleModule.script1()
+      },
+      newSchedule(){
+        //this.schedule = new Schedule(this.bpm, this.timeLimit, ScheduleModule.beeper)
+        ScheduleModule.script2()
+      },
+      playSchedule(){
+        ScheduleModule.script3()
+      },
       setSound(value) {
           this.soundSelected = value
       },
