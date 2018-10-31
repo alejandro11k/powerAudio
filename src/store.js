@@ -14,7 +14,14 @@ export default new Vuex.Store({
     soundSelect: 'beeper',
     timeLimit: 0,
     timeLimitEnable: false,
-    timer: timer
+    timer: timer,
+    scheduleProperties: {
+      bpm: 60,
+      timeLimit: 10,
+      soundSelected: 'beeper'
+    },
+    scheduleTempList: []
+
   },
   mutations: {
     setBpm (state, value) { state.bpm = value },
@@ -23,11 +30,21 @@ export default new Vuex.Store({
     setTimeLimit (state, value) { state.timeLimit = value },
     setTimeLimitEnable (state, value) { state.timeLimitEnable = value },
     setTimer (state, value) { state.timer = value },
+    setScheduleProperties (state, value) { state.scheduleProperties = value },
+    setScheduleBpm (state, value) { state.scheduleProperties.bpm = value },
+    setScheduleTimeLimit (state, value) { state.scheduleProperties.timeLimit = value },
+    setScheduleSoundSelected (state, value) { state.scheduleProperties.soundSelect = value },
+    setScheduleTempList (state, value) { 
+      state.scheduleTempList.push(value)
+      console.log(state.scheduleTempList)
+    }
   },
   actions: {
 
   },
   getters: {
     // getStateNodes: (state) => state.stateNodes
+    getScheduleProperties: (state) => { return state.scheduleProperties },
+    getScheduleTempList: (state) => { return state.scheduleTempList }
   }
 })
