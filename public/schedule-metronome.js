@@ -11,14 +11,27 @@ export class ScheduleModule {
         this.played = false
     }
 
-    script3() {
-        this.play() // this broke 
-    }
-
-    script1() {
+    playTest(schedules) {
         this.createContextAndGainNode()
         this.initSounds()
+        console.log('schedules', schedules)
+        const firstSchedule = schedules[0]
+        console.log('firstSchedule', firstSchedule)
+        console.log('schedules', schedules)
+        this.sl = new ScheduleList(
+            new Schedule(
+                firstSchedule[0],
+                firstSchedule[1],
+                this.sounds.get(firstSchedule[2])
+            ))
+        // const tailSchedules = schedules.shift()
+        // console.log('tailSchedules', tailSchedules)
+        schedules.forEach((schedule)=>{
+            console.log('schedule', schedule)
+            this.sl.addNext(new Schedule(schedule[0],schedule[1],this.sounds.get(schedule[2])))
+        })
 
+        this.play()
     }
 
     script2() {
@@ -126,11 +139,11 @@ export class Schedule {
         });
     }
 
-    _playBeat(time,audioNode) {
+    playBeat(time,audioNode) {
         this.sound.executeAt(time,audioNode)
     }
 
-    playBeat (time, audioContext) {
+    _playBeat (time, audioContext) {
         var startTime = time //audioContext.currentTime + delay
         var endTime = time + 0.1
         var pitch = 2
@@ -186,7 +199,11 @@ export class ScheduleList {
     }
 
     addNext(schedule) {
-        this.nextSchedule = new ScheduleList(schedule)
+        if(this.lastSchedule()){
+          this.nextSchedule = new ScheduleList(schedule)
+        } else {
+            this.nextSchedule.addNext(schedule)
+        }
     }
 
     remove() {

@@ -19,15 +19,9 @@
     <br>
     {{ list }}
     <br>
-    <md-button @click="newScheduleModule">
-        <md-icon> init </md-icon>
-    </md-button>   
-    <md-button @click="newSchedule">
-        <md-icon> sch </md-icon>
-    </md-button>   
-    <md-button @click="playSchedule">
-        <md-icon> playS </md-icon>
-    </md-button>   
+    <md-button @click="playTest">
+        <md-icon> playTest </md-icon>
+    </md-button>
   </div>
 </template>
 
@@ -58,17 +52,14 @@ export default {
     }
   },
   methods: {
-      newScheduleModule(){
-        // ScheduleModule.createContextAndGainNode()
-        // ScheduleModule.initSounds()
-        ScheduleModule.script1()
-      },
-      newSchedule(){
-        //this.schedule = new Schedule(this.bpm, this.timeLimit, ScheduleModule.beeper)
-        ScheduleModule.script2()
-      },
-      playSchedule(){
-        ScheduleModule.script3()
+      playTest(){
+        const arraySchedules = [
+          [60,5,'beeper'],
+          [60,5,'kicker'],
+          [60,5,'beeper']
+        ]
+        // eslint-disable-next-line
+        ScheduleModule.playTest(arraySchedules)
       },
       setSound(value) {
           this.soundSelected = value
