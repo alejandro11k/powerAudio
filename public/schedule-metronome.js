@@ -24,8 +24,8 @@ export class ScheduleModule {
                 firstSchedule[1],
                 this.sounds.get(firstSchedule[2])
             ))
-        // const tailSchedules = schedules.shift()
-        // console.log('tailSchedules', tailSchedules)
+        const tailSchedules = schedules.splice(0, 1)
+        console.log('tailSchedules', tailSchedules)
         schedules.forEach((schedule)=>{
             console.log('schedule', schedule)
             this.sl.addNext(new Schedule(schedule[0],schedule[1],this.sounds.get(schedule[2])))
@@ -212,7 +212,7 @@ export class ScheduleList {
 
     execute(audioNode) {
         this.schedule.execute(audioNode)
-        console.log(this.schedule)
+        console.log('beats to play', this.schedule.timeList.length)
         if(!this.lastSchedule()){
             this.nextSchedule.schedule.reInitialize(this.schedule.getLatsBeat())
             this.nextSchedule.execute(audioNode)
