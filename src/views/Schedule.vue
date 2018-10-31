@@ -23,10 +23,14 @@
     <div class="root">
       <slick-list lockAxis="y" v-model="items">
         <slick-item v-for="(item, index) in items" :index="index" :key="index">
-          {{ item }}
+          <md-chip class="md-primary" md-deletable @md-delete="deleteChip($event)">
+            {{ item }}
+          </md-chip>
         </slick-item>
       </slick-list>
     </div>
+
+
     <!--md-button @click="playTest">
         <md-icon> playTest </md-icon>
     </md-button-->
@@ -63,17 +67,7 @@ export default {
         scheduleProperties: this.$store.state.scheduleProperties,
         scheduleTempList: this.$store.state.scheduleTempList,
         items: [],
-        /*
-        items: [
-        'Item 1',
-        'Item 2',
-        'Item 3',
-        'Item 4',
-        'Item 5',
-        'Item 6',
-        'Item 7',
-        'Item 8'
-        ]*/
+        
     }
   },
   watch: {
@@ -82,6 +76,9 @@ export default {
     soundSelected: function (value) { this.updateSoundSelected(value) }
   },
   methods: {
+    deleteChip(event) {
+      console.log(event)
+    },
       updateBpm(value) {
         this.$store.commit('setScheduleBpm', value)
       },
