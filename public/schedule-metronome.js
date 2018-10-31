@@ -212,7 +212,7 @@ export class ScheduleList {
 
     execute(audioNode) {
         this.schedule.execute(audioNode)
-        console.log('beats to play', this.schedule.timeList.length)
+        console.log('beats to play', this.schedule.timeList.length, 'sound', this.schedule.sound)
         if(!this.lastSchedule()){
             this.nextSchedule.schedule.reInitialize(this.schedule.getLatsBeat())
             this.nextSchedule.execute(audioNode)

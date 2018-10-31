@@ -19,9 +19,17 @@
     <br>
     {{ list }}
     <br>
-    <md-button @click="playTest">
+
+    <div class="root">
+      <slick-list lockAxis="y" v-model="items">
+        <slick-item v-for="(item, index) in items" :index="index" :key="index">
+          {{ item }}
+        </slick-item>
+      </slick-list>
+    </div>
+    <!--md-button @click="playTest">
         <md-icon> playTest </md-icon>
-    </md-button>
+    </md-button-->
   </div>
 </template>
 
@@ -32,6 +40,7 @@ import VueKnobControl from 'vue-knob-control'
 import RangeSlider from 'vue-range-slider'
 // you probably need to import built-in style
 import 'vue-range-slider/dist/vue-range-slider.css'
+import { SlickList, SlickItem } from 'vue-slicksort';
 
 export default {
   name: 'schedule',
@@ -39,7 +48,9 @@ export default {
     'knob-control': VueKnobControl,
     'range-slider': RangeSlider,
     'sound-selector': SoundSelector,
-    'time-selector': TimeSelector
+    'time-selector': TimeSelector,
+    'slick-item': SlickItem,
+    'slick-list': SlickList,
   },
   data() {
     return {
@@ -50,7 +61,19 @@ export default {
         scheduleList: null,
         schedule: null,
         scheduleProperties: this.$store.state.scheduleProperties,
-        scheduleTempList: this.$store.state.scheduleTempList
+        scheduleTempList: this.$store.state.scheduleTempList,
+        items: [],
+        /*
+        items: [
+        'Item 1',
+        'Item 2',
+        'Item 3',
+        'Item 4',
+        'Item 5',
+        'Item 6',
+        'Item 7',
+        'Item 8'
+        ]*/
     }
   },
   watch: {
@@ -88,6 +111,7 @@ export default {
       },
       add() {
         this.list.push('bpm: ' + this.bpm + '|timeLimit: ' + this.timeLimit + '|sound: ' + this.soundSelected)
+        this.items.push('bpm: ' + this.bpm + '|timeLimit: ' + this.timeLimit + '|sound: ' + this.soundSelected)
         // eslint-disable-next-line
         // ScheduleModule.add(this.bpm, this.timeLimit, this.soundSelected)
         console.log(this.$store.getters.getScheduleProperties) // return observer?!?!?!?!
