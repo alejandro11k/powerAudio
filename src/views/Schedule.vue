@@ -16,19 +16,40 @@
     <md-button class="md-fab" @click="play">
         <md-icon> > </md-icon>
     </md-button>
-    <br>
+    <!--br>
     {{ list }}
+    <br-->
+
+    <br>
     <br>
 
-    <div class="root">
-      <slick-list lockAxis="y" v-model="items">
+    <md-content>
+
+      <div class="root">
+        <slick-list 
+          lockAxis="y" 
+          v-model="items" >
+          <slick-item v-for="(item, index) in items" :index="index" :key="index">
+            <md-chip class="md-primary" md-deletable @md-delete="deleteChip($event)">
+              {{ item }}
+            </md-chip>
+          </slick-item>
+        </slick-list>
+      </div>
+
+    </md-content>
+
+    <!--div class="root">
+      <slick-list 
+        lockAxis="y" 
+        v-model="items" >
         <slick-item v-for="(item, index) in items" :index="index" :key="index">
           <md-chip class="md-primary" md-deletable @md-delete="deleteChip($event)">
             {{ item }}
           </md-chip>
         </slick-item>
       </slick-list>
-    </div>
+    </div-->
 
 
     <!--md-button @click="playTest">
@@ -136,3 +157,12 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+  .md-content {
+    width: 100px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+  }
+</style>
