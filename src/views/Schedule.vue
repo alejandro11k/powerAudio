@@ -16,15 +16,10 @@
     <md-button class="md-fab" @click="play">
         <md-icon> > </md-icon>
     </md-button>
-    <!--br>
-    {{ list }}
-    <br-->
-
-    <br>
+    
     <br>
 
     <md-content>
-
       <div class="root">
         <slick-list 
           lockAxis="y" 
@@ -68,82 +63,57 @@ export default {
         bpm: this.$store.state.scheduleProperties.bpm,
         timeLimit: this.$store.state.scheduleProperties.timeLimit,
         soundSelected: this.$store.state.scheduleProperties.soundSelected,
-        list: [],
-        scheduleList: null,
-        schedule: null,
         scheduleProperties: this.$store.state.scheduleProperties,
         scheduleTempList: this.$store.state.scheduleTempList,
-        items: [],
-        value: 0
     }
   },
   watch: {
     bpm: function (value) { this.updateBpm(value) },
     timeLimit: function (value) { this.updateTimeLimit(value) },
     soundSelected: function (value) { this.updateSoundSelected(value) },
-    // this fire twice when add and element?
-    scheduleTempList: function (value) { this.$store.commit('setScheduleTempList', value) }
+    scheduleTempList: function (value) { this.$store.commit('setScheduleTempList', value) } // this fire twice when add and element?
   },
   methods: {
     deleteChip(pos) {
-      // this.items.splice(pos,1)
       const tempList = this.$store.getters.getScheduleTempList
       tempList.splice(pos,1)
       this.$store.commit('setScheduleTempList', tempList)
     },
-      updateBpm(value) {
-        this.$store.commit('setScheduleBpm', value)
-      },
-      updateTimeLimit(value) {
-        this.$store.commit('setScheduleTimeLimit', value)
-      },
-      updateSoundSelected(value) {
-        this.$store.commit('setScheduleSoundSelected', value)
-      },
-      updateScheduleProperties(value) {
-        this.$store.commit('setScheduleProperties', value)
-      },
-      playTest(){
-        const arraySchedules = [
-          [60,5,'beeper'],
-          [60,5,'kicker'],
-          [60,5,'beeper']
-        ]
-        // eslint-disable-next-line
-        ScheduleModule.playTest(arraySchedules)
-      },
-      setSound(value) {
-          this.soundSelected = value
-      },
-      setTimeLimit(value) {
-          this.timeLimit = value
-      },
-      add() {
-        //new schedule
-        const bpm = this.$store.getters.getScheduleProperties.bpm
-        const timeLimit = this.$store.getters.getScheduleProperties.timeLimit
-        const soundSelected = this.$store.getters.getScheduleProperties.soundSelected
-        const newSchedule = [bpm, timeLimit, soundSelected]
-        //add schedule
-        const tempList = this.$store.getters.getScheduleTempList
-        tempList.push(newSchedule)
-        this.$store.commit('setScheduleTempList', tempList)
-      },
-      play() {
-          // eslint-disable-next-line
-          // ScheduleModule.play()
-          console.log('scheduleTempList', this.$store.getters.getScheduleTempList) // return observer?!?!?!?!)
-          // eslint-disable-next-line
-          const original = this.$store.getters.getScheduleTempList
-          let cloned = JSON.parse(JSON.stringify(original)); // this will copy everything from original 
-          ScheduleModule.playTest(cloned)
-          
-      /*
-          window.addEventListener('SoundExecute', (e) => { 
-            console.log(e)
-      }, false);
-      */
-      }
+    updateBpm(value) {
+      this.$store.commit('setScheduleBpm', value)
+    },
+    updateTimeLimit(value) {
+      this.$store.commit('setScheduleTimeLimit', value)
+    },
+    updateSoundSelected(value) {
+      this.$store.commit('setScheduleSoundSelected', value)
+    },
+    updateScheduleProperties(value) {
+      this.$store.commit('setScheduleProperties', value)
+    },
+    setSound(value) {
+        this.soundSelected = value
+    },
+    setTimeLimit(value) {
+        this.timeLimit = value
+    },
+    add() {
+      //new schedule
+      const bpm = this.$store.getters.getScheduleProperties.bpm
+      const timeLimit = this.$store.getters.getScheduleProperties.timeLimit
+      const soundSelected = this.$store.getters.getScheduleProperties.soundSelected
+      const newSchedule = [bpm, timeLimit, soundSelected]
+      //add schedule
+      const tempList = this.$store.getters.getScheduleTempList
+      tempList.push(newSchedule)
+      this.$store.commit('setScheduleTempList', tempList)
+    },
+    play() {
+      const original = this.$store.getters.getScheduleTempList // return observer?!?!?!?!)
+      let cloned = JSON.parse(JSON.stringify(original)); // this will copy everything from original 
+      // eslint-disable-next-line
+      ScheduleModule.playTest(cloned)
+    }
   }
 }
 </script>

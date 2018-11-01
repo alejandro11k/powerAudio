@@ -14,59 +14,19 @@ export class ScheduleModule {
     playTest(schedules) {
         this.createContextAndGainNode()
         this.initSounds()
-        console.log('schedules', schedules)
         const firstSchedule = schedules[0]
-        console.log('firstSchedule', firstSchedule)
-        console.log('schedules', schedules)
         this.sl = new ScheduleList(
             new Schedule(
                 firstSchedule[0],
                 firstSchedule[1],
                 this.sounds.get(firstSchedule[2])
             ))
-        const tailSchedules = schedules.splice(0, 1)
-        console.log('tailSchedules', tailSchedules)
+        schedules.splice(0,1)
         schedules.forEach((schedule)=>{
-            console.log('schedule', schedule)
             this.sl.addNext(new Schedule(schedule[0],schedule[1],this.sounds.get(schedule[2])))
         })
 
         this.play()
-    }
-
-    script2() {
-       this.createContextAndGainNode()
-       //this.initSounds()
-
-        // let s1 = new Schedule(60, 5, this.sounds.get('beeper'))//new Beeper(new Sound(this.context)))
-        // let s2 = new Schedule(120, 5, this.sounds.get('beeper'))//new Beeper(new Sound(this.context)))
-        let s1 = new Schedule(60, 5)
-        let s2 = new Schedule(120, 5)
-
-        // this.add(s1) // don t work
-        // this.add(s2) //
-
-        this.sl = new ScheduleList(s1)
-        this.sl.addNext(s2)
-
-       this.play()
-
-    }
-
-    script() {
-        //this.createContextAndGainNode()
-        //this.initSounds()
-
-        let s1 = new Schedule(60, 5, this.beeper)
-        let s2 = new Schedule(120, 5, this.beeper)
-
-        let sl1 = new ScheduleList(s1)
-        sl1.addNext(s2)
-
-        this.context.audioWorklet.addModule('./processor.js').then(() => {
-            sl1.execute(this.context)
-        })
-        
     }
 
     add(bpm, time, sound) {
@@ -143,7 +103,8 @@ export class Schedule {
         this.sound.executeAt(time,audioNode)
     }
 
-    _playBeat (time, audioContext) {
+    // To use with Schedules without Sounds
+    simplePlayBeat (time, audioContext) {
         var startTime = time //audioContext.currentTime + delay
         var endTime = time + 0.1
         var pitch = 2
