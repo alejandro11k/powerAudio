@@ -30,27 +30,16 @@
           lockAxis="y" 
           v-model="items" >
           <slick-item v-for="(item, index) in items" :index="index" :key="index">
-            <md-chip class="md-primary" md-deletable @md-delete="deleteChip($event)">
+            <md-chip 
+              class="md-primary" 
+              :md-deletable="true"
+              @md-delete="deleteChip(index)">
               {{ item }}
             </md-chip>
           </slick-item>
         </slick-list>
       </div>
-
     </md-content>
-
-    <!--div class="root">
-      <slick-list 
-        lockAxis="y" 
-        v-model="items" >
-        <slick-item v-for="(item, index) in items" :index="index" :key="index">
-          <md-chip class="md-primary" md-deletable @md-delete="deleteChip($event)">
-            {{ item }}
-          </md-chip>
-        </slick-item>
-      </slick-list>
-    </div-->
-
 
     <!--md-button @click="playTest">
         <md-icon> playTest </md-icon>
@@ -88,7 +77,7 @@ export default {
         scheduleProperties: this.$store.state.scheduleProperties,
         scheduleTempList: this.$store.state.scheduleTempList,
         items: [],
-        
+        value: 0
     }
   },
   watch: {
@@ -97,8 +86,8 @@ export default {
     soundSelected: function (value) { this.updateSoundSelected(value) }
   },
   methods: {
-    deleteChip(event) {
-      console.log(event)
+    deleteChip(pos) {
+      this.items.splice(pos,1)
     },
       updateBpm(value) {
         this.$store.commit('setScheduleBpm', value)
@@ -160,7 +149,7 @@ export default {
 
 <style lang="scss" scoped>
   .md-content {
-    width: 100px;
+    width: 80px;
     display: inline-flex;
     justify-content: center;
     align-items: center;
