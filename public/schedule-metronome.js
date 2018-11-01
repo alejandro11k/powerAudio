@@ -9,6 +9,21 @@ export class ScheduleModule {
         this.sounds = new Map()
         this.sl = null
         this.played = false
+        // this.context = new AudioContext() // same old error!
+        // this.initSounds()
+    }
+
+    suspendResume() {
+        console.log('stateBefore', this.context.state)
+        if(this.context.state === 'running') {
+            this.context.suspend().then(function() {
+                return 'Resume context';
+          });
+        } else if(this.context.state === 'suspended') {
+            this.context.resume().then(function() {
+                return 'Suspend context';
+          });  
+        }
     }
 
     playTest(schedules) {
@@ -65,9 +80,6 @@ export class ScheduleModule {
         this.gainNode = this.context.createGain()
     }
 
-    stop() {
-        this.audioContext.suspend()
-    }
 }
 
 export class Schedule {

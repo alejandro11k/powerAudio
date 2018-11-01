@@ -18,6 +18,10 @@
     </md-button>
     
     <br>
+    <md-button @click="test">
+      <md-icon> test </md-icon>
+    </md-button>
+    <br>
 
     <md-content>
       <div class="root">
@@ -33,9 +37,6 @@
       </div>
     </md-content>
 
-    <!--md-button @click="playTest">
-        <md-icon> playTest </md-icon>
-    </md-button-->
   </div>
 </template>
 
@@ -74,6 +75,10 @@ export default {
     scheduleTempList: function (value) { this.$store.commit('setScheduleTempList', value) } // this fire twice when add and element?
   },
   methods: {
+    test() {
+      // eslint-disable-next-line
+      ScheduleModule.suspendResume()
+    },
     deleteChip(pos) {
       const tempList = this.$store.getters.getScheduleTempList
       tempList.splice(pos,1)
