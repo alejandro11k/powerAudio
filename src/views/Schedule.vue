@@ -28,12 +28,9 @@
       <div class="root">
         <slick-list 
           lockAxis="y" 
-          v-model="items" >
-          <slick-item v-for="(item, index) in items" :index="index" :key="index">
-            <md-chip 
-              class="md-primary" 
-              :md-deletable="true"
-              @md-delete="deleteChip(index)">
+          v-model="scheduleTempList" >
+          <slick-item v-for="(item, index) in scheduleTempList" :index="index" :key="index">
+            <md-chip class="md-primary" md-deletable @md-delete="deleteChip(index)">
               {{ item }}
             </md-chip>
           </slick-item>
@@ -83,11 +80,16 @@ export default {
   watch: {
     bpm: function (value) { this.updateBpm(value) },
     timeLimit: function (value) { this.updateTimeLimit(value) },
-    soundSelected: function (value) { this.updateSoundSelected(value) }
+    soundSelected: function (value) { this.updateSoundSelected(value) },
+    // this fire twice when add and element?
+    scheduleTempList: function (value) { this.$store.commit('setScheduleTempList', value) }
   },
   methods: {
     deleteChip(pos) {
-      this.items.splice(pos,1)
+      // this.items.splice(pos,1)
+      const tempList = this.$store.getters.getScheduleTempList
+      tempList.splice(pos,1)
+      this.$store.commit('setScheduleTempList', tempList)
     },
       updateBpm(value) {
         this.$store.commit('setScheduleBpm', value)
@@ -117,18 +119,15 @@ export default {
           this.timeLimit = value
       },
       add() {
-        this.list.push('bpm: ' + this.bpm + '|timeLimit: ' + this.timeLimit + '|sound: ' + this.soundSelected)
-        this.items.push('bpm: ' + this.bpm + '|timeLimit: ' + this.timeLimit + '|sound: ' + this.soundSelected)
-        // eslint-disable-next-line
-        // ScheduleModule.add(this.bpm, this.timeLimit, this.soundSelected)
-        console.log(this.$store.getters.getScheduleProperties) // return observer?!?!?!?!
+        //new schedule
         const bpm = this.$store.getters.getScheduleProperties.bpm
         const timeLimit = this.$store.getters.getScheduleProperties.timeLimit
         const soundSelected = this.$store.getters.getScheduleProperties.soundSelected
-        const value = [bpm, timeLimit, soundSelected]
-        console.log('value', value)
-        this.$store.commit('setScheduleTempList', value)
-        console.log('scheduleTempList', this.$store.getters.getScheduleTempList) // return observer?!?!?!?!)
+        const newSchedule = [bpm, timeLimit, soundSelected]
+        //add schedule
+        const tempList = this.$store.getters.getScheduleTempList
+        tempList.push(newSchedule)
+        this.$store.commit('setScheduleTempList', tempList)
       },
       play() {
           // eslint-disable-next-line

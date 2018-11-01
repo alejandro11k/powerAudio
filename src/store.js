@@ -35,8 +35,9 @@ export default new Vuex.Store({
     setScheduleTimeLimit (state, value) { state.scheduleProperties.timeLimit = value },
     setScheduleSoundSelected (state, value) { state.scheduleProperties.soundSelected = value },
     setScheduleTempList (state, value) { 
-      state.scheduleTempList.push(value)
-      console.log(state.scheduleTempList)
+      //state.scheduleTempList.push(value)
+      //console.log(state.scheduleTempList)
+      state.scheduleTempList = value
     }
   },
   actions: {
