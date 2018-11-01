@@ -134,7 +134,9 @@ export default {
           // ScheduleModule.play()
           console.log('scheduleTempList', this.$store.getters.getScheduleTempList) // return observer?!?!?!?!)
           // eslint-disable-next-line
-          ScheduleModule.playTest(this.scheduleTempList)
+          const original = this.$store.getters.getScheduleTempList
+          let cloned = JSON.parse(JSON.stringify(original)); // this will copy everything from original 
+          ScheduleModule.playTest(cloned)
           
       /*
           window.addEventListener('SoundExecute', (e) => { 
