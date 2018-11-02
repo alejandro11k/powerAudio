@@ -26,7 +26,7 @@ export class ScheduleModule {
             this.context.resume().then(function() {
                 return 'Resuming context';
           });  
-        } else {
+        } else if (schedules.length > 0) {
             this.playTest(schedules)
         }
     }

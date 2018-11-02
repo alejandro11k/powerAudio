@@ -3,7 +3,7 @@
     <md-button class="md-fab" @click="add">
         <md-icon> + </md-icon>
     </md-button>
-    <md-button class="md-fab" @click="play">
+    <md-button class="md-fab" @click="play($event)">
         <md-icon> > </md-icon>
     </md-button>
     
@@ -114,7 +114,8 @@ export default {
       tempList.push(newSchedule)
       this.$store.commit('setScheduleTempList', tempList)
     },
-    play() {
+    play(event) {
+      console.log(event)
       const original = this.$store.getters.getScheduleTempList // return observer?!?!?!?!)
       let cloned = JSON.parse(JSON.stringify(original)); // this will copy everything from original 
       // eslint-disable-next-line
