@@ -14,7 +14,7 @@ export class ScheduleModule {
     }
 
     isFinished() {
-        return this.sl.getLastBeat()<this.context.currentTime
+        return (this.sl.getLastBeat()<this.context.currentTime)
     }
 
     suspendResume() {
@@ -195,14 +195,14 @@ export class ScheduleList {
     }
 
     getLastSchedule() {
-        if (this.lastSchedule()) {
-            return  this.schedule
-        } else {
-            this.nextSchedule.getLastSchedule()
-        }
+        return this.lastSchedule() ? this.schedule : this.nextSchedule.getLastSchedule()
     }
 
     getLastBeat() {
+        console.log('lastSchedule', this.getLastSchedule())
+        let a = this.getLastSchedule()
+        
+        console.log(a.getLastBeat())
         return this.getLastSchedule().getLastBeat()
     }
 

@@ -1,5 +1,12 @@
 <template>
   <div class="schedule">
+    <md-button class="md-fab" @click="add">
+        <md-icon> + </md-icon>
+    </md-button>
+    <md-button class="md-fab" @click="play">
+        <md-icon> > </md-icon>
+    </md-button>
+    
     <div>
       <knob-control 
         v-model="bpm"
@@ -10,12 +17,6 @@
       <sound-selector @soundSelect="setSound($event)"></sound-selector>
       <time-selector @timeLimit="setTimeLimit($event)"></time-selector>
     </div>
-    <md-button class="md-fab" @click="add">
-        <md-icon> + </md-icon>
-    </md-button>
-    <md-button class="md-fab" @click="play">
-        <md-icon> > </md-icon>
-    </md-button>
     
     <br>
     <md-button @click="test">
