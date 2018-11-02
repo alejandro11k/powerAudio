@@ -78,7 +78,7 @@ export default {
   methods: {
     test() {
       // eslint-disable-next-line
-      ScheduleModule.suspendResume()
+      ScheduleModule.test()
     },
     deleteChip(pos) {
       const tempList = this.$store.getters.getScheduleTempList
@@ -118,7 +118,7 @@ export default {
       const original = this.$store.getters.getScheduleTempList // return observer?!?!?!?!)
       let cloned = JSON.parse(JSON.stringify(original)); // this will copy everything from original 
       // eslint-disable-next-line
-      ScheduleModule.playTest(cloned)
+      ScheduleModule.suspendResume(cloned)
     }
   }
 }

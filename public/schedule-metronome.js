@@ -17,36 +17,18 @@ export class ScheduleModule {
         return (this.sl.getLastBeat()<this.context.currentTime)
     }
 
-    suspendResume() {
-        console.log('stateBefore', this.context.state)
-        console.log('currentTime', this.context.currentTime)
-
-        console.log('finished?', this.isFinished())
-        /*
-        switch (this.state) {
-            case 'value':
-                
-                break;
-            case value:
-            
-                break;
-            case value:
-            
-                break;
-            default:
-                break;
-        }
-        /*
-        if(this.context.state === 'running') {
+    suspendResume(schedules) {
+        if(this.context !== null && this.context.state === 'running' && !this.isFinished()) {
             this.context.suspend().then(function() {
                 return 'Suspending context';
           });
-        } else if(this.context.state === 'suspended') {
+        } else if(this.context !== null && this.context.state === 'suspended') {
             this.context.resume().then(function() {
                 return 'Resuming context';
           });  
+        } else {
+            this.playTest(schedules)
         }
-        */
     }
 
     playTest(schedules) {
@@ -63,7 +45,6 @@ export class ScheduleModule {
         schedules.forEach((schedule)=>{
             this.sl.addNext(new Schedule(schedule[0],schedule[1],this.sounds.get(schedule[2])))
         })
-
         this.play()
     }
 
@@ -81,9 +62,9 @@ export class ScheduleModule {
 
     play() {
         if (!this.played) {
+            this.played = true
             this.context.audioWorklet.addModule('./processor.js').then(() => {
                 this.sl.execute(this.context)
-                this.played = true
             })
         } else {
             this.sl.execute(this.context)
