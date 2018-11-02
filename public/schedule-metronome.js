@@ -13,17 +13,40 @@ export class ScheduleModule {
         // this.initSounds()
     }
 
+    isFinished() {
+        return this.sl.getLastBeat()<this.context.currentTime
+    }
+
     suspendResume() {
         console.log('stateBefore', this.context.state)
+        console.log('currentTime', this.context.currentTime)
+
+        console.log('finished?', this.isFinished())
+        /*
+        switch (this.state) {
+            case 'value':
+                
+                break;
+            case value:
+            
+                break;
+            case value:
+            
+                break;
+            default:
+                break;
+        }
+        /*
         if(this.context.state === 'running') {
             this.context.suspend().then(function() {
-                return 'Resume context';
+                return 'Suspending context';
           });
         } else if(this.context.state === 'suspended') {
             this.context.resume().then(function() {
-                return 'Suspend context';
+                return 'Resuming context';
           });  
         }
+        */
     }
 
     playTest(schedules) {
@@ -101,7 +124,7 @@ export class Schedule {
         this.start = start
     }
 
-    getLatsBeat() {
+    getLastBeat() {
         return this.lastBeat
     }
 
@@ -171,6 +194,18 @@ export class ScheduleList {
         this.nextSchedule = null
     }
 
+    getLastSchedule() {
+        if (this.lastSchedule()) {
+            return  this.schedule
+        } else {
+            this.nextSchedule.getLastSchedule()
+        }
+    }
+
+    getLastBeat() {
+        return this.getLastSchedule().getLastBeat()
+    }
+
     addNext(schedule) {
         if(this.lastSchedule()){
           this.nextSchedule = new ScheduleList(schedule)
@@ -187,7 +222,7 @@ export class ScheduleList {
         this.schedule.execute(audioNode)
         console.log('beats to play', this.schedule.timeList.length, 'sound', this.schedule.sound)
         if(!this.lastSchedule()){
-            this.nextSchedule.schedule.reInitialize(this.schedule.getLatsBeat())
+            this.nextSchedule.schedule.reInitialize(this.schedule.getLastBeat())
             this.nextSchedule.execute(audioNode)
         }
     }
