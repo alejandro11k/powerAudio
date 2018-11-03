@@ -1,14 +1,17 @@
 <template>
     <div>
-        <br>
-      {{ timeLimitInMinutes }}
-      <br>
+      <!--br-->
+      
+      <!--br-->
       <md-button class="md-fab md-mini md-primary" @click="add10">
         <md-icon> + </md-icon>
       </md-button>
       <md-button class="md-fab md-mini md-plain" @click="sub10">
         <md-icon> - </md-icon>
       </md-button>    
+      <md-content>
+        {{ timeLimitInMinutes }}
+      </md-content>
     </div>
 </template>
 

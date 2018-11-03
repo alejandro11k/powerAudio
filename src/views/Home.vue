@@ -1,39 +1,52 @@
 <template>
   <div class="home">
 
-    <div v-bind:style="bgc" v-on:input="bgc.backgroundColor = $event.target.value">.</div>
+    <md-content class="metronomeSection">
+
+      <div v-bind:style="bgc" v-on:input="bgc.backgroundColor = $event.target.value">.</div>
+      
+      <div> {{ timerValue }} </div>
+
+      <md-button class="md-fab" @click="onOff">
+          <md-icon> > </md-icon>
+      </md-button>
+
+      <!--img alt="Vue logo" src="../assets/logo.png"-->
+      <!--HelloWorld msg="Welcome to Your Vue.js App"/-->
+      <knob-control 
+        v-model="bpm"
+        :size="220"
+        :min="40"
+        :max="300">
+      </knob-control>
+
+      <sound-selector @soundSelect="setSound($event)"></sound-selector>
+
+      <br>
+      <range-slider
+        class="slider"
+        min="0"
+        max="100"
+        step="1"
+        v-model="volume">
+      </range-slider>
+
+      <div>
+        Volume: {{ volume }}%
+      </div>
+
+    </md-content>
     
-    <div> {{ timerValue }} </div>
+    <md-content class="separator">
+    </md-content>
 
-    <md-button class="md-fab" @click="onOff">
-        <md-icon> > </md-icon>
-    </md-button>
-
-    <!--img alt="Vue logo" src="../assets/logo.png"-->
-    <!--HelloWorld msg="Welcome to Your Vue.js App"/-->
-    <knob-control 
-      v-model="bpm"
-      :size="220"
-      :min="40"
-      :max="300">
-    </knob-control>
-
-    <sound-selector @soundSelect="setSound($event)"></sound-selector>
-
-    <br>
-    <range-slider
-      class="slider"
-      min="0"
-      max="100"
-      step="1"
-      v-model="volume">
-    </range-slider>
-
-    <div>
-      Volume: {{ volume }}%
-    </div>
-
-    <div>
+    <md-content class="timerSection">
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      
       <time-selector @timeLimit="setTimeLimit($event)"></time-selector>
 
       <md-switch v-model="timeLimitEnable" class="md-primary"></md-switch>
@@ -42,14 +55,13 @@
       <div v-else>Off</div>
 
       </div>
-    </div>
+    </md-content>
 
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-// import HelloWorld from '@/components/HelloWorld.vue'
 import SoundSelector from '@/components/SoundSelector.vue'
 import TimeSelector from '@/components/TimeSelector.vue'
 import VueKnobControl from 'vue-knob-control'
@@ -60,7 +72,6 @@ import 'vue-range-slider/dist/vue-range-slider.css'
 export default {
   name: 'home',
   components: {
-    // HelloWorld
     'knob-control': VueKnobControl,
     'range-slider': RangeSlider,
     'sound-selector': SoundSelector,
@@ -171,6 +182,33 @@ export default {
   .slider {
   /* overwrite slider styles */
   width: 200px;
+  }
+
+  .home {
+    display: inline-flex
+  }
+
+  .md-content {
+    // width: 100px;
+    // height: 200px;
+    display: static;
+    // justify-content: center;
+    // align-items: center;
+    &.timerSection {
+      display: static;
+      width: 200px;
+      height: 400px;
+      align-items: bottom;
+      justify-content: center;
+    }
+    &.metronomeSection {
+      display: static;
+      width: 250px;
+      height: 250px;
+    }
+    &.separator {
+      // width: 100px
+    }
   }
 
 </style>

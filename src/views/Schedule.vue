@@ -1,30 +1,32 @@
 <template>
   <div class="schedule">
-    <md-button class="md-fab" @click="add">
-        <md-icon> + </md-icon>
-    </md-button>
-    <md-button class="md-fab" v-longpress="test" @click="play">
-        <md-icon> > </md-icon>
-    </md-button>
-    
-    <div>
-      <knob-control 
-        v-model="bpm"
-        :size="220"
-        :min="40"
-        :max="300">
-      </knob-control>
-      <sound-selector @soundSelect="setSound($event)"></sound-selector>
+
+    <md-content class="mainSection">
+      <md-button class="md-fab" @click="add">
+          <md-icon> + </md-icon>
+      </md-button>
+      <md-button class="md-fab" v-longpress="test" @click="play">
+          <md-icon> > </md-icon>
+      </md-button>
       <time-selector @timeLimit="setTimeLimit($event)"></time-selector>
-    </div>
-    
+      <div>
+        <knob-control 
+          v-model="bpm"
+          :size="220"
+          :min="40"
+          :max="300">
+        </knob-control>
+        <sound-selector @soundSelect="setSound($event)"></sound-selector>
+      </div>
+    </md-content>
+
     <br>
     <!--md-button @click="test">
       <md-icon> test </md-icon>
     </md-button>
     <br-->
 
-    <md-content>
+    <md-content class="listSection">
       <div class="root">
         <slick-list 
           lockAxis="y" 
@@ -184,10 +186,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  .schedule {
+    display: inline-flex
+  }
+
   .md-content {
-    width: 80px;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
+    &.mainSection {
+      width: 400px;
+    }
+    &.listSection {
+      width: 80px;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+    }
   }
 </style>
