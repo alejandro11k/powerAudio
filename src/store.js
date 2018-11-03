@@ -12,7 +12,7 @@ export default new Vuex.Store({
     bpm: 60,
     volume: 80,
     soundSelect: 'beeper',
-    timeLimit: 0,
+    timeLimit: 10,
     timeLimitEnable: false,
     timer: timer,
     scheduleProperties: {

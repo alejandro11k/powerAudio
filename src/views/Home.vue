@@ -72,7 +72,7 @@ export default {
       volume: this.$store.state.volume,
       timeLimitEnable: this.$store.state.timeLimitEnable,
       timerValue: this.$store.state.timer.getTimeValues().toString(),
-      click: false,
+      // click: false,
       bgc: { backgroundColor: '' }
     }
   },
@@ -154,6 +154,7 @@ export default {
       console.log(`keyup event. key property value is "${e.key}"`);
       // this.onOff()
     });
+    
   },
   beforeUpdate() {
     

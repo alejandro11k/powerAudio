@@ -29,7 +29,7 @@ export default {
       this.timeLimit = this.timeLimit + 10
     },
     sub10 () {
-      this.timeLimit = this.timeLimit>0? this.timeLimit - 10 : this.timeLimit
+      this.timeLimit = this.timeLimit>10? this.timeLimit - 10 : this.timeLimit
     },
   },
   computed: {

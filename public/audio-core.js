@@ -5,7 +5,7 @@ import { Sound, Beeper, Kicker } from "./sound.js"
 let bpm = 60
 let lastGainNodeValue = 80
 let beats = 0
-let timeLimit = 0
+let timeLimit = 10
 let timeLimitEnable = false
 let counter = 1
 
