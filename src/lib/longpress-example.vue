@@ -5,7 +5,6 @@
 </template>
 
 <script>
-// https://blog.logrocket.com/building-a-long-press-directive-in-vue-3408d60fb511
 
 export default {
     data() {
@@ -17,17 +16,20 @@ export default {
     methods: {
         // Increment value plus one
         incrementPlusOne() {
+            console.log('incremente 1...')
             this.value++
         },
 
         // increment value plus 10
         incrementPlusTen() {
+            console.log('incremente 10...')
             this.value += 10
         }
     },
 
     directives: {
         longpress: {
+            // https://blog.logrocket.com/building-a-long-press-directive-in-vue-3408d60fb511
             bind: function (el, binding, vNode) {
             // Make sure expression provided is a function
                 if (typeof binding.value !== 'function') {

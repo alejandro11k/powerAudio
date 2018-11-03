@@ -19,10 +19,10 @@
     </div>
     
     <br>
-    <md-button @click="test">
+    <!--md-button @click="test">
       <md-icon> test </md-icon>
     </md-button>
-    <br>
+    <br-->
 
     <md-content>
       <div class="root">
