@@ -9,8 +9,8 @@ export class ScheduleModule {
         this.sounds = new Map()
         this.sl = null
         this.played = false
-        // this.context = new AudioContext() // same old error!
-        // this.initSounds()
+        this.context = new AudioContext() // same old error!
+        //this.initSounds()
     }
 
     isFinished() {
@@ -32,10 +32,10 @@ export class ScheduleModule {
     }
 
     playTest(schedules) {
-        this.createContextAndGainNode()
+        // this.createContextAndGainNode()
         this.initSounds()
         const firstSchedule = schedules[0]
-        this.sl = new ScheduleList(
+        this.sl = new ScheduleNode(
             new Schedule(
                 firstSchedule[0],
                 firstSchedule[1],
@@ -53,7 +53,7 @@ export class ScheduleModule {
             this.createContextAndGainNode()
             this.initSounds()
             let s = new Schedule(bpm, time, this.sounds.get(sound))
-            this.sl = new ScheduleList(s)
+            this.sl = new ScheduleNode(s)
         } else {
             let s = new Schedule(bpm, time, this.sounds.get(sound))
             this.sl.addNext(s)
@@ -169,29 +169,25 @@ export class Schedule {
 }
 
 
-export class ScheduleList {
+export class ScheduleNode {
     constructor(schedule) {
         this.schedule = schedule
-        this.nextSchedule = null
+        this.nextScheduleNode = null
     }
 
     getLastSchedule() {
-        return this.lastSchedule() ? this.schedule : this.nextSchedule.getLastSchedule()
+        return this.lastScheduleNode() ? this.schedule : this.nextScheduleNode.schedule
     }
 
     getLastBeat() {
-        console.log('lastSchedule', this.getLastSchedule())
-        let a = this.getLastSchedule()
-        
-        console.log(a.getLastBeat())
         return this.getLastSchedule().getLastBeat()
     }
 
     addNext(schedule) {
-        if(this.lastSchedule()){
-          this.nextSchedule = new ScheduleList(schedule)
+        if(this.lastScheduleNode()){
+          this.nextScheduleNode = new ScheduleNode(schedule)
         } else {
-            this.nextSchedule.addNext(schedule)
+            this.nextScheduleNode.addNext(schedule)
         }
     }
 
@@ -202,13 +198,13 @@ export class ScheduleList {
     execute(audioNode) {
         this.schedule.execute(audioNode)
         console.log('beats to play', this.schedule.timeList.length, 'sound', this.schedule.sound)
-        if(!this.lastSchedule()){
-            this.nextSchedule.schedule.reInitialize(this.schedule.getLastBeat())
-            this.nextSchedule.execute(audioNode)
+        if(!this.lastScheduleNode()){
+            this.nextScheduleNode.schedule.reInitialize(this.schedule.getLastBeat())
+            this.nextScheduleNode.execute(audioNode)
         }
     }
 
-    lastSchedule() {
-        return this.nextSchedule===null
+    lastScheduleNode() {
+        return this.nextScheduleNode===null
     }
 }

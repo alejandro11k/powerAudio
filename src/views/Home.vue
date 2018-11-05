@@ -206,9 +206,11 @@ export default {
       width: 250px;
       height: 250px;
     }
+    /*
     &.separator {
-      // width: 100px
+      width: 100px
     }
+    */
   }
 
 </style>
