@@ -4,17 +4,13 @@ export class ScheduleModule {
     constructor() {
         this.context = null
         this.gainNode = null
-        this.beeper = null
-        this.kicker = null
         this.sounds = new Map()
-        this.sl = null
+        this.scheduleNode = null
         this.played = false
-        this.context = new AudioContext() // same old error!
-        //this.initSounds()
     }
 
     isFinished() {
-        return (this.sl.getLastBeat()<this.context.currentTime)
+        return (this.scheduleNode.getLastBeat()<this.context.currentTime)
     }
 
     suspendResume(schedules) {
@@ -27,15 +23,15 @@ export class ScheduleModule {
                 return 'Resuming context';
           });  
         } else if (schedules.length > 0) {
-            this.playTest(schedules)
+            this.playScheduleNodes(schedules)
         }
     }
 
-    playTest(schedules) {
-        // this.createContextAndGainNode()
+    playScheduleNodes(schedules) {
+        this.createContextAndGainNode()
         this.initSounds()
         const firstSchedule = schedules[0]
-        this.sl = new ScheduleNode(
+        this.scheduleNode = new ScheduleNode(
             new Schedule(
                 firstSchedule[0],
                 firstSchedule[1],
@@ -43,40 +39,28 @@ export class ScheduleModule {
             ))
         schedules.splice(0,1)
         schedules.forEach((schedule)=>{
-            this.sl.addNext(new Schedule(schedule[0],schedule[1],this.sounds.get(schedule[2])))
+            this.scheduleNode.addNext(new Schedule(schedule[0],schedule[1],this.sounds.get(schedule[2])))
         })
         this.play()
-    }
-
-    add(bpm, time, sound) {
-        if (this.sl===null) {
-            this.createContextAndGainNode()
-            this.initSounds()
-            let s = new Schedule(bpm, time, this.sounds.get(sound))
-            this.sl = new ScheduleNode(s)
-        } else {
-            let s = new Schedule(bpm, time, this.sounds.get(sound))
-            this.sl.addNext(s)
-        }
     }
 
     play() {
         if (!this.played) {
             this.played = true
             this.context.audioWorklet.addModule('./processor.js').then(() => {
-                this.sl.execute(this.context)
+                this.scheduleNode.execute(this.context)
             })
         } else {
-            this.sl.execute(this.context)
+            this.scheduleNode.execute(this.context)
         }
         
     }
 
     initSounds() {
-        this.beeper = new Beeper(new Sound(this.context))
-        this.kicker = new Kicker(new Sound(this.context))
-        this.sounds.set('beeper', this.beeper)
-        this.sounds.set('kicker', this.kicker)
+        const beeper = new Beeper(new Sound(this.context))
+        const kicker = new Kicker(new Sound(this.context))
+        this.sounds.set('beeper', beeper)
+        this.sounds.set('kicker', kicker)
     }
 
     createContextAndGainNode() {
@@ -110,16 +94,12 @@ export class Schedule {
     }
 
     execute(audioNode) {
-        this.timeList.forEach(element => {
-            this.playBeat(element,audioNode)
+        this.timeList.forEach(time => {
+            this.sound.executeAt(time,audioNode)
         });
     }
 
-    playBeat(time,audioNode) {
-        this.sound.executeAt(time,audioNode)
-    }
-
-    // To use with Schedules without Sounds
+    // To use with Schedules without Sound Library
     simplePlayBeat (time, audioContext) {
         var startTime = time //audioContext.currentTime + delay
         var endTime = time + 0.1
@@ -189,10 +169,6 @@ export class ScheduleNode {
         } else {
             this.nextScheduleNode.addNext(schedule)
         }
-    }
-
-    remove() {
-        //
     }
 
     execute(audioNode) {
