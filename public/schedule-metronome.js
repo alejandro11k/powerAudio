@@ -74,7 +74,8 @@ export class Schedule {
     constructor(bpm, seconds, sound) {
         this.bpm = bpm
         this.seconds = seconds
-        this.sound = sound
+        // sound is an optional parameter
+        this.sound = sound || null
         this.lastBeat = 0
         this.start = 0
         this.timeList = this.calculateTimeList(bpm, seconds, this.start)
@@ -94,12 +95,18 @@ export class Schedule {
     }
 
     execute(audioNode) {
+        const playSimple = (this.sound===null)
         this.timeList.forEach(time => {
-            this.sound.executeAt(time,audioNode)
+            if (playSimple) {
+                this.simplePlayBeat(time, audioNode)
+            } else {
+                this.sound.executeAt(time,audioNode)
+            }
         });
     }
 
     // To use with Schedules without Sound Library
+    // or when no sound setted
     simplePlayBeat (time, audioContext) {
         var startTime = time //audioContext.currentTime + delay
         var endTime = time + 0.1

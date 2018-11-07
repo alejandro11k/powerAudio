@@ -21,10 +21,10 @@
     </md-content>
 
     <br>
-    <!--md-button @click="test">
+    <md-button @click="test">
       <md-icon> test </md-icon>
     </md-button>
-    <br-->
+    <br>
 
     <md-content class="listSection">
       <div class="root">
@@ -81,7 +81,9 @@ export default {
     test() {
       // eslint-disable-next-line
       // ScheduleModule.test()
-      console.log('teeeeeessst!')
+      // console.log('teeeeeessst!')
+      // eslint-disable-next-line
+      console.log(ScheduleModule.test())
     },
     deleteChip(pos) {
       const tempList = this.$store.getters.getScheduleTempList
@@ -116,6 +118,11 @@ export default {
       const tempList = this.$store.getters.getScheduleTempList
       tempList.push(newSchedule)
       this.$store.commit('setScheduleTempList', tempList)
+
+      // real schedules
+      // eslint-disable-next-line
+      const test = new Schedule(newSchedule[0],newSchedule[1],newSchedule[2])
+      console.log(test)
     },
     play() {
       const original = this.$store.getters.getScheduleTempList // return observer?!?!?!?!)
