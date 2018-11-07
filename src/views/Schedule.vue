@@ -1,7 +1,10 @@
 <template>
   <div class="schedule">
-
     <md-content class="mainSection">
+
+      <md-progress-bar md-mode="determinate" :md-value="amount"></md-progress-bar>
+      <md-progress-bar class="md-accent" md-mode="determinate" :md-value="amount"></md-progress-bar>
+    
       <md-button class="md-fab" @click="add">
           <md-icon> + </md-icon>
       </md-button>
@@ -69,6 +72,7 @@ export default {
         soundSelected: this.$store.state.scheduleProperties.soundSelected,
         scheduleProperties: this.$store.state.scheduleProperties,
         scheduleTempList: this.$store.state.scheduleTempList,
+        amount: 50
     }
   },
   watch: {
@@ -83,7 +87,8 @@ export default {
       // ScheduleModule.test()
       // console.log('teeeeeessst!')
       // eslint-disable-next-line
-      console.log(ScheduleModule.test())
+      // console.log(ScheduleModule.test())
+      this.totalTimeList()
     },
     deleteChip(pos) {
       const tempList = this.$store.getters.getScheduleTempList
@@ -125,10 +130,20 @@ export default {
       console.log(test)
     },
     play() {
+      // eslint-disable-next-line
+      ScheduleModule.suspendResume(this.cloneList())
+    },
+    cloneList() {
       const original = this.$store.getters.getScheduleTempList // return observer?!?!?!?!)
       let cloned = JSON.parse(JSON.stringify(original)); // this will copy everything from original 
-      // eslint-disable-next-line
-      ScheduleModule.suspendResume(cloned)
+      return cloned;
+    },
+    totalTimeList() {
+      let totalSeconds = 0
+      this.cloneList().forEach(element => {
+        totalSeconds = totalSeconds + element[1]
+      });
+      console.log(totalSeconds)
     }
   },
   directives: {
@@ -193,6 +208,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+  .md-progress-bar {
+    margin: 10px;
+  }
+
   .schedule {
     display: inline-flex
   }
