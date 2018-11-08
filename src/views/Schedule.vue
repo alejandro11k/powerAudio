@@ -2,9 +2,12 @@
   <div class="schedule">
     <md-content class="mainSection">
 
-      <md-progress-bar md-mode="determinate" :md-value="amount"></md-progress-bar>
-      <md-progress-bar class="md-accent" md-mode="determinate" :md-value="amount"></md-progress-bar>
+      <md-progress-bar md-mode="determinate" :md-value="amountBwd"></md-progress-bar>
+      <md-progress-bar class="md-accent" md-mode="determinate" :md-value="amountFwd"></md-progress-bar>
     
+      <div> {{ timerValue }} </div>
+      <div> {{ anotherTimerValue }} </div>
+
       <md-button class="md-fab" @click="add">
           <md-icon> + </md-icon>
       </md-button>
@@ -29,9 +32,7 @@
     </md-button>
     <br-->
     
-    <div> {{ timerValue }} </div>
-    <br>
-
+    
     <md-content class="listSection">
 
       <div class="root">
@@ -76,8 +77,10 @@ export default {
         soundSelected: this.$store.state.scheduleProperties.soundSelected,
         scheduleProperties: this.$store.state.scheduleProperties,
         scheduleTempList: this.$store.state.scheduleTempList,
-        amount: 0,
+        amountFwd: 0,
+        amountBwd: 100,
         timerValue: this.$store.state.timer.getTimeValues().toString(),
+        anotherTimerValue: this.$store.state.anotherTimer.getTimeValues().toString(),
     }
   },
   watch: {
@@ -138,33 +141,44 @@ export default {
     play() {
       
       const timer = this.$store.state.timer
+      const anotherTimer = this.$store.state.anotherTimer
+
       if (!timer.isRunning()) {
         // if (this.timeLimitEnable) {
+          anotherTimer.start();
           timer.start({countdown: true, startValues: {seconds: this.totalTimeList()}});
           timer.addEventListener('targetAchieved', () => {
             this.timerValue = 'Well Done!'
+            anotherTimer.stop()
           });
-        /*
-        } else {
-          timer.start();
-        }
-        */
+        
         this.timerValue = timer.getTimeValues().toString()
         timer.addEventListener('secondsUpdated', (e) => {
           this.timerValue = e.detail.timer.getTimeValues().toString()
-          this.setAmount(e.detail.timer.getTimeValues().seconds)
+          this.setAmountBwd(e.detail.timer.getTimeValues().seconds)
         });
+
+        anotherTimer.addEventListener('secondsUpdated', (e) => {
+          this.anotherTimerValue = e.detail.timer.getTimeValues().toString()
+          this.setAmountFwd(e.detail.timer.getTimeValues().seconds)
+        });
+
       } else {
         timer.stop();
+        anotherTimer.stop();
       }
 
       // eslint-disable-next-line
       ScheduleModule.suspendResume(this.cloneList())
 
     },
-    setAmount(remaining) {
+    setAmountBwd(remaining) {
       const totalSec = this.totalTimeList()
-      this.amount = (remaining * 100) / totalSec
+      this.amountBwd = (remaining * 100) / totalSec
+    },
+    setAmountFwd(time) {
+      const totalSec = this.totalTimeList()
+      this.amountFwd = (time * 100) / totalSec
     },
     cloneList() {
       const original = this.$store.getters.getScheduleTempList // return observer?!?!?!?!)

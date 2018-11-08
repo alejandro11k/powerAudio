@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 // import { StateNodes } from '../public/audio-nodes';
 import Timer from 'easytimer.js/dist/easytimer.min.js'
 const timer = new Timer()
+const anotherTimer = new Timer()
 
 Vue.use(Vuex)
 
@@ -15,6 +16,7 @@ export default new Vuex.Store({
     timeLimit: 10,
     timeLimitEnable: false,
     timer: timer,
+    anotherTimer: anotherTimer,
     scheduleProperties: {
       bpm: 60,
       timeLimit: 10,
@@ -30,6 +32,7 @@ export default new Vuex.Store({
     setTimeLimit (state, value) { state.timeLimit = value },
     setTimeLimitEnable (state, value) { state.timeLimitEnable = value },
     setTimer (state, value) { state.timer = value },
+    setAnotherTimer (state, value) { state.anotherTimer = value },
     setScheduleProperties (state, value) { state.scheduleProperties = value },
     setScheduleBpm (state, value) { state.scheduleProperties.bpm = value },
     setScheduleTimeLimit (state, value) { state.scheduleProperties.timeLimit = value },
