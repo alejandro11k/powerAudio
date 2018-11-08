@@ -24,12 +24,16 @@
     </md-content>
 
     <br>
-    <md-button @click="test">
+    <!--md-button @click="test">
       <md-icon> test </md-icon>
     </md-button>
+    <br-->
+    
+    <div> {{ timerValue }} </div>
     <br>
 
     <md-content class="listSection">
+
       <div class="root">
         <slick-list 
           lockAxis="y" 
@@ -72,13 +76,15 @@ export default {
         soundSelected: this.$store.state.scheduleProperties.soundSelected,
         scheduleProperties: this.$store.state.scheduleProperties,
         scheduleTempList: this.$store.state.scheduleTempList,
-        amount: 50
+        amount: 0,
+        timerValue: this.$store.state.timer.getTimeValues().toString(),
     }
   },
   watch: {
     bpm: function (value) { this.updateBpm(value) },
     timeLimit: function (value) { this.updateTimeLimit(value) },
     soundSelected: function (value) { this.updateSoundSelected(value) },
+    // timerValue: function (value) { this,setAmount() },
     scheduleTempList: function (value) { this.$store.commit('setScheduleTempList', value) } // this fire twice when add and element?
   },
   methods: {
@@ -130,8 +136,35 @@ export default {
       console.log(test)
     },
     play() {
+      
+      const timer = this.$store.state.timer
+      if (!timer.isRunning()) {
+        // if (this.timeLimitEnable) {
+          timer.start({countdown: true, startValues: {seconds: this.totalTimeList()}});
+          timer.addEventListener('targetAchieved', () => {
+            this.timerValue = 'Well Done!'
+          });
+        /*
+        } else {
+          timer.start();
+        }
+        */
+        this.timerValue = timer.getTimeValues().toString()
+        timer.addEventListener('secondsUpdated', (e) => {
+          this.timerValue = e.detail.timer.getTimeValues().toString()
+          this.setAmount(e.detail.timer.getTimeValues().seconds)
+        });
+      } else {
+        timer.stop();
+      }
+
       // eslint-disable-next-line
       ScheduleModule.suspendResume(this.cloneList())
+
+    },
+    setAmount(remaining) {
+      const totalSec = this.totalTimeList()
+      this.amount = (remaining * 100) / totalSec
     },
     cloneList() {
       const original = this.$store.getters.getScheduleTempList // return observer?!?!?!?!)
@@ -143,7 +176,7 @@ export default {
       this.cloneList().forEach(element => {
         totalSeconds = totalSeconds + element[1]
       });
-      console.log(totalSeconds)
+      return totalSeconds
     }
   },
   directives: {
