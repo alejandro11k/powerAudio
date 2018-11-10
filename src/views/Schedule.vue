@@ -8,10 +8,10 @@
       <div> {{ timerValue }} </div>
       <div> {{ anotherTimerValue }} </div>
 
-      <md-button class="md-fab" @click="add">
+      <md-button class="md-fab" v-longpress="removeAll" @click="add">
           <md-icon> + </md-icon>
       </md-button>
-      <md-button class="md-fab" v-longpress="test" @click="play">
+      <md-button class="md-fab" @click="play">
           <md-icon> > </md-icon>
       </md-button>
       <time-selector @timeLimit="setTimeLimit($event)"></time-selector>
@@ -81,6 +81,7 @@ export default {
         amountBwd: 100,
         timerValue: this.$store.state.timer.getTimeValues().toString(),
         anotherTimerValue: this.$store.state.anotherTimer.getTimeValues().toString(),
+        timeStamp: Date.now()
     }
   },
   watch: {
@@ -98,6 +99,10 @@ export default {
       // eslint-disable-next-line
       // console.log(ScheduleModule.test())
       this.totalTimeList()
+    },
+    removeAll() {
+      this.timeStamp = Date.now()
+      this.scheduleTempList = []
     },
     deleteChip(pos) {
       const tempList = this.$store.getters.getScheduleTempList
@@ -123,20 +128,24 @@ export default {
         this.timeLimit = value
     },
     add() {
-      //new schedule
-      const bpm = this.$store.getters.getScheduleProperties.bpm
-      const timeLimit = this.$store.getters.getScheduleProperties.timeLimit
-      const soundSelected = this.$store.getters.getScheduleProperties.soundSelected
-      const newSchedule = [bpm, timeLimit, soundSelected]
-      //add schedule
-      const tempList = this.$store.getters.getScheduleTempList
-      tempList.push(newSchedule)
-      this.$store.commit('setScheduleTempList', tempList)
+      const actualTimeStamp = Date.now()
+      const diffTime = actualTimeStamp-this.timeStamp < 500
+      if (!diffTime) {
+        //new schedule
+        const bpm = this.$store.getters.getScheduleProperties.bpm
+        const timeLimit = this.$store.getters.getScheduleProperties.timeLimit
+        const soundSelected = this.$store.getters.getScheduleProperties.soundSelected
+        const newSchedule = [bpm, timeLimit, soundSelected]
+        //add schedule
+        const tempList = this.$store.getters.getScheduleTempList
+        tempList.push(newSchedule)
+        this.$store.commit('setScheduleTempList', tempList)
 
-      // real schedules
-      // eslint-disable-next-line
-      const test = new Schedule(newSchedule[0],newSchedule[1],newSchedule[2])
-      console.log(test)
+        // real schedules
+        // eslint-disable-next-line
+        const test = new Schedule(newSchedule[0],newSchedule[1],newSchedule[2])
+        console.log(test)
+      }
     },
     play() {
       
