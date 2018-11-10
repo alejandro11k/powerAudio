@@ -6,8 +6,8 @@ export class PortWorkletNode extends AudioWorkletNode {
         // this.counter = 1;
         this.port.onmessage = this.handleMessage.bind(this);
         this.port.postMessage({
-        message: 'Are you ready?',
-        timeStamp: this.context.currentTime
+            message: 'Are you ready?',
+            timeStamp: this.context.currentTime
         });
     }
 
@@ -37,3 +37,27 @@ export class PortWorkletNode extends AudioWorkletNode {
     }
     
 }
+
+export class ClockWorkletNode extends AudioWorkletNode {
+    constructor(context) {
+        super(context, 'processor');
+        // this.counter = 1;
+        this.port.onmessage = this.handleMessage.bind(this);
+        this.port.postMessage({
+            message: 'Are you ready?',
+            timeStamp: this.context.currentTime
+        });
+    }
+
+    handleMessage(event) {
+        // console.log('[Node:Received] "' + event.data.message + '" (' + event.data.timeStamp + ')');
+        this.clock.click()
+    }
+
+    setClock(clock) {
+        this.clock = clock
+    }
+
+}
+
+

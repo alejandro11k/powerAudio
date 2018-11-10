@@ -3,6 +3,7 @@
     <md-content class="mainSection">
 
       <md-progress-bar md-mode="determinate" :md-value="amountBwd"></md-progress-bar>
+      <div v-bind:style="bgc" v-on:input="bgc.backgroundColor = $event.target.value">.</div>
       <md-progress-bar class="md-accent" md-mode="determinate" :md-value="amountFwd"></md-progress-bar>
     
       <div> {{ timerValue }} </div>
@@ -81,7 +82,8 @@ export default {
         amountBwd: 100,
         timerValue: this.$store.state.timer.getTimeValues().toString(),
         anotherTimerValue: this.$store.state.anotherTimer.getTimeValues().toString(),
-        timeStamp: Date.now()
+        timeStamp: Date.now(),
+        bgc: { backgroundColor: '' }
     }
   },
   watch: {
@@ -149,13 +151,30 @@ export default {
     },
     play() {
       
+      if (this.totalTimeList()>0) {
+        this.timers()
+      }
+      
+      // eslint-disable-next-line
+      let currentTime = ScheduleModule.suspendResume(this.cloneList())
+      console.log(currentTime)
+      
+      window.addEventListener('Clock', () => { 
+        console.log('Clock')
+        this.bgc.backgroundColor = this.getRandomColor()
+      }, false);
+      
+    },
+    timers() {
       const timer = this.$store.state.timer
       const anotherTimer = this.$store.state.anotherTimer
 
-      if (!timer.isRunning()) {
+      if (!(timer.isRunning())) {
+        console.log('in')
         // if (this.timeLimitEnable) {
-          anotherTimer.start();
           timer.start({countdown: true, startValues: {seconds: this.totalTimeList()}});
+          anotherTimer.start();
+
           timer.addEventListener('targetAchieved', () => {
             this.timerValue = 'Well Done!'
             anotherTimer.stop()
@@ -173,13 +192,17 @@ export default {
         });
 
       } else {
-        timer.stop();
-        anotherTimer.stop();
+          timer.pause();
+          anotherTimer.pause();  
       }
-
-      // eslint-disable-next-line
-      ScheduleModule.suspendResume(this.cloneList())
-
+    },
+    getRandomColor() {
+      var letters = '0123456789ABCDEF';
+      var color = '#';
+      for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
     },
     setAmountBwd(remaining) {
       const totalSec = this.totalTimeList()

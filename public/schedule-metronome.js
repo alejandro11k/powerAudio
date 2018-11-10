@@ -1,4 +1,6 @@
 import { Sound, Beeper, Kicker } from "./sound.js"
+import { ClockWorkletNode } from './port-worklet-node.js'
+import { Clock } from './clock.js'
 
 export class ScheduleModule {
     constructor() {
@@ -7,6 +9,7 @@ export class ScheduleModule {
         this.sounds = new Map()
         this.scheduleNode = null
         this.played = false
+        this.clock = new Clock()
     }
 
     isFinished() {
@@ -16,15 +19,19 @@ export class ScheduleModule {
     suspendResume(schedules) {
         if(this.context !== null && this.context.state === 'running' && !this.isFinished()) {
             this.context.suspend().then(function() {
-                return 'Suspending context';
+            // return 'Suspending context';
           });
         } else if(this.context !== null && this.context.state === 'suspended') {
             this.context.resume().then(function() {
-                return 'Resuming context';
+            // return 'Resuming context';
           });  
         } else if (schedules.length > 0) {
             this.playScheduleNodes(schedules)
+        } else {
+            return 0;
         }
+
+        return this.context.currentTime
     }
 
     playScheduleNodes(schedules) {
@@ -48,12 +55,27 @@ export class ScheduleModule {
         if (!this.played) {
             this.played = true
             this.context.audioWorklet.addModule('./processor.js').then(() => {
+                const clockWorkletNode = new ClockWorkletNode(this.context)
+                this.contextGainNode(clockWorkletNode, 80)
+                clockWorkletNode.setClock(this.clock)
                 this.scheduleNode.execute(this.context)
             })
         } else {
             this.scheduleNode.execute(this.context)
         }
         
+    }
+
+    contextGainNode(portWorkletNode, lastGainNodeValue) {
+        portWorkletNode.connect(this.gainNode);
+        this.gainNode.connect(this.context.destination);
+        this.gainNode.gain.value = this.input2GainValue(lastGainNodeValue) //0.09
+    }
+
+    input2GainValue(value) {
+        const gainValue = (value * 1.2) / 100
+        console.log('input', value, 'gainValue', gainValue)
+        return gainValue
     }
 
     initSounds() {
