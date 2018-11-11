@@ -10,6 +10,7 @@ export class ScheduleModule {
         this.scheduleNode = null
         this.played = false
         this.clock = new Clock()
+        this.clockWorkletNode = null
     }
 
     isFinished() {
@@ -55,9 +56,10 @@ export class ScheduleModule {
         if (!this.played) {
             this.played = true
             this.context.audioWorklet.addModule('./processor.js').then(() => {
-                const clockWorkletNode = new ClockWorkletNode(this.context)
-                this.contextGainNode(clockWorkletNode, 80)
-                clockWorkletNode.setClock(this.clock)
+                this.clockWorkletNode = new ClockWorkletNode(this.context)
+                this.contextGainNode(this.clockWorkletNode, 80)
+                this.clockWorkletNode.setClock(this.clock)
+                this.clockWorkletNode.setModule(this)
                 this.scheduleNode.execute(this.context)
             })
         } else {
@@ -185,11 +187,12 @@ export class ScheduleNode {
     }
 
     getLastSchedule() {
-        return this.lastScheduleNode() ? this.schedule : this.nextScheduleNode.schedule
+        return this.lastScheduleNode() ? this.schedule : this.nextScheduleNode.getLastSchedule()
     }
 
     getLastBeat() {
-        return this.getLastSchedule().getLastBeat()
+        const lastSchedule = this.getLastSchedule()
+        return lastSchedule.lastBeat
     }
 
     addNext(schedule) {

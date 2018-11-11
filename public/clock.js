@@ -6,5 +6,8 @@ export class Clock {
     click() {
         dispatchEvent(this.event)
     }
-    
+
+    stop() {
+        this.event.stopPropagation();
+    }
 }

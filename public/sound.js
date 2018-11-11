@@ -40,7 +40,6 @@ export class SoundType {
         oscillator.start(currentTime)
         this.doExecute(oscillator, currentTime)
         oscillator.stop(currentTime + this.stopDelta())
-        dispatchEvent(this.event)
     }
 
 }

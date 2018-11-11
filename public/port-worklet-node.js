@@ -51,11 +51,20 @@ export class ClockWorkletNode extends AudioWorkletNode {
 
     handleMessage(event) {
         // console.log('[Node:Received] "' + event.data.message + '" (' + event.data.timeStamp + ')');
-        this.clock.click()
+        const notFinished = !this.module.isFinished()
+        if (notFinished && this.module.context.state === 'running') {
+            this.clock.click() 
+        } else {
+            this.clock.stop()
+        }
     }
 
     setClock(clock) {
         this.clock = clock
+    }
+
+    setModule(m) {
+        this.module = m
     }
 
 }

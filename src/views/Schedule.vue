@@ -2,12 +2,15 @@
   <div class="schedule">
     <md-content class="mainSection">
 
-      <md-progress-bar md-mode="determinate" :md-value="amountBwd"></md-progress-bar>
-      <div v-bind:style="bgc" v-on:input="bgc.backgroundColor = $event.target.value">.</div>
+      <!--md-progress-bar md-mode="determinate" :md-value="amountBwd"></md-progress-bar>
+      <div v-bind:style="bgc" v-on:input="bgc.backgroundColor = $event.target.value">.</div-->
       <md-progress-bar class="md-accent" md-mode="determinate" :md-value="amountFwd"></md-progress-bar>
+      <md-progress-bar md-mode="determinate" :md-value="amountFwd"></md-progress-bar>
     
-      <div> {{ timerValue }} </div>
+      <!--div> {{ timerValue }} </div>
       <div> {{ anotherTimerValue }} </div>
+      <div> {{ countdown }} </div-->
+      <div> {{ countup }} </div>
 
       <md-button class="md-fab" v-longpress="removeAll" @click="add">
           <md-icon> + </md-icon>
@@ -83,12 +86,19 @@ export default {
         timerValue: this.$store.state.timer.getTimeValues().toString(),
         anotherTimerValue: this.$store.state.anotherTimer.getTimeValues().toString(),
         timeStamp: Date.now(),
-        bgc: { backgroundColor: '' }
+        bgc: { backgroundColor: '' },
+        clock: 0,
+        countup: 0
     }
   },
   watch: {
     bpm: function (value) { this.updateBpm(value) },
     timeLimit: function (value) { this.updateTimeLimit(value) },
+    clock: function (value) { 
+      if (this.countdown > 0) { this.countdown-- }
+      if (this.countup <= this.totalTimeList()) { this.countup++ }
+      this.setAmountFwd(this.countup)
+    },
     soundSelected: function (value) { this.updateSoundSelected(value) },
     // timerValue: function (value) { this,setAmount() },
     scheduleTempList: function (value) { this.$store.commit('setScheduleTempList', value) } // this fire twice when add and element?
@@ -145,25 +155,31 @@ export default {
 
         // real schedules
         // eslint-disable-next-line
-        const test = new Schedule(newSchedule[0],newSchedule[1],newSchedule[2])
-        console.log(test)
+        // const test = new Schedule(newSchedule[0],newSchedule[1],newSchedule[2])
+        
       }
     },
     play() {
+
+      window.addEventListener('Clock', () => { 
+        console.log('Clock')
+        // this.bgc.backgroundColor = this.getRandomColor()
+        this.clock++
+      }, false);
       
       if (this.totalTimeList()>0) {
-        this.timers()
+        // this.timers()
+        this.realClock()
       }
       
       // eslint-disable-next-line
       let currentTime = ScheduleModule.suspendResume(this.cloneList())
-      console.log(currentTime)
+      console.log('currentTime', typeof currentTime ,Math.trunc(currentTime))
+      this.countup = Math.trunc(currentTime)
       
-      window.addEventListener('Clock', () => { 
-        console.log('Clock')
-        this.bgc.backgroundColor = this.getRandomColor()
-      }, false);
-      
+    },
+    realClock() {
+      this.countdown = this.totalTimeList()
     },
     timers() {
       const timer = this.$store.state.timer
@@ -289,7 +305,7 @@ export default {
 <style lang="scss" scoped>
 
   .md-progress-bar {
-    margin: 10px;
+    margin: 1px;
   }
 
   .schedule {
