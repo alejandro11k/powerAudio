@@ -94,7 +94,7 @@ export default {
   watch: {
     bpm: function (value) { this.updateBpm(value) },
     timeLimit: function (value) { this.updateTimeLimit(value) },
-    clock: function (value) { 
+    clock: function () { 
       if (this.countdown > 0) { this.countdown-- }
       if (this.countup <= this.totalTimeList()) { this.countup++ }
       this.setAmountFwd(this.countup)
