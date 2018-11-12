@@ -3,7 +3,7 @@ import { getCounter, stepCounter, getBeats, getTimeLimitEnable} from './audio-co
 export class PortWorkletNode extends AudioWorkletNode {
     constructor(context) {
         super(context, 'processor');
-        // this.counter = 1;
+        this.counter = 1;
         this.port.onmessage = this.handleMessage.bind(this);
         this.port.postMessage({
             message: 'Are you ready?',
@@ -15,7 +15,10 @@ export class PortWorkletNode extends AudioWorkletNode {
         // this.counter++;
         console.log('[Node:Received] "' + event.data.message + '" (' + event.data.timeStamp + ')');
 
-        this.click.execute(this)
+        // this.click.execute(this)
+        this.stresser.doYourJob(this.counter, this.click, this)
+
+        this.counter++
         // Notify the processor when the node gets 10 messages. Then reset the
         // counter.
 
@@ -34,6 +37,10 @@ export class PortWorkletNode extends AudioWorkletNode {
 
     setSound(sound) {
         this.click = sound 
+    }
+
+    setStresser(stresser) {
+        this.stresser = stresser
     }
     
 }

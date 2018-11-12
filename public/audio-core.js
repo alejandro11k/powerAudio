@@ -1,6 +1,6 @@
 import { PortWorkletNode } from './port-worklet-node.js'
 import { Sound, Beeper, Kicker } from "./sound.js"
-
+import { Stresser } from "./stresser.js"
 
 let bpm = 60
 let lastGainNodeValue = 80
@@ -38,6 +38,8 @@ export function init() {
 
         setBeats()
         beats++ // Fix
+
+        portWorkletNode.setStresser(new Stresser())
     });
 }
 
