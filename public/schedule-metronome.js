@@ -35,6 +35,13 @@ export class ScheduleModule {
         return this.context.currentTime
     }
 
+    stop() {
+        this.played = false
+        this.context.suspend().then( () => {
+            this.context = null
+        })
+    }
+
     playScheduleNodes(schedules) {
         this.createContextAndGainNode()
         this.initSounds()

@@ -10,7 +10,7 @@
       <md-button class="md-fab" v-longpress="removeAll" @click="add">
           <md-icon> + </md-icon>
       </md-button>
-      <md-button class="md-fab" @click="play">
+      <md-button class="md-fab" @click="play" v-longpress="stop">
           <md-icon> > </md-icon>
       </md-button>
       <time-selector @timeLimit="setTimeLimit($event)"></time-selector>
@@ -116,6 +116,13 @@ export default {
       this.timeStamp = Date.now()
       this.scheduleTempList = []
     },
+    stop() {
+      this.timeStamp = Date.now()
+      // eslint-disable-next-line
+      ScheduleModule.stop()
+      this.countup = 0
+      this.amountFwd = 0
+    },
     deleteChip(pos) {
       const tempList = this.$store.getters.getScheduleTempList
       tempList.splice(pos,1)
@@ -152,25 +159,27 @@ export default {
         const tempList = this.$store.getters.getScheduleTempList
         tempList.push(newSchedule)
         this.$store.commit('setScheduleTempList', tempList)
-
-        // real schedules
-        // eslint-disable-next-line
-        // const test = new Schedule(newSchedule[0],newSchedule[1],newSchedule[2])
         
+        // eslint-disable-next-line
+        // const test = new Schedule(newSchedule[0],newSchedule[1],newSchedule[2]) // real schedules
       }
     },
     play() {
-
-      window.addEventListener('Clock', () => { 
-        console.log('Clock')
-        // this.bgc.backgroundColor = this.getRandomColor()
-        this.clock++
-      }, false);
-      
-      // eslint-disable-next-line
-      let currentTime = ScheduleModule.suspendResume(this.cloneList())
-      this.countup = Math.round(currentTime)
-      
+      const actualTimeStamp = Date.now()
+      console.log(actualTimeStamp-this.timeStamp)
+      const diffTime = actualTimeStamp-this.timeStamp < 500
+      if (!diffTime) {
+        
+        window.addEventListener('Clock', () => { 
+          console.log('Clock')
+          // this.bgc.backgroundColor = this.getRandomColor()
+          this.clock++
+        }, false);
+        
+        // eslint-disable-next-line
+        let currentTime = ScheduleModule.suspendResume(this.cloneList())
+        this.countup = Math.round(currentTime)
+      }  
     },
     getRandomColor() {
       var letters = '0123456789ABCDEF';
