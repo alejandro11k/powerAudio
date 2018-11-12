@@ -24,17 +24,21 @@ export class Stresser {
         })
     }
 
+    addStress(stress) {
+        this.stressers.push(stress)
+    }
+
 }
 
-class Stress {
+export class Stress {
     constructor() {
         this.stressSound = null // sound type
-        this.stressBeat = null // int
+        this.stressInterval = null // int
     }
 
     isRightNow(actualBeat) {
         let retValue = false
-        if (actualBeat === this.stressBeat) {
+        if (actualBeat === 1 || (actualBeat-1)  % this.stressInterval === 0) {
             retValue = true
         }
         return retValue

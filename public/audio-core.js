@@ -1,6 +1,6 @@
 import { PortWorkletNode } from './port-worklet-node.js'
 import { Sound, Beeper, Kicker } from "./sound.js"
-import { Stresser } from "./stresser.js"
+import { Stresser, Stress } from "./stresser.js"
 
 let bpm = 60
 let lastGainNodeValue = 80
@@ -39,15 +39,24 @@ export function init() {
         setBeats()
         beats++ // Fix
 
-        portWorkletNode.setStresser(new Stresser())
+        const stresser = new Stresser()
+        const stressTest = new Stress()
+        stressTest.stressSound = sounds.get('highKicker')
+        stressTest.stressInterval = 4
+        stresser.addStress(stressTest)
+        portWorkletNode.setStresser(stresser)
+
     });
 }
 
 export function initSounds() {
     const beeper = new Beeper(new Sound(context))
     const kicker = new Kicker(new Sound(context))
+    const highKicker = new Kicker(new Sound(context))
+    highKicker.setOscillatorFrequency(360)
     sounds.set('beeper',beeper)
     sounds.set('kicker',kicker)
+    sounds.set('highKicker',highKicker)
 }
 
 function contextGainNode(portWorkletNode, lastGainNodeValue) {
