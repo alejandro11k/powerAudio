@@ -89,8 +89,10 @@ export default {
         let segundos = actualLimit - (minutos * 60)
         if (segundos==0) {
           segundos = ''
+        } else if (segundos >= 1 && segundos <= 9) {
+            segundos = ':0' + segundos
         } else {
-          segundos = ':' + segundos
+            segundos = ':' + segundos
         }
         value = minutos + segundos + ' minute'
       }
