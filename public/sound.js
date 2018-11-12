@@ -23,6 +23,11 @@ export class SoundType {
     constructor(sound) {
         this.sound = sound
         this.event = new Event('SoundExecute');
+        this.oscillatorFrequency = null
+    }
+
+    setOscillatorFrequency(frequency) {
+        this.oscillatorFrequency = frequency
     }
 
     execute(audioNode) {
@@ -56,9 +61,14 @@ export class Beeper extends SoundType {
 }
 
 export class Kicker extends SoundType {
+
+    constructor(sound) {
+        super(sound)
+        this.setOscillatorFrequency(180)
+    }
     
     doExecute(oscillator, currentTime) {
-        oscillator.frequency.setValueAtTime(180, currentTime)
+        oscillator.frequency.setValueAtTime(this.oscillatorFrequency, currentTime)
         this.sound.gainNode.gain.setValueAtTime(0.9, currentTime)
         oscillator.frequency.exponentialRampToValueAtTime(0.01, currentTime + 0.1)
         this.sound.gainNode.gain.exponentialRampToValueAtTime(0.01, currentTime + 0.1)
