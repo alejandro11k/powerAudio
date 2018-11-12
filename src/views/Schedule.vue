@@ -1,16 +1,11 @@
 <template>
   <div class="schedule">
     <md-content class="mainSection">
-
-      <!--md-progress-bar md-mode="determinate" :md-value="amountBwd"></md-progress-bar>
-      <div v-bind:style="bgc" v-on:input="bgc.backgroundColor = $event.target.value">.</div-->
+    
       <md-progress-bar class="md-accent" md-mode="determinate" :md-value="amountFwd"></md-progress-bar>
       <md-progress-bar md-mode="determinate" :md-value="amountFwd"></md-progress-bar>
     
-      <!--div> {{ timerValue }} </div>
-      <div> {{ anotherTimerValue }} </div>
-      <div> {{ countdown }} </div-->
-      <div> {{ countup }} </div>
+      <div> {{ countUpInMinutes }} </div>
 
       <md-button class="md-fab" v-longpress="removeAll" @click="add">
           <md-icon> + </md-icon>
@@ -31,11 +26,6 @@
     </md-content>
 
     <br>
-    <!--md-button @click="test">
-      <md-icon> test </md-icon>
-    </md-button>
-    <br-->
-    
     
     <md-content class="listSection">
 
@@ -81,37 +71,45 @@ export default {
         soundSelected: this.$store.state.scheduleProperties.soundSelected,
         scheduleProperties: this.$store.state.scheduleProperties,
         scheduleTempList: this.$store.state.scheduleTempList,
-        amountFwd: 0,
-        amountBwd: 100,
-        timerValue: this.$store.state.timer.getTimeValues().toString(),
-        anotherTimerValue: this.$store.state.anotherTimer.getTimeValues().toString(),
         timeStamp: Date.now(),
-        bgc: { backgroundColor: '' },
+        amountFwd: 0,
         clock: 0,
-        countup: 0
+        countup: 0,
+        // bgc: { backgroundColor: '' },
+    }
+  },
+  computed: {
+    countUpInMinutes () {
+      let actualLimit = this.countup
+      let value = 0
+      if (actualLimit < 60) {
+        value = actualLimit + ' seg.'
+      } else {
+        let minutos = Math.floor(actualLimit / 60)
+        let segundos = actualLimit - (minutos * 60)
+        if (segundos==0) {
+          segundos = ''
+        } else {
+          segundos = ':' + segundos
+        }
+        value = minutos + segundos + ' minute'
+      }
+      return value
     }
   },
   watch: {
     bpm: function (value) { this.updateBpm(value) },
     timeLimit: function (value) { this.updateTimeLimit(value) },
     clock: function () { 
-      if (this.countdown > 0) { this.countdown-- }
-      if (this.countup <= this.totalTimeList()) { this.countup++ }
+      if (this.countup < this.totalTimeList()) { 
+        this.countup++ 
+      }
       this.setAmountFwd(this.countup)
     },
     soundSelected: function (value) { this.updateSoundSelected(value) },
-    // timerValue: function (value) { this,setAmount() },
     scheduleTempList: function (value) { this.$store.commit('setScheduleTempList', value) } // this fire twice when add and element?
   },
   methods: {
-    test() {
-      // eslint-disable-next-line
-      // ScheduleModule.test()
-      // console.log('teeeeeessst!')
-      // eslint-disable-next-line
-      // console.log(ScheduleModule.test())
-      this.totalTimeList()
-    },
     removeAll() {
       this.timeStamp = Date.now()
       this.scheduleTempList = []
@@ -167,50 +165,10 @@ export default {
         this.clock++
       }, false);
       
-      if (this.totalTimeList()>0) {
-        // this.timers()
-        this.realClock()
-      }
-      
       // eslint-disable-next-line
       let currentTime = ScheduleModule.suspendResume(this.cloneList())
-      console.log('currentTime', typeof currentTime ,Math.trunc(currentTime))
-      this.countup = Math.trunc(currentTime)
+      this.countup = Math.round(currentTime)
       
-    },
-    realClock() {
-      this.countdown = this.totalTimeList()
-    },
-    timers() {
-      const timer = this.$store.state.timer
-      const anotherTimer = this.$store.state.anotherTimer
-
-      if (!(timer.isRunning())) {
-        console.log('in')
-        // if (this.timeLimitEnable) {
-          timer.start({countdown: true, startValues: {seconds: this.totalTimeList()}});
-          anotherTimer.start();
-
-          timer.addEventListener('targetAchieved', () => {
-            this.timerValue = 'Well Done!'
-            anotherTimer.stop()
-          });
-        
-        this.timerValue = timer.getTimeValues().toString()
-        timer.addEventListener('secondsUpdated', (e) => {
-          this.timerValue = e.detail.timer.getTimeValues().toString()
-          this.setAmountBwd(e.detail.timer.getTimeValues().seconds)
-        });
-
-        anotherTimer.addEventListener('secondsUpdated', (e) => {
-          this.anotherTimerValue = e.detail.timer.getTimeValues().toString()
-          this.setAmountFwd(e.detail.timer.getTimeValues().seconds)
-        });
-
-      } else {
-          timer.pause();
-          anotherTimer.pause();  
-      }
     },
     getRandomColor() {
       var letters = '0123456789ABCDEF';
@@ -219,10 +177,6 @@ export default {
         color += letters[Math.floor(Math.random() * 16)];
       }
       return color;
-    },
-    setAmountBwd(remaining) {
-      const totalSec = this.totalTimeList()
-      this.amountBwd = (remaining * 100) / totalSec
     },
     setAmountFwd(time) {
       const totalSec = this.totalTimeList()

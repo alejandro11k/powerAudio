@@ -14,7 +14,7 @@ export class ScheduleModule {
     }
 
     isFinished() {
-        return (this.scheduleNode.getLastBeat()<this.context.currentTime)
+        return (this.scheduleNode.getLastBeat() + 0.2 < this.context.currentTime)
     }
 
     suspendResume(schedules) {
