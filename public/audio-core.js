@@ -74,13 +74,12 @@ function input2GainValue(value) {
 export function suspendResume() {
     if(context.state === 'running') {
         context.suspend().then(function() {
+            this.portWorkletNode.resetCounter();
             return 'Resume context';
       });
     } else if(context.state === 'suspended') {
-        
         setBeats()
         resetCounter()
-
         context.resume().then(function() {
             return 'Suspend context';
       });  

@@ -42,6 +42,10 @@ export class PortWorkletNode extends AudioWorkletNode {
     setStresser(stresser) {
         this.stresser = stresser
     }
+
+    resetCounter() {
+        this.counter = 1
+    }
     
 }
 
