@@ -1,7 +1,7 @@
 export class Stresser {
     constructor() {
         this.stressers = [] // list of stress class
-        this.onlyStress = false
+        this.stressOnly = false
         this.isOn = false
     }
 
@@ -11,7 +11,7 @@ export class Stresser {
     }
 
     nextSound(actualBeat, selectedClick) {
-        const soundsToExecute = [selectedClick]
+        const soundsToExecute = this.stressOnly? [] : [selectedClick]
         this.stressers.forEach((stress) => {
             stress.isRightNow(actualBeat) ? soundsToExecute.push(stress.stressSound) : null
         })

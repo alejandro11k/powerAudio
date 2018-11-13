@@ -11,6 +11,7 @@
     "easytimer.js": "^2.3.0",
     "express": "^4.16.4",
     "vue": "^2.5.17",
+    "vue-circle-slider": "^1.0.2",
     "vue-knob-control": "^1.2.1",
     "vue-material": "^1.0.0-beta-10.2",
     "vue-range-slider": "^0.6.0",

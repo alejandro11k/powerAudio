@@ -13,6 +13,10 @@ let gainNode = null
 let context = null
 let portWorkletNode = null
 
+let stresser = null
+let stressOne = null
+let stressTwo = null
+
 export function createContextAndGainNode() {
     context = new AudioContext()
     gainNode = context.createGain()
@@ -39,24 +43,46 @@ export function init() {
         setBeats()
         beats++ // Fix
 
-        const stresser = new Stresser()
-        const stressTest = new Stress()
-        stressTest.stressSound = sounds.get('highKicker')
-        stressTest.stressInterval = 4
-        stresser.addStress(stressTest)
-        portWorkletNode.setStresser(stresser)
+        stresser = new Stresser()
+        stressOne = new Stress()
+        stressOne.stressSound = sounds.get('highKicker')
+        stressOne.stressInterval = 4
+        stresser.addStress(stressOne)
 
+        stressTwo = new Stress()
+        stressTwo.stressSound = sounds.get('ultraHighKicker')
+        stressTwo.stressInterval = 4
+        stresser.addStress(stressTwo)
+        portWorkletNode.setStresser(stresser)
     });
+}
+
+export function stressOnly(bool) {
+    console.log(portWorkletNode)
+    portWorkletNode.stresser.stressOnly = bool
+}
+
+export function stressOneInterval(number) {
+    stressOne.stressInterval = number
+}
+
+export function stressTwoInterval(number) {
+    stressTwo.stressInterval = number
 }
 
 export function initSounds() {
     const beeper = new Beeper(new Sound(context))
     const kicker = new Kicker(new Sound(context))
-    const highKicker = new Kicker(new Sound(context))
-    highKicker.setOscillatorFrequency(360)
+    
     sounds.set('beeper',beeper)
     sounds.set('kicker',kicker)
+    
+    const highKicker = new Kicker(new Sound(context))
+    highKicker.setOscillatorFrequency(360)
     sounds.set('highKicker',highKicker)
+    const ultraHighKicker = new Kicker(new Sound(context))
+    ultraHighKicker.setOscillatorFrequency(540)
+    sounds.set('ultraHighKicker',ultraHighKicker)
 }
 
 function contextGainNode(portWorkletNode, lastGainNodeValue) {
@@ -73,8 +99,8 @@ function input2GainValue(value) {
 
 export function suspendResume() {
     if(context.state === 'running') {
+        portWorkletNode.resetCounter();
         context.suspend().then(function() {
-            this.portWorkletNode.resetCounter();
             return 'Resume context';
       });
     } else if(context.state === 'suspended') {

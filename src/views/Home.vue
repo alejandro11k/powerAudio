@@ -55,6 +55,42 @@
       <div v-else>Off</div>
 
       </div>
+
+      <md-content class="stresser">
+
+        <br>
+        <br>
+
+        <md-button class="md-icon-button md-dense md-raised md-primary" @click="addStressOne">
+          <md-icon> + </md-icon>
+        </md-button>
+
+        <md-button class="md-icon-button md-dense md-raised" @click="subStressOne">
+          <md-icon> - </md-icon>
+        </md-button>
+
+        {{ stressOne }}
+
+        <md-button class="md-icon-button md-dense md-raised md-primary" @click="addStressTwo">
+          <md-icon> + </md-icon>
+        </md-button>
+
+        <md-button class="md-icon-button md-dense md-raised" @click="subStressTwo">
+          <md-icon> - </md-icon>
+        </md-button>
+
+        {{ stressTwo }}
+
+        <br>
+
+        <md-switch v-model="stressOnly" class="md-primary"></md-switch>
+        <div> Stress Only:
+          <div v-if="stressOnly">On</div>
+          <div v-else>Off</div>
+        </div>
+
+      </md-content>
+    
     </md-content>
 
   </div>
@@ -68,6 +104,7 @@ import VueKnobControl from 'vue-knob-control'
 import RangeSlider from 'vue-range-slider'
 // you probably need to import built-in style
 import 'vue-range-slider/dist/vue-range-slider.css'
+// import VueCircleSlider from 'vue-circle-slider'
 
 export default {
   name: 'home',
@@ -75,7 +112,8 @@ export default {
     'knob-control': VueKnobControl,
     'range-slider': RangeSlider,
     'sound-selector': SoundSelector,
-    'time-selector': TimeSelector
+    'time-selector': TimeSelector,
+    // 'circle-slider': VueCircleSlider
   },
   data() {
     return {
@@ -84,15 +122,42 @@ export default {
       timeLimitEnable: this.$store.state.timeLimitEnable,
       timerValue: this.$store.state.timer.getTimeValues().toString(),
       // click: false,
-      bgc: { backgroundColor: '' }
+      bgc: { backgroundColor: '' },
+      stressOnly: false,
+      stressOne: 0,
+      stressTwo: 0
     }
   },
   watch: {
     bpm: function (value) { this.setBpm(value) },
     volume: function (value) { this.setGain(value) },
     timeLimitEnable: function (value) { this.setTimeLimitEnable(value) },
+    stressOnly: function (value) {
+      // eslint-disable-next-line
+      stressOnly(value)
+    },
+    stressOne: function (value) {
+      // eslint-disable-next-line
+      stressOneInterval(value)
+    },
+    stressTwo: function (value) {
+      // eslint-disable-next-line
+      stressTwoInterval(value)
+    }
   },
   methods: {
+    addStressOne() {
+      this.stressOne++
+    },
+    subStressOne() {
+      this.stressOne--
+    },
+    addStressTwo() {
+      this.stressTwo++
+    },
+    subStressTwo() {
+      this.stressTwo--
+    },
     setBpm (value) {
       this.$store.commit('setBpm', value)
       // eslint-disable-next-line
@@ -200,6 +265,9 @@ export default {
       height: 400px;
       align-items: bottom;
       justify-content: center;
+      &.stresser {
+        display: static
+      }
     }
     &.metronomeSection {
       display: static;
