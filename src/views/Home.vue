@@ -71,6 +71,8 @@
 
         {{ stressOne }}
 
+        <br>
+
         <md-button class="md-icon-button md-dense md-raised md-primary" @click="addStressTwo">
           <md-icon> + </md-icon>
         </md-button>
