@@ -135,8 +135,11 @@ export default {
     volume: function (value) { this.setGain(value) },
     timeLimitEnable: function (value) { this.setTimeLimitEnable(value) },
     stressOnly: function (value) {
+      this.$store.commit('setStressOnly', value)
+      console.log(this.$store.state.stressOnly)
       // eslint-disable-next-line
-      stressOnly(value)
+      StateNodes.setStressOnly(this.$store.state.stressOnly)
+      // stressOnly(value)
     },
     stressOne: function (value) {
       // eslint-disable-next-line

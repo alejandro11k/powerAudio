@@ -27,36 +27,22 @@ export class StateNodes {
     }
 
     getSounds() {
-        this.state.getSounds()
-    }
-}
-
-class NullNodes {
-    constructor() {
-
+        this.state.getSounds() // ??
     }
 
-    onOff(context) {
-       // SetNewState
-       // context.setState(new ContextAndGainNodes())
+    setStressOne() {
+        this.state.setStressOne = 0
     }
 
-    setBpm(value) {
-        // guardar el valor para darselo al proximo estado
+    setStressTwo() {
+        this.state.setStressTwo = 0
     }
 
-    setSound(value) {
-        // guardar el valor para darselo al proximo estado
+    setStressOnly() {
+        console.log('statesNodes, setStressOnly')
+        this.state.setStressOnly = false
     }
 
-    setGain(value) {
-        // guardar el valor para darselo al proximo estado
-    }
-
-    getSounds() {
-        // ??
-    }
-    
 }
 
 class ContextAndGainNodes {
@@ -93,6 +79,19 @@ class ContextAndGainNodes {
 
     seconds2Beats(value) {
         return value / 60
+    }
+
+    setStressOne(value) {
+        this.state.setStressOne = value
+    }
+
+    setStressTwo(value) {
+        this.state.setStressTwo = value
+    }
+
+    setStressOnly(value) {
+        console.log('ContextAndGainNodes, setStressOnly')
+        this.state.stressOnly = value
     }
 
 }
@@ -132,4 +131,46 @@ class AllNodes {
         return value / 60
     }
 
+    setStressOne(value) {
+        this.state.setStressOne = value
+    }
+
+    setStressTwo(value) {
+        this.state.setStressTwo = value
+    }
+
+    setStressOnly(value) {
+        console.log('AllNodes, setStressOnly')
+        this.state.setStressOnly = value
+    }
+
 }
+/*
+class NullNodes {
+    constructor() {
+
+    }
+
+    onOff(context) {
+       // SetNewState
+       // context.setState(new ContextAndGainNodes())
+    }
+
+    setBpm(value) {
+        // guardar el valor para darselo al proximo estado
+    }
+
+    setSound(value) {
+        // guardar el valor para darselo al proximo estado
+    }
+
+    setGain(value) {
+        // guardar el valor para darselo al proximo estado
+    }
+
+    getSounds() {
+        // ??
+    }
+    
+}
+*/

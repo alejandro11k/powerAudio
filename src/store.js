@@ -20,8 +20,14 @@ export default new Vuex.Store({
       soundSelected: 'beeper'
     },
     scheduleTempList: [],
+    stressOne: 0,
+    stressTwo: 0,
+    stressOnly: false
   },
   mutations: {
+    setStressOne (state, value) { state.stressOne = value },
+    setStressTwo (state, value) { state.stressTwo = value },
+    setStressOnly (state, value) { state.stressOnly = value },
     setBpm (state, value) { state.bpm = value },
     setVolume (state, value) { state.volume = value },
     setSoundSelect (state, value) { state.soundSelect = value },
