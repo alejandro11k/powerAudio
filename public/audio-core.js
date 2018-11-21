@@ -28,7 +28,6 @@ let selectedSound = null
 
 export function storeSelectedSound(value) {
     selectedSound = value
-    console.log(selectedSound)
 }
 
 export function init() {
@@ -62,9 +61,10 @@ export function init() {
 }
 
 export function setStressOnly(bool) {
-    console.log('portWorkletNode')
     stressOnly = bool
-    portWorkletNode.stresser.stressOnly = bool
+    if (portWorkletNode!==null) {
+        portWorkletNode.stresser.setStressOnly(bool)
+    }
 }
 
 export function setStressOneInterval(number) {
@@ -98,7 +98,6 @@ function contextGainNode(portWorkletNode, lastGainNodeValue) {
 
 function input2GainValue(value) {
     const gainValue = (value * 1.2) / 100
-    console.log('input', value, 'gainValue', gainValue)
     return gainValue
 }
 

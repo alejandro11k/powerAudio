@@ -28,6 +28,10 @@ export class Stresser {
         this.stressers.push(stress)
     }
 
+    setStressOnly(value) {
+        this.stressOnly = value
+    }
+
 }
 
 export class Stress {

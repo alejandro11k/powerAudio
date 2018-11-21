@@ -31,16 +31,15 @@ export class StateNodes {
     }
 
     setStressOne() {
-        this.state.setStressOne = 0
+        this.state.setStressOne(0)
     }
 
     setStressTwo() {
-        this.state.setStressTwo = 0
+        this.state.setStressTwo(0)
     }
 
-    setStressOnly() {
-        console.log('statesNodes, setStressOnly')
-        this.state.setStressOnly = false
+    setStressOnly(value) {
+        this.state.setStressOnly(value)
     }
 
 }
@@ -82,16 +81,15 @@ class ContextAndGainNodes {
     }
 
     setStressOne(value) {
-        this.state.setStressOne = value
+        AudioCore.setStressOne(value)
     }
 
     setStressTwo(value) {
-        this.state.setStressTwo = value
+        AudioCore.setStressTwo(value)
     }
 
     setStressOnly(value) {
-        console.log('ContextAndGainNodes, setStressOnly')
-        this.state.stressOnly = value
+        AudioCore.setStressOnly(value)
     }
 
 }
@@ -99,12 +97,10 @@ class ContextAndGainNodes {
 class AllNodes {
     constructor() {
         AudioCore.init()
-        console.log('start', AudioCore.getCurrentTime())
     }
 
     onOff() {
         AudioCore.suspendResume()
-        console.log('start/end', AudioCore.getCurrentTime())
     }
 
     setBpm (value) {
@@ -132,16 +128,15 @@ class AllNodes {
     }
 
     setStressOne(value) {
-        this.state.setStressOne = value
+        AudioCore.setStressOne(value)
     }
 
     setStressTwo(value) {
-        this.state.setStressTwo = value
+        AudioCore.setStressTwo(value)
     }
 
     setStressOnly(value) {
-        console.log('AllNodes, setStressOnly')
-        this.state.setStressOnly = value
+        AudioCore.setStressOnly(value)
     }
 
 }

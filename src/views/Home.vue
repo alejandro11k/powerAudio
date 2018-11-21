@@ -136,10 +136,8 @@ export default {
     timeLimitEnable: function (value) { this.setTimeLimitEnable(value) },
     stressOnly: function (value) {
       this.$store.commit('setStressOnly', value)
-      console.log(this.$store.state.stressOnly)
       // eslint-disable-next-line
       StateNodes.setStressOnly(this.$store.state.stressOnly)
-      // stressOnly(value)
     },
     stressOne: function (value) {
       // eslint-disable-next-line
