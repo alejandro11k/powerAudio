@@ -48,12 +48,12 @@ export function init() {
 
         stressOne = new Stress()
         stressOne.stressSound = sounds.get('highKicker')
-        stressOne.stressInterval = 4
+        stressOne.stressInterval = 0
         stresser.addStress(stressOne)
 
         stressTwo = new Stress()
         stressTwo.stressSound = sounds.get('ultraHighKicker')
-        stressTwo.stressInterval = 4
+        stressTwo.stressInterval = 0
         stresser.addStress(stressTwo)
         
         portWorkletNode.setStresser(stresser)

@@ -42,7 +42,7 @@ export class Stress {
 
     isRightNow(actualBeat) {
         let retValue = false
-        if (actualBeat === 1 || (actualBeat-1)  % this.stressInterval === 0) {
+        if ((actualBeat === 1 && this.stressInterval !== 0)|| (actualBeat-1)  % this.stressInterval === 0) {
             retValue = true
         }
         return retValue
