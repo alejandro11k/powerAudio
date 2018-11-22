@@ -30,12 +30,12 @@ export class StateNodes {
         this.state.getSounds() // ??
     }
 
-    setStressOne() {
-        this.state.setStressOne(0)
+    setStressOne(value) {
+        this.state.setStressOne(value)
     }
 
-    setStressTwo() {
-        this.state.setStressTwo(0)
+    setStressTwo(value) {
+        this.state.setStressTwo(value)
     }
 
     setStressOnly(value) {
@@ -81,11 +81,11 @@ class ContextAndGainNodes {
     }
 
     setStressOne(value) {
-        AudioCore.setStressOne(value)
+        AudioCore.setStressOneInterval(value)
     }
 
     setStressTwo(value) {
-        AudioCore.setStressTwo(value)
+        AudioCore.setStressTwoInterval(value)
     }
 
     setStressOnly(value) {
@@ -128,11 +128,11 @@ class AllNodes {
     }
 
     setStressOne(value) {
-        AudioCore.setStressOne(value)
+        AudioCore.setStressOneInterval(value)
     }
 
     setStressTwo(value) {
-        AudioCore.setStressTwo(value)
+        AudioCore.setStressTwoInterval(value)
     }
 
     setStressOnly(value) {

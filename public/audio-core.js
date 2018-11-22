@@ -16,6 +16,8 @@ let portWorkletNode = null
 let stresser = null
 let stressOne = null
 let stressTwo = null
+let stressOneInterval = 0
+let stressTwoInterval = 0
 let stressOnly = false
 
 export function createContextAndGainNode() {
@@ -48,12 +50,12 @@ export function init() {
 
         stressOne = new Stress()
         stressOne.stressSound = sounds.get('highKicker')
-        stressOne.stressInterval = 0
+        stressOne.stressInterval = stressOneInterval
         stresser.addStress(stressOne)
 
         stressTwo = new Stress()
         stressTwo.stressSound = sounds.get('ultraHighKicker')
-        stressTwo.stressInterval = 0
+        stressTwo.stressInterval = stressTwoInterval
         stresser.addStress(stressTwo)
         
         portWorkletNode.setStresser(stresser)
@@ -68,11 +70,14 @@ export function setStressOnly(bool) {
 }
 
 export function setStressOneInterval(number) {
-    stressOne.stressInterval = number
+    console.log('one', number)
+    // stressOne.stressInterval = number
+    stressOneInterval = number
 }
 
 export function setStressTwoInterval(number) {
-    stressTwo.stressInterval = number
+    // stressTwo.stressInterval = number
+    stressTwoInterval = number
 }
 
 export function initSounds() {

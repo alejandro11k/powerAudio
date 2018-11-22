@@ -141,11 +141,17 @@ export default {
     },
     stressOne: function (value) {
       // eslint-disable-next-line
-      stressOneInterval(value)
+      // stressOneInterval(value)
+      this.$store.commit('setStressOne', value)
+      // eslint-disable-next-line
+      StateNodes.setStressOne(this.$store.state.stressOne)
     },
     stressTwo: function (value) {
       // eslint-disable-next-line
-      stressTwoInterval(value)
+      // stressTwoInterval(value)
+      this.$store.commit('setStressTwo', value)
+      // eslint-disable-next-line
+      StateNodes.setStressTwo(this.$store.state.stressTwo)
     }
   },
   methods: {
