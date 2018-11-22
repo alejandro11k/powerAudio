@@ -32,6 +32,14 @@ export class Stresser {
         this.stressOnly = value
     }
 
+    getStressOne() {
+        return this.stressers[0]
+    }
+
+    getStressTwo() {
+        return this.stressers[1]
+    }
+
 }
 
 export class Stress {
