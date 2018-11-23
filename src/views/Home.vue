@@ -1,7 +1,7 @@
 <template>
   <div class="home">
 
-    <md-content class="metronomeSection">
+    <md-content class="metronome">
 
       <div v-bind:style="bgc" v-on:input="bgc.backgroundColor = $event.target.value">.</div>
       
@@ -44,42 +44,26 @@
 
     </md-content>
     
-    <md-content class="separator">
-    </md-content>
+    <md-content class="tools">
 
-    <md-content class="timerSection">
-      <br>
-      <br>
-      <br>
-      <br>
-      <br>
-      
-      <time-selector @timeLimit="setTimeLimit($event)"></time-selector>
-
-      <md-switch v-model="timeLimitEnable" class="md-primary"></md-switch>
-      <div> Time Limit:
-      <div v-if="timeLimitEnable">On</div>
-      <div v-else>Off</div>
-
-      </div>
+      <md-content class="timeLimit">
+        <time-selector @timeLimit="setTimeLimit($event)"></time-selector>
+        <md-switch v-model="timeLimitEnable" class="md-primary"></md-switch>
+        <div> Time Limit:
+          <div v-if="timeLimitEnable">On</div>
+          <div v-else>Off</div>
+        </div>
+      </md-content>
 
       <md-content class="stresser">
-
-        <br>
-        <br>
-
         <md-button class="md-icon-button md-dense md-raised md-primary" @click="addStressOne">
           <md-icon> + </md-icon>
         </md-button>
-
         <md-button class="md-icon-button md-dense md-raised" @click="subStressOne">
           <md-icon> - </md-icon>
         </md-button>
-
         {{ stressOne }}
-
         <br>
-
         <md-button class="md-icon-button md-dense md-raised md-primary" @click="addStressTwo">
           <md-icon> + </md-icon>
         </md-button>
@@ -87,9 +71,7 @@
         <md-button class="md-icon-button md-dense md-raised" @click="subStressTwo">
           <md-icon> - </md-icon>
         </md-button>
-
         {{ stressTwo }}
-
         <br>
 
         <md-switch v-model="stressOnly" class="md-primary"></md-switch>
@@ -269,32 +251,24 @@ export default {
     display: inline-flex
   }
 
-  .md-content {
-    // width: 100px;
-    // height: 200px;
-    display: static;
-    // justify-content: center;
-    // align-items: center;
-    &.timerSection {
-      display: static;
-      width: 200px;
-      height: 400px;
-      align-items: bottom;
-      justify-content: center;
-      &.stresser {
-        display: static
-      }
-    }
-    &.metronomeSection {
-      display: static;
-      width: 250px;
-      height: 250px;
-    }
-    /*
-    &.separator {
-      width: 100px
-    }
-    */
+  .metronome {
+    width: 220px;
+    height: 440px;
+  }
+
+  .tools {
+    width: 220px;
+    height: 440px;
+  }
+
+  .timeLimit {
+    width: 105px;
+    height: 165px;
+  }
+
+  .stresser {
+    width: 105px;
+    height: 165px;
   }
 
 </style>

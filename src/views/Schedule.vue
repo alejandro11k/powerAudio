@@ -1,6 +1,6 @@
 <template>
   <div class="schedule">
-    <md-content class="mainSection">
+    <md-content class="main">
     
       <md-progress-bar class="md-accent" md-mode="determinate" :md-value="amountFwd"></md-progress-bar>
       <md-progress-bar md-mode="determinate" :md-value="amountFwd"></md-progress-bar>
@@ -32,9 +32,7 @@
       </div>
     </md-content>
 
-    <br>
-    
-    <md-content class="listSection">
+    <md-content class="list">
 
       <div class="root">
         <slick-list 
@@ -281,18 +279,19 @@ export default {
   }
 
   .schedule {
-    display: inline-flex
+    display: inline-flex;
+    // justify-content: center;
   }
 
-  .md-content {
-    &.mainSection {
-      width: 400px;
-    }
-    &.listSection {
-      width: 80px;
-      display: inline-flex;
-      justify-content: center;
-      align-items: center;
-    }
+  .main {
+    width: 440px;
   }
+
+  .list {
+    width: 80px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+  }
+
 </style>
