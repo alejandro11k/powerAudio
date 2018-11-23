@@ -11,7 +11,8 @@
           <md-icon> + </md-icon>
       </md-button>
       <md-button class="md-fab" @click="play" v-longpress="stop">
-          <md-icon> > </md-icon>
+          <md-icon v-if="stoped"> > </md-icon>
+          <md-icon v-else> || </md-icon>
       </md-button>
       <time-selector @timeLimit="setTimeLimit($event)"></time-selector>
       <div>
@@ -80,6 +81,7 @@ export default {
         amountFwd: 0,
         clock: 0,
         countup: 0,
+        stoped: true
         // bgc: { backgroundColor: '' },
     }
   },
