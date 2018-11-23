@@ -50,8 +50,14 @@ export class SoundType {
 }
 
 export class Beeper extends SoundType {
+
+    constructor(sound) {
+        super(sound)
+        this.setOscillatorFrequency(440)
+    }
     
     doExecute(oscillator, currentTime) {
+        oscillator.frequency.setValueAtTime(this.oscillatorFrequency, currentTime);
         this.sound.gainNode.gain.value = 0.2
     }
 

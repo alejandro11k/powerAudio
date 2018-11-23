@@ -49,12 +49,12 @@ export function init() {
         stresser.stressOnly = stressOnly
 
         stressOne = new Stress()
-        stressOne.stressSound = sounds.get('highKicker')
+        stressOne.stressSound = sounds.get('kicker880')
         stressOne.stressInterval = stressOneInterval
         stresser.addStress(stressOne)
 
         stressTwo = new Stress()
-        stressTwo.stressSound = sounds.get('ultraHighKicker')
+        stressTwo.stressSound = sounds.get('kicker940')
         stressTwo.stressInterval = stressTwoInterval
         stresser.addStress(stressTwo)
         
@@ -92,12 +92,18 @@ export function initSounds() {
     sounds.set('beeper',beeper)
     sounds.set('kicker',kicker)
     
-    const highKicker = new Kicker(new Sound(context))
-    highKicker.setOscillatorFrequency(360)
-    sounds.set('highKicker',highKicker)
-    const ultraHighKicker = new Kicker(new Sound(context))
-    ultraHighKicker.setOscillatorFrequency(540)
-    sounds.set('ultraHighKicker',ultraHighKicker)
+    const kicker880 = new Kicker(new Sound(context))
+    const kicker940 = new Kicker(new Sound(context))
+    
+    kicker880.setOscillatorFrequency(880)
+    kicker940.setOscillatorFrequency(940)
+    
+    sounds.set('kicker880',kicker880)
+    sounds.set('kicker940',kicker940)
+
+    const beeper880 = new Kicker(new Sound(context))
+    beeper880.setOscillatorFrequency(880)
+    sounds.set('beeper880',beeper880)
 }
 
 function contextGainNode(portWorkletNode, lastGainNodeValue) {
