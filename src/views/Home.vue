@@ -8,7 +8,8 @@
       <div> {{ timerValue }} </div>
 
       <md-button class="md-fab" @click="onOff">
-          <md-icon> > </md-icon>
+          <md-icon v-if="stoped"> > </md-icon>
+          <md-icon v-else> ■ </md-icon>
       </md-button>
 
       <!--img alt="Vue logo" src="../assets/logo.png"-->
@@ -116,7 +117,8 @@ export default {
       bgc: { backgroundColor: '' },
       stressOnly: false,
       stressOne: 0,
-      stressTwo: 0
+      stressTwo: 0,
+      stoped: true
     }
   },
   watch: {
@@ -167,6 +169,7 @@ export default {
       
       const timer = this.$store.state.timer
       if (!timer.isRunning()) {
+        this.stoped = false
         if (this.timeLimitEnable) {
           timer.start({countdown: true, startValues: {seconds: this.$store.state.timeLimit}});
           timer.addEventListener('targetAchieved', () => {
@@ -181,6 +184,8 @@ export default {
         });
       } else {
         timer.stop();
+        this.stoped = true
+        this.bgc.backgroundColor = '#FFFAFA'
       }
       
       window.addEventListener('SoundExecute', () => { 
