@@ -136,9 +136,11 @@ export default {
       this.amountFwd = 0
     },
     deleteChip(pos) {
-      const tempList = this.$store.getters.getScheduleTempList
-      tempList.splice(pos,1)
-      this.$store.commit('setScheduleTempList', tempList)
+      if (this.stoped) {
+        const tempList = this.$store.getters.getScheduleTempList
+        tempList.splice(pos,1)
+        this.$store.commit('setScheduleTempList', tempList)
+      }
     },
     updateBpm(value) {
       this.$store.commit('setScheduleBpm', value)
