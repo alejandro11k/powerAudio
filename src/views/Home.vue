@@ -8,8 +8,8 @@
       <div> {{ timerValue }} </div>
 
       <md-button class="md-fab" @click="onOff">
-          <md-icon v-if="stoped"> > </md-icon>
-          <md-icon v-else> ■ </md-icon>
+          <md-icon v-if="stoped">▹</md-icon> <!--▸▹►-->
+          <md-icon v-else style="color: red;"> ■ </md-icon>
       </md-button>
 
       <!--img alt="Vue logo" src="../assets/logo.png"-->
@@ -174,6 +174,7 @@ export default {
           timer.start({countdown: true, startValues: {seconds: this.$store.state.timeLimit}});
           timer.addEventListener('targetAchieved', () => {
             this.timerValue = 'Well Done!'
+            this.stoped = true
           });
         } else {
           timer.start();

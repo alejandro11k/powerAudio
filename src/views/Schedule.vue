@@ -10,9 +10,9 @@
       <md-button class="md-fab" v-longpress="removeAll" @click="add">
           <md-icon> + </md-icon>
       </md-button>
-      <md-button class="md-fab" @click="play" v-longpress="stop">
-          <md-icon v-if="stoped"> > </md-icon>
-          <md-icon v-else> || </md-icon>
+      <md-button class="md-fab" @click="play"> <!--v-longpress="stop"-->
+          <md-icon v-if="stoped">▹</md-icon>
+          <md-icon v-else style="color: red;"> ■ </md-icon>  <!--▐ ▌-->
       </md-button>
       <time-selector @timeLimit="setTimeLimit($event)"></time-selector>
       <div>
@@ -114,6 +114,9 @@ export default {
         this.countup++ 
       }
       this.setAmountFwd(this.countup)
+      if (this.amountFwd===100) {
+        this.stop()
+      }
     },
     soundSelected: function (value) { this.updateSoundSelected(value) },
     scheduleTempList: function (value) { this.$store.commit('setScheduleTempList', value) } // this fire twice when add and element?
@@ -127,6 +130,7 @@ export default {
       this.timeStamp = Date.now()
       // eslint-disable-next-line
       ScheduleModule.stop()
+      this.stoped = true
       this.countup = 0
       this.amountFwd = 0
     },
@@ -172,10 +176,15 @@ export default {
       }
     },
     play() {
-      const actualTimeStamp = Date.now()
-      console.log(actualTimeStamp-this.timeStamp)
-      const diffTime = actualTimeStamp-this.timeStamp < 500
-      if (!diffTime) {
+      
+      // code to use loongpress directive
+      // const actualTimeStamp = Date.now()
+      // const diffTime = actualTimeStamp-this.timeStamp < 500
+      // if (!diffTime) {
+
+      if (this.totalTimeList()>0) {
+        if (this.stoped) {
+        this.stoped = !this.stoped
         
         window.addEventListener('Clock', () => { 
           console.log('Clock')
@@ -186,7 +195,11 @@ export default {
         // eslint-disable-next-line
         let currentTime = ScheduleModule.suspendResume(this.cloneList())
         this.countup = Math.round(currentTime)
-      }  
+        } else {
+          this.stop();
+        }
+      }
+      
     },
     getRandomColor() {
       var letters = '0123456789ABCDEF';
