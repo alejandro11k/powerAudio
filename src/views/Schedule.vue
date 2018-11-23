@@ -21,7 +21,14 @@
           :min="40"
           :max="300">
         </knob-control>
-        <sound-selector @soundSelect="setSound($event)"></sound-selector>
+        <sound-selector 
+          @soundSelect="setSound($event)"
+          :showTag1=true
+          :showTag2=true
+          selector1="Beeper"
+          selector2="Kicker"
+        >
+        </sound-selector>
       </div>
     </md-content>
 
