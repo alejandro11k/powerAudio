@@ -231,10 +231,8 @@ export default {
   },
   mounted() {
     window.addEventListener('keyup', (e) => {
-      console.log(`keyup event. key property value is "${e.key}"`);
-      // this.onOff()
+      console.log(`keyup event. key property value is "${e.key}"`, e.keyCode, this.$route.name);
     });
-    
   },
   beforeUpdate() {
     

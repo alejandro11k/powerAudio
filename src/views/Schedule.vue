@@ -123,6 +123,7 @@ export default {
   },
   methods: {
     removeAll() {
+      this.stop()
       this.timeStamp = Date.now()
       this.scheduleTempList = []
     },
@@ -160,7 +161,7 @@ export default {
     add() {
       const actualTimeStamp = Date.now()
       const diffTime = actualTimeStamp-this.timeStamp < 500
-      if (!diffTime) {
+      if (!diffTime && this.stoped) {
         //new schedule
         const bpm = this.$store.getters.getScheduleProperties.bpm
         const timeLimit = this.$store.getters.getScheduleProperties.timeLimit
