@@ -109,6 +109,7 @@ class AllNodes {
 
     setSound(value) {
         AudioCore.setSound(value)
+        AudioCore.selectStressersSounds()
     }
 
     setGain(value) {

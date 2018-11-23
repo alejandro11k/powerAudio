@@ -21,6 +21,7 @@ export class Sound {
 export class SoundType {
 
     constructor(sound) {
+        this.className = "SoundType"
         this.sound = sound
         this.event = new Event('SoundExecute');
         this.oscillatorFrequency = null
@@ -53,6 +54,7 @@ export class Beeper extends SoundType {
 
     constructor(sound) {
         super(sound)
+        this.className = "Beeper"
         this.setOscillatorFrequency(440)
     }
     
@@ -70,6 +72,7 @@ export class Kicker extends SoundType {
 
     constructor(sound) {
         super(sound)
+        this.className = "Kicker"
         this.setOscillatorFrequency(180)
     }
     

@@ -49,17 +49,27 @@ export function init() {
         stresser.stressOnly = stressOnly
 
         stressOne = new Stress()
-        stressOne.stressSound = sounds.get('kicker880')
-        stressOne.stressInterval = stressOneInterval
-        stresser.addStress(stressOne)
-
         stressTwo = new Stress()
-        stressTwo.stressSound = sounds.get('kicker940')
+        stressOne.stressInterval = stressOneInterval
         stressTwo.stressInterval = stressTwoInterval
+
+        stresser.addStress(stressOne)
         stresser.addStress(stressTwo)
         
         portWorkletNode.setStresser(stresser)
+
+        selectStressersSounds()
     });
+}
+
+export function selectStressersSounds() {
+    if (portWorkletNode.click.className === 'Beeper') {
+        portWorkletNode.stresser.getStressOne().stressSound = sounds.get('beeper1220')
+        portWorkletNode.stresser.getStressTwo().stressSound = sounds.get('kicker440')
+    } else {
+        portWorkletNode.stresser.getStressOne().stressSound = sounds.get('beeper880')
+        portWorkletNode.stresser.getStressTwo().stressSound = sounds.get('beeper1220')
+    }
 }
 
 export function setStressOnly(bool) {
@@ -92,18 +102,25 @@ export function initSounds() {
     sounds.set('beeper',beeper)
     sounds.set('kicker',kicker)
     
+    const kicker440 = new Kicker(new Sound(context))
     const kicker880 = new Kicker(new Sound(context))
-    const kicker940 = new Kicker(new Sound(context))
+    const kicker1440 = new Kicker(new Sound(context))
     
+    kicker440.setOscillatorFrequency(440)
     kicker880.setOscillatorFrequency(880)
-    kicker940.setOscillatorFrequency(940)
+    kicker1440.setOscillatorFrequency(1440)
     
+    sounds.set('kicker440',kicker440)
     sounds.set('kicker880',kicker880)
-    sounds.set('kicker940',kicker940)
+    sounds.set('kicker1440',kicker1440)
 
-    const beeper880 = new Kicker(new Sound(context))
+    const beeper880 = new Beeper(new Sound(context))
     beeper880.setOscillatorFrequency(880)
     sounds.set('beeper880',beeper880)
+
+    const beeper1220 = new Beeper(new Sound(context))
+    beeper1220.setOscillatorFrequency(1220)
+    sounds.set('beeper1220',beeper1220)
 }
 
 function contextGainNode(portWorkletNode, lastGainNodeValue) {
