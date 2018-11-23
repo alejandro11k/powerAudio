@@ -166,13 +166,13 @@ export default {
       this.stressOne++
     },
     subStressOne() {
-      this.stressOne--
+      this.stressOne>0? this.stressOne-- : this.stressOne = 0
     },
     addStressTwo() {
       this.stressTwo++
     },
     subStressTwo() {
-      this.stressTwo--
+      this.stressTwo>0? this.stressTwo-- : this.subStressTwo = 0
     },
     setBpm (value) {
       this.$store.commit('setBpm', value)
