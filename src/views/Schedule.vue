@@ -123,7 +123,9 @@ export default {
   },
   methods: {
     removeAll() {
-      this.stop()
+      if (!this.stoped) {
+        this.stop()
+      }
       this.timeStamp = Date.now()
       this.scheduleTempList = []
     },
@@ -163,7 +165,7 @@ export default {
     add() {
       const actualTimeStamp = Date.now()
       const diffTime = actualTimeStamp-this.timeStamp < 500
-      if (!diffTime && this.stoped) {
+      if (!diffTime && this.stoped && this.$store.getters.getScheduleTempList.length<12) {
         //new schedule
         const bpm = this.$store.getters.getScheduleProperties.bpm
         const timeLimit = this.$store.getters.getScheduleProperties.timeLimit
@@ -306,7 +308,7 @@ export default {
   }
 
   .list {
-    width: 80px;
+    width: 1px;
     display: inline-flex;
     justify-content: center;
     align-items: center;
