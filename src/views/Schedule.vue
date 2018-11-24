@@ -304,7 +304,7 @@ export default {
   }
 
   .main {
-    width: 440px;
+    width: 420px;
   }
 
   .list {
