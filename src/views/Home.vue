@@ -263,16 +263,21 @@ export default {
   .tools {
     width: 220px;
     height: 440px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; //space-evenly;
   }
 
   .timeLimit {
     width: 105px;
     height: 165px;
+    margin: auto;
   }
 
   .stresser {
     width: 105px;
     height: 165px;
+    margin: auto;
   }
 
 </style>
