@@ -4,8 +4,8 @@
     <md-content class="metronome">
 
       <div v-bind:style="bgc" v-on:input="bgc.backgroundColor = $event.target.value">.</div>
-      
-      <div> {{ timerValue }} </div>
+
+      <div> {{ stressOneCounter }} | {{ timerValue }} | {{ stressTwoCounter }} </div>
 
       <md-button class="md-fab" @click="onOff">
           <md-icon v-if="stoped">▹</md-icon> <!--▸▹►-->
@@ -118,10 +118,30 @@ export default {
       stressOnly: false,
       stressOne: 0,
       stressTwo: 0,
-      stoped: true
+      stoped: true,
+      clock1: 0,
+      clock2: 0,
+      stressOneCounter: 0,
+      stressTwoCounter: 0,
     }
   },
   watch: {
+    clock1: function (value) {
+      if (value<=this.stressOne){
+        this.stressOneCounter = value
+      } else if (this.stressOne!=0){
+        this.stressOneCounter = 1
+        this.clock1 = 1
+      }
+    },
+    clock2: function (value) {
+      if (value<=this.stressTwo){
+        this.stressTwoCounter = value
+      } else if (this.stressTwo!=0){
+        this.stressTwoCounter = 1
+        this.clock2 = 1
+      }
+    },
     bpm: function (value) { this.setBpm(value) },
     volume: function (value) { this.setGain(value) },
     timeLimitEnable: function (value) { this.setTimeLimitEnable(value) },
@@ -148,15 +168,23 @@ export default {
   methods: {
     addStressOne() {
       this.stressOne++
+      if (!this.stoped) { this.fixWhenRunning() }
     },
     subStressOne() {
       this.stressOne>0? this.stressOne-- : this.stressOne = 0
+      if (!this.stoped) { this.fixWhenRunning() }
     },
     addStressTwo() {
       this.stressTwo++
+      if (!this.stoped) { this.fixWhenRunning() }
     },
     subStressTwo() {
       this.stressTwo>0? this.stressTwo-- : this.subStressTwo = 0
+      if (!this.stoped) { this.fixWhenRunning() }
+    },
+    fixWhenRunning() {
+      this.onOff()
+      this.onOff()
     },
     setBpm (value) {
       this.$store.commit('setBpm', value)
@@ -166,7 +194,7 @@ export default {
     onOff () {
       // eslint-disable-next-line
       StateNodes.onOff()
-      
+
       const timer = this.$store.state.timer
       if (!timer.isRunning()) {
         this.stoped = false
@@ -188,11 +216,13 @@ export default {
         this.stoped = true
         this.bgc.backgroundColor = '#FFFAFA'
       }
-      
-      window.addEventListener('SoundExecute', () => { 
-        this.bgc.backgroundColor = this.getRandomColor()
-      }, false);
-      
+      this.resetClockAndCounters()
+    },
+    resetClockAndCounters() {
+      this.clock1 = 0
+      this.clock2 = 0
+      this.stressOneCounter = 0
+      this.stressTwoCounter = 0
     },
     getRandomColor() {
       var letters = '0123456789ABCDEF';
@@ -213,7 +243,6 @@ export default {
       // eslint-disable-next-line
       StateNodes.setGain(this.$store.state.volume)
     },
-    
     setTimeLimit (value) {
       this.$store.commit('setTimeLimit', value)
       // eslint-disable-next-line
@@ -227,18 +256,20 @@ export default {
     
   },
   computed: {
-
   },
   mounted() {
     window.addEventListener('keyup', (e) => {
       console.log(`keyup event. key property value is "${e.key}"`, e.keyCode, this.$route.name);
     });
+    window.addEventListener('SoundExecute', () => { 
+        this.bgc.backgroundColor = this.getRandomColor()
+        this.clock1++
+        this.clock2++
+      }, false);
   },
   beforeUpdate() {
-    
   },
   updated() {
-    
   },
 }
 </script>

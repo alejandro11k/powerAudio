@@ -25,6 +25,7 @@ export class SoundType {
         this.sound = sound
         this.event = new Event('SoundExecute');
         this.oscillatorFrequency = null
+        this.dispatchEvent = false
     }
 
     setOscillatorFrequency(frequency) {
@@ -37,7 +38,9 @@ export class SoundType {
         oscillator.start(currentTime)
         this.doExecute(oscillator, currentTime)
         oscillator.stop(currentTime + this.stopDelta())
-        dispatchEvent(this.event)
+        if (this.dispatchEvent) {
+            dispatchEvent(this.event)
+        }
     }
 
     executeAt(time, audioNode) {

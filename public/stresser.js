@@ -3,10 +3,12 @@ export class Stresser {
         this.stressers = [] // list of stress class
         this.stressOnly = false
         this.isOn = false
+        this.event = new Event('SoundExecute');
     }
 
     doYourJob(actualBeat, selectedClick, aundioNode) {
         const soundsToExecute = this.nextSound(actualBeat, selectedClick)
+        dispatchEvent(this.event)
         this.execute(soundsToExecute, aundioNode)
     }
 

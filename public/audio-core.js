@@ -98,6 +98,9 @@ export function setStressTwoInterval(number) {
 export function initSounds() {
     const beeper = new Beeper(new Sound(context))
     const kicker = new Kicker(new Sound(context))
+
+    // beeper.dispatchEvent = true
+    // kicker.dispatchEvent = true
     
     sounds.set('beeper',beeper)
     sounds.set('kicker',kicker)
