@@ -95,7 +95,7 @@ export default {
         let minutos = Math.floor(actualLimit / 60)
         let segundos = actualLimit - (minutos * 60)
         if (segundos==0) {
-          segundos = ''
+          segundos = ':00'
         } else if (segundos >= 1 && segundos <= 9) {
             segundos = ':0' + segundos
         } else {

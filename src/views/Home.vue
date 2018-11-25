@@ -4,9 +4,8 @@
     <md-content class="metronome">
 
       <div v-bind:style="bgc" v-on:input="bgc.backgroundColor = $event.target.value">.</div>
-
-      <div> {{ stressOneCounter }} | {{ clock }} seg. | {{ stressTwoCounter }} </div>
-
+      <div> {{ stressOneCounter }} | {{ clockShow }} | {{ stressTwoCounter }} </div>
+      
       <md-button class="md-fab" @click="onOff">
           <md-icon v-if="stoped">▹</md-icon> <!--▸▹►-->
           <md-icon v-else style="color: red;"> ■ </md-icon>
@@ -120,6 +119,7 @@ export default {
       stressTwo: 0,
       stoped: true,
       clock: 0,
+      countDown: 0,
       clock1: 0,
       clock2: 0,
       stressOneCounter: 0,
@@ -129,11 +129,15 @@ export default {
   watch: {
     clock: function(value) {
       const timeLimit = this.$store.state.timeLimit
-      console.log(value, timeLimit)
       if (this.timeLimitEnable && value===timeLimit) {
         this.stoped = true
-        this.clock = 'Well Done!'
       }
+
+      if (this.timeLimitEnable && !this.stoped) {
+        // this.countDown--
+        this.countDown = timeLimit - value
+      }
+      
     },
     clock1: function (value) {
       if (value<=this.stressOne){
@@ -208,6 +212,7 @@ export default {
       // this.timerLogic() // old external timer
       if (this.stoped) {
         this.clock = 0
+        this.countDown = this.$store.state.timeLimit
       }
       this.stoped = !this.stoped
       this.bgc.backgroundColor = '#FFFAFA'
@@ -242,7 +247,7 @@ export default {
       this.$store.commit('setTimeLimit', value)
       // eslint-disable-next-line
       setTimeLimit(this.$store.state.timeLimit)
-
+      this.countDown = value
       // fix
       if  (this.timeLimitEnable && !this.stoped && value <= this.clock) {
         this.stoped = true
@@ -254,6 +259,7 @@ export default {
       setTimeLimitEnable(this.$store.state.timeLimitEnable)
       this.fixWhenRunning()
       this.clock = 0
+      this.countDown = this.$store.state.timeLimit
     },
     timerLogic() {
       const timer = this.$store.state.timer
@@ -280,21 +286,41 @@ export default {
     }
   },
   computed: {
+    clockShow() {
+      let actualLimit = this.timeLimitEnable? this.countDown : this.clock
+      let value = 0
+      if (this.timeLimitEnable && actualLimit===1) {
+          value = 'Well Done!'
+      } else if (actualLimit < 60) {
+        value = actualLimit + ' seg.'
+      } else {
+        let minutos = Math.floor(actualLimit / 60)
+        let segundos = actualLimit - (minutos * 60)
+        if (segundos==0) {
+          segundos = ':00'
+        } else if (segundos >= 1 && segundos <= 9) {
+          segundos = ':0' + segundos
+        } else {
+          segundos = ':' + segundos
+        }
+        value = minutos + segundos + ' minute'
+      }
+      return value
+    }
   },
   mounted() {
     window.addEventListener('keyup', (e) => {
       console.log(`keyup event. key property value is "${e.key}"`, e.keyCode, this.$route.name);
     });
-    window.addEventListener('Clock', () => { 
-          console.log('Clock')
-          // this.bgc.backgroundColor = this.getRandomColor()
-          this.clock++
-        }, false);
+    window.addEventListener('Clock', () => {
+      // this.bgc.backgroundColor = this.getRandomColor()
+      this.clock++
+    }, false);
     window.addEventListener('SoundExecute', () => { 
-        this.bgc.backgroundColor = this.getRandomColor()
-        this.clock1++
-        this.clock2++
-      }, false);
+      this.bgc.backgroundColor = this.getRandomColor()
+      this.clock1++
+      this.clock2++
+    }, false);
   },
   beforeUpdate() {
   },
