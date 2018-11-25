@@ -169,6 +169,7 @@ export default {
       this.$store.commit('setStressOne', value)
       // eslint-disable-next-line
       StateNodes.setStressOne(this.$store.state.stressOne)
+      this.fixWhenRunning()
     },
     stressTwo: function (value) {
       // eslint-disable-next-line
@@ -176,6 +177,7 @@ export default {
       this.$store.commit('setStressTwo', value)
       // eslint-disable-next-line
       StateNodes.setStressTwo(this.$store.state.stressTwo)
+      this.fixWhenRunning()
     }
   },
   methods: {
@@ -205,6 +207,7 @@ export default {
       this.$store.commit('setBpm', value)
       // eslint-disable-next-line
       StateNodes.setBpm(this.$store.state.bpm)
+      this.resetClockAndCounters()
     },
     onOff () {
       // eslint-disable-next-line
