@@ -159,6 +159,7 @@ export function setBpm(value) {
     bpm = value
     let param = portWorkletNode.parameters.get('bpm')
     param.value = bpm
+    portWorkletNode.resetActualBeat()
 }
 
 export function storeBpm(value) {

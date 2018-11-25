@@ -4,6 +4,7 @@ export class PortWorkletNode extends AudioWorkletNode {
     constructor(context) {
         super(context, 'processor');
         this.counter = 1;
+        this.actualBeat = 1;
         this.port.onmessage = this.handleMessage.bind(this);
         this.port.postMessage({
             message: 'Are you ready?',
@@ -21,7 +22,8 @@ export class PortWorkletNode extends AudioWorkletNode {
             // this.click.execute(this)
             
             if (isClick) {
-                this.stresser.doYourJob(this.counter, this.click, this)
+                this.stresser.doYourJob(this.actualBeat, this.click, this)
+                this.actualBeat++
             }
         
             if (isClock) {
@@ -60,6 +62,10 @@ export class PortWorkletNode extends AudioWorkletNode {
     
     setClock(clock) {
         this.clock = clock
+    }
+
+    resetActualBeat() {
+        this.actualBeat = 1
     }
     
 }
