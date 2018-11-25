@@ -8,16 +8,17 @@
     <title>power-audio</title>
 
     <script type="module">
-      import { getSounds, setTimeLimit, setTimeLimitEnable, setStressOneInterval, setStressTwoInterval } from './audio-core.js' // FIX
+      import { getSounds, resetCounter, setTimeLimit, setTimeLimitEnable, setStressOneInterval, setStressTwoInterval } from './audio-core.js' // FIX
       import { StateNodes } from './audio-nodes.js'
       
       window.getSounds = getSounds
+      window.resetCounter = resetCounter
       window.setTimeLimit = setTimeLimit
       window.setTimeLimitEnable = setTimeLimitEnable
       window.StateNodes = new StateNodes()
 
-      window.stressOneInterval = setStressOneInterval
-      window.stressTwoInterval = setStressTwoInterval
+      // window.stressOneInterval = setStressOneInterval
+      // window.stressTwoInterval = setStressTwoInterval
 
     </script>
 

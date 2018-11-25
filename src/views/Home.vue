@@ -249,9 +249,10 @@ export default {
       this.$store.commit('setTimeLimit', value)
       // eslint-disable-next-line
       setTimeLimit(this.$store.state.timeLimit)
-      if (!this.stoped) {
-        this.countDown = value
-      }
+      // eslint-disable-next-line
+      resetCounter() // fix
+      this.countDown = value
+      this.clock = 0
       // fix
       if  (this.timeLimitEnable && !this.stoped && value <= this.clock) {
         this.stoped = true

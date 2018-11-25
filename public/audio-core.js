@@ -188,6 +188,7 @@ export function getBeats() {
 
 export function setTimeLimit (segundos) {
     timeLimit = segundos
+    // counter = 1
 }
 
 export function getTimeLimit() {
