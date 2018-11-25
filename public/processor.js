@@ -8,6 +8,7 @@ class PortProcessor extends AudioWorkletProcessor {
     constructor() {
         super();
         this._lastUpdate = currentTime;
+        this._lastUpdateClock = currentTime;
         this.port.onmessage = this.handleMessage.bind(this);
     }
   
@@ -17,14 +18,26 @@ class PortProcessor extends AudioWorkletProcessor {
     }
 
     process(inputs, outputs, parameters){
-        // Post a message to the node for every 1 second.
-        let second = (60 / parameters.bpm[0]);
-        if (currentTime - this._lastUpdate > second) {
+        let bpmInSeconds = (60 / parameters.bpm[0]);
+
+        let processCurrentTime = currentTime
+        let isBpmTime = processCurrentTime - this._lastUpdate > bpmInSeconds
+        let isSecondTime = processCurrentTime - this._lastUpdateClock > 1
+
+        if (isBpmTime) {
             this.port.postMessage({
-            message: 'Process is called.',
+            message: 'click',
             timeStamp: currentTime,
             });
             this._lastUpdate = currentTime;
+        }
+
+        if (isSecondTime) {
+            this.port.postMessage({
+            message: 'clock',
+            timeStamp: currentTime,
+            });
+            this._lastUpdateClock = currentTime;
         }
 
         /* process audio */

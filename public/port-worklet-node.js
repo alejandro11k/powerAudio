@@ -13,26 +13,30 @@ export class PortWorkletNode extends AudioWorkletNode {
 
     handleMessage(event) {
         // this.counter++;
-        console.log('[Node:Received] "' + event.data.message + '" (' + event.data.timeStamp + ')');
+        // console.log('[Node:Received] "' + event.data.message + '" (' + event.data.timeStamp + ')');
 
-        // this.click.execute(this)
-        this.stresser.doYourJob(this.counter, this.click, this)
+        if (event.data.message==='click') {
+            // this.click.execute(this)
+            this.stresser.doYourJob(this.counter, this.click, this)
 
-        this.counter++
-        // Notify the processor when the node gets 10 messages. Then reset the
-        // counter.
+            this.counter++
+            // Notify the processor when the node gets 10 messages. Then reset the
+            // counter.
 
-        if (getTimeLimitEnable() && getCounter() >= getBeats()) {
-            this.port.postMessage({
-                message: 'insert coin!',
-                timeStamp: this.context.currentTime
-            });
-            // this.counter = 1;
-            this.context.suspend()
-            // this.context.currentTime
+            if (getTimeLimitEnable() && getCounter() >= getBeats()) {
+                this.port.postMessage({
+                    message: 'insert coin!',
+                    timeStamp: this.context.currentTime
+                });
+                // this.counter = 1;
+                this.context.suspend()
+                // this.context.currentTime
+            }
+
+            stepCounter()
+
         }
-
-        stepCounter()
+        
     }
 
     setSound(sound) {
@@ -61,13 +65,18 @@ export class ClockWorkletNode extends AudioWorkletNode {
     }
 
     handleMessage(event) {
-        // console.log('[Node:Received] "' + event.data.message + '" (' + event.data.timeStamp + ')');
-        const notFinished = !this.module.isFinished()
-        if (notFinished && this.module.context.state === 'running') {
-            this.clock.click() 
-        } else {
-            this.clock.stop()
+
+        if (event.data.message==='clock') { 
+            // console.log('[Node:Received] "' + event.data.message + '" (' + event.data.timeStamp + ')');
+            const notFinished = !this.module.isFinished()
+            if (notFinished && this.module.context.state === 'running') {
+                this.clock.click() 
+            } else {
+                this.clock.stop()
+            }
+
         }
+        
     }
 
     setClock(clock) {
