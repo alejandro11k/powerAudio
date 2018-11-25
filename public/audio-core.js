@@ -1,6 +1,7 @@
 import { PortWorkletNode } from './port-worklet-node.js'
 import { Sound, Beeper, Kicker } from "./sound.js"
 import { Stresser, Stress } from "./stresser.js"
+import { Clock } from './clock.js';
 
 let bpm = 60
 let lastGainNodeValue = 80
@@ -12,6 +13,7 @@ let counter = 1
 let gainNode = null
 let context = null
 let portWorkletNode = null
+let clock = new Clock()
 
 let stresser = null
 let stressOne = null
@@ -36,6 +38,7 @@ export function init() {
     context.audioWorklet.addModule('./processor.js').then(() => {
         portWorkletNode = new PortWorkletNode(context);
         contextGainNode(portWorkletNode, lastGainNodeValue)
+        portWorkletNode.setClock(clock)
 
         let sound = selectedSound || sounds.get('beeper')
         portWorkletNode.setSound(sound)

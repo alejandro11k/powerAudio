@@ -26,6 +26,7 @@ export class PortWorkletNode extends AudioWorkletNode {
         
             if (isClock) {
                 this.counter++
+                this.clock.click()
     
                 console.log('this.counter',this.counter,'getCounter', getCounter(), 'getTimeLimit', getTimeLimit())
                 if (getTimeLimitEnable() && getCounter() >= getTimeLimit()) { // >= getBeats()) {
@@ -55,6 +56,10 @@ export class PortWorkletNode extends AudioWorkletNode {
 
     resetCounter() {
         this.counter = 1
+    }
+    
+    setClock(clock) {
+        this.clock = clock
     }
     
 }

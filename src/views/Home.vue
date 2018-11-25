@@ -5,7 +5,7 @@
 
       <div v-bind:style="bgc" v-on:input="bgc.backgroundColor = $event.target.value">.</div>
 
-      <div> {{ stressOneCounter }} | {{ timerValue }} | {{ stressTwoCounter }} </div>
+      <div> {{ stressOneCounter }} | {{ clock }} seg. | {{ stressTwoCounter }} </div>
 
       <md-button class="md-fab" @click="onOff">
           <md-icon v-if="stoped">▹</md-icon> <!--▸▹►-->
@@ -119,6 +119,7 @@ export default {
       stressOne: 0,
       stressTwo: 0,
       stoped: true,
+      clock: 0,
       clock1: 0,
       clock2: 0,
       stressOneCounter: 0,
@@ -194,28 +195,12 @@ export default {
     onOff () {
       // eslint-disable-next-line
       StateNodes.onOff()
-
-      const timer = this.$store.state.timer
-      if (!timer.isRunning()) {
-        this.stoped = false
-        if (this.timeLimitEnable) {
-          timer.start({countdown: true, startValues: {seconds: this.$store.state.timeLimit}});
-          timer.addEventListener('targetAchieved', () => {
-            this.timerValue = 'Well Done!'
-            this.stoped = true
-          });
-        } else {
-          timer.start();
-        }
-        this.timerValue = timer.getTimeValues().toString()
-        timer.addEventListener('secondsUpdated', (e) => {
-          this.timerValue = e.detail.timer.getTimeValues().toString()
-        });
-      } else {
-        timer.stop();
-        this.stoped = true
-        this.bgc.backgroundColor = '#FFFAFA'
+      // this.timerLogic() // old external timer
+      if (this.stoped) {
+        this.clock = 0
       }
+      this.stoped = !this.stoped
+      this.bgc.backgroundColor = '#FFFAFA'
       this.resetClockAndCounters()
     },
     resetClockAndCounters() {
@@ -253,7 +238,29 @@ export default {
       // eslint-disable-next-line
       setTimeLimitEnable(this.$store.state.timeLimitEnable)
     },
-    
+    timerLogic() {
+      const timer = this.$store.state.timer
+      if (!timer.isRunning()) {
+        this.stoped = false
+        if (this.timeLimitEnable) {
+          timer.start({countdown: true, startValues: {seconds: this.$store.state.timeLimit}});
+          timer.addEventListener('targetAchieved', () => {
+            this.timerValue = 'Well Done!'
+            this.stoped = true
+          });
+        } else {
+          timer.start();
+        }
+        this.timerValue = timer.getTimeValues().toString()
+        timer.addEventListener('secondsUpdated', (e) => {
+          this.timerValue = e.detail.timer.getTimeValues().toString()
+        });
+      } else {
+        timer.stop();
+        this.stoped = true
+        this.bgc.backgroundColor = '#FFFAFA'
+      }
+    }
   },
   computed: {
   },
@@ -261,6 +268,11 @@ export default {
     window.addEventListener('keyup', (e) => {
       console.log(`keyup event. key property value is "${e.key}"`, e.keyCode, this.$route.name);
     });
+    window.addEventListener('Clock', () => { 
+          console.log('Clock')
+          // this.bgc.backgroundColor = this.getRandomColor()
+          this.clock++
+        }, false);
     window.addEventListener('SoundExecute', () => { 
         this.bgc.backgroundColor = this.getRandomColor()
         this.clock1++
