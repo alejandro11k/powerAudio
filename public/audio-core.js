@@ -187,6 +187,10 @@ export function setTimeLimit (segundos) {
     timeLimit = segundos
 }
 
+export function getTimeLimit() {
+    return timeLimit
+}
+
 export function setBeats() {
     let intervaloEnSegundos = 60 / bpm
     let cantidadDeBeats = timeLimit / intervaloEnSegundos

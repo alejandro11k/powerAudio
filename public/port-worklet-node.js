@@ -1,4 +1,4 @@
-import { getCounter, stepCounter, getBeats, getTimeLimitEnable} from './audio-core.js'
+import { getCounter, stepCounter, getTimeLimitEnable, getTimeLimit} from './audio-core.js'
 
 export class PortWorkletNode extends AudioWorkletNode {
     constructor(context) {
@@ -14,29 +14,35 @@ export class PortWorkletNode extends AudioWorkletNode {
     handleMessage(event) {
         // this.counter++;
         // console.log('[Node:Received] "' + event.data.message + '" (' + event.data.timeStamp + ')');
+        let isClick = event.data.isClick
+        let isClock = event.data.isClock
 
-        if (event.data.message==='click') {
+        if (isClick || isClock) {
             // this.click.execute(this)
-            this.stresser.doYourJob(this.counter, this.click, this)
-
-            this.counter++
-            // Notify the processor when the node gets 10 messages. Then reset the
-            // counter.
-
-            if (getTimeLimitEnable() && getCounter() >= getBeats()) {
-                this.port.postMessage({
-                    message: 'insert coin!',
-                    timeStamp: this.context.currentTime
-                });
-                // this.counter = 1;
-                this.context.suspend()
-                // this.context.currentTime
+            
+            if (isClick) {
+                this.stresser.doYourJob(this.counter, this.click, this)
+            }
+        
+            if (isClock) {
+                this.counter++
+    
+                console.log('this.counter',this.counter,'getCounter', getCounter(), 'getTimeLimit', getTimeLimit())
+                if (getTimeLimitEnable() && getCounter() >= getTimeLimit()) { // >= getBeats()) {
+                    this.port.postMessage({
+                        message: 'insert coin!',
+                        timeStamp: this.context.currentTime
+                    });
+                    // this.counter = 1;
+                    this.context.suspend()
+                    // this.context.currentTime
+                }
+    
+                stepCounter()
             }
 
-            stepCounter()
-
         }
-        
+
     }
 
     setSound(sound) {
@@ -66,7 +72,7 @@ export class ClockWorkletNode extends AudioWorkletNode {
 
     handleMessage(event) {
 
-        if (event.data.message==='clock') { 
+        if (event.data.isClock) { 
             // console.log('[Node:Received] "' + event.data.message + '" (' + event.data.timeStamp + ')');
             const notFinished = !this.module.isFinished()
             if (notFinished && this.module.context.state === 'running') {

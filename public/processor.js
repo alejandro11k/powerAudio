@@ -21,23 +21,24 @@ class PortProcessor extends AudioWorkletProcessor {
         let bpmInSeconds = (60 / parameters.bpm[0]);
 
         let processCurrentTime = currentTime
-        let isBpmTime = processCurrentTime - this._lastUpdate > bpmInSeconds
-        let isSecondTime = processCurrentTime - this._lastUpdateClock > 1
+        let isClickTime = processCurrentTime - this._lastUpdate > bpmInSeconds
+        let isClockTime = processCurrentTime - this._lastUpdateClock > 1
 
-        if (isBpmTime) {
-            this.port.postMessage({
-            message: 'click',
-            timeStamp: currentTime,
-            });
-            this._lastUpdate = currentTime;
-        }
+        // console.log(isSecondTime, isBpmTime)
 
-        if (isSecondTime) {
+        if (isClickTime || isClockTime) {
             this.port.postMessage({
-            message: 'clock',
+            message: 'processorMsj',
             timeStamp: currentTime,
+            isClick: isClickTime,
+            isClock: isClockTime
             });
-            this._lastUpdateClock = currentTime;
+            if (isClickTime) {
+                this._lastUpdate = currentTime;
+            }
+            if (isClockTime) {
+                this._lastUpdateClock = currentTime;
+            }
         }
 
         /* process audio */
