@@ -131,6 +131,8 @@ export default {
       const timeLimit = this.$store.state.timeLimit
       if (this.timeLimitEnable && value===timeLimit) {
         this.stoped = true
+        this.countDown = 0
+        this.clockShow
       }
 
       if (this.timeLimitEnable && !this.stoped) {
@@ -252,10 +254,12 @@ export default {
       this.$store.commit('setTimeLimit', value)
       // eslint-disable-next-line
       setTimeLimit(this.$store.state.timeLimit)
-      // eslint-disable-next-line
-      resetCounter() // fix
       this.countDown = value
-      this.clock = 0
+      if (this.timeLimitEnable) {
+        // eslint-disable-next-line
+        resetCounter() // fix
+        this.clock = 0
+      }
       // fix
       if  (this.timeLimitEnable && !this.stoped && value <= this.clock) {
         this.stoped = true
@@ -297,7 +301,7 @@ export default {
     clockShow() {
       let actualLimit = this.timeLimitEnable? this.countDown : this.clock
       let value = 0
-      if (this.timeLimitEnable && actualLimit===1) {
+      if (this.timeLimitEnable && actualLimit===0) {
           value = 'Well Done!'
       } else if (actualLimit < 60) {
         value = actualLimit + ' seg.'
