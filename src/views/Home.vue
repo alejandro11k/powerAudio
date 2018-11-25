@@ -213,6 +213,8 @@ export default {
       if (this.stoped) {
         this.clock = 0
         this.countDown = this.$store.state.timeLimit
+      } else if (this.timeLimitEnable) {
+        this.countDown = this.$store.state.timeLimit
       }
       this.stoped = !this.stoped
       this.bgc.backgroundColor = '#FFFAFA'
@@ -247,7 +249,9 @@ export default {
       this.$store.commit('setTimeLimit', value)
       // eslint-disable-next-line
       setTimeLimit(this.$store.state.timeLimit)
-      this.countDown = value
+      if (!this.stoped) {
+        this.countDown = value
+      }
       // fix
       if  (this.timeLimitEnable && !this.stoped && value <= this.clock) {
         this.stoped = true
