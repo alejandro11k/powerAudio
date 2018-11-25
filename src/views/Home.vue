@@ -112,7 +112,7 @@ export default {
       bpm: this.$store.state.bpm,
       volume: this.$store.state.volume,
       timeLimitEnable: this.$store.state.timeLimitEnable,
-      timerValue: this.$store.state.timer.getTimeValues().toString(),
+      // timerValue: this.$store.state.timer.getTimeValues().toString(),
       // click: false,
       bgc: { backgroundColor: '' },
       stressOnly: false,
@@ -127,6 +127,14 @@ export default {
     }
   },
   watch: {
+    clock: function(value) {
+      const timeLimit = this.$store.state.timeLimit
+      console.log(value, timeLimit)
+      if (this.timeLimitEnable && value===timeLimit) {
+        this.stoped = true
+        this.clock = 'Well Done!'
+      }
+    },
     clock1: function (value) {
       if (value<=this.stressOne){
         this.stressOneCounter = value
@@ -169,23 +177,25 @@ export default {
   methods: {
     addStressOne() {
       this.stressOne++
-      if (!this.stoped) { this.fixWhenRunning() }
+      this.fixWhenRunning()
     },
     subStressOne() {
       this.stressOne>0? this.stressOne-- : this.stressOne = 0
-      if (!this.stoped) { this.fixWhenRunning() }
+      this.fixWhenRunning()
     },
     addStressTwo() {
       this.stressTwo++
-      if (!this.stoped) { this.fixWhenRunning() }
+      this.fixWhenRunning()
     },
     subStressTwo() {
       this.stressTwo>0? this.stressTwo-- : this.subStressTwo = 0
-      if (!this.stoped) { this.fixWhenRunning() }
+      this.fixWhenRunning()
     },
     fixWhenRunning() {
-      this.onOff()
-      this.onOff()
+      if (!this.stoped) {
+        this.onOff()
+        this.onOff()
+      }
     },
     setBpm (value) {
       this.$store.commit('setBpm', value)
@@ -232,11 +242,18 @@ export default {
       this.$store.commit('setTimeLimit', value)
       // eslint-disable-next-line
       setTimeLimit(this.$store.state.timeLimit)
+
+      // fix
+      if  (this.timeLimitEnable && !this.stoped && value <= this.clock) {
+        this.stoped = true
+      }
     },
     setTimeLimitEnable (value) {
       this.$store.commit('setTimeLimitEnable', value)
       // eslint-disable-next-line
       setTimeLimitEnable(this.$store.state.timeLimitEnable)
+      this.fixWhenRunning()
+      this.clock = 0
     },
     timerLogic() {
       const timer = this.$store.state.timer
