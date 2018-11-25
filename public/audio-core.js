@@ -87,6 +87,7 @@ export function setStressOneInterval(number) {
     stressOneInterval = number
     if (portWorkletNode!==null) {
         portWorkletNode.stresser.getStressOne().stressInterval = number
+        portWorkletNode.resetActualBeat()
     }
 }
 
@@ -95,6 +96,7 @@ export function setStressTwoInterval(number) {
     stressTwoInterval = number
     if (portWorkletNode!==null) {
         portWorkletNode.stresser.getStressTwo().stressInterval = number
+        portWorkletNode.resetActualBeat()
     }
 }
 
