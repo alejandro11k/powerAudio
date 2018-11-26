@@ -13,13 +13,11 @@ export class PortWorkletNode extends AudioWorkletNode {
     }
 
     handleMessage(event) {
-        // this.counter++;
         // console.log('[Node:Received] "' + event.data.message + '" (' + event.data.timeStamp + ')');
         let isClick = event.data.isClick
         let isClock = event.data.isClock
 
         if (isClick || isClock) {
-            // this.click.execute(this)
             
             if (isClick) {
                 this.stresser.doYourJob(this.actualBeat, this.click, this)
@@ -28,24 +26,19 @@ export class PortWorkletNode extends AudioWorkletNode {
         
             if (isClock) {
                 this.counter++
-                this.clock.click()
+                this.clock.clock()
     
-                console.log('this.counter',this.counter,'getCounter', getCounter(), 'getTimeLimit', getTimeLimit())
-                if (getTimeLimitEnable() && getCounter() >= getTimeLimit()) { // >= getBeats()) {
+                if (getTimeLimitEnable() && getCounter() >= getTimeLimit()) {
                     this.port.postMessage({
                         message: 'insert coin!',
                         timeStamp: this.context.currentTime
                     });
-                    // this.counter = 1;
                     this.context.suspend()
-                    // this.context.currentTime
                 }
-    
+
                 stepCounter()
             }
-
         }
-
     }
 
     setSound(sound) {
@@ -73,7 +66,6 @@ export class PortWorkletNode extends AudioWorkletNode {
 export class ClockWorkletNode extends AudioWorkletNode {
     constructor(context) {
         super(context, 'processor');
-        // this.counter = 1;
         this.port.onmessage = this.handleMessage.bind(this);
         this.port.postMessage({
             message: 'Are you ready?',
@@ -87,13 +79,22 @@ export class ClockWorkletNode extends AudioWorkletNode {
             // console.log('[Node:Received] "' + event.data.message + '" (' + event.data.timeStamp + ')');
             const notFinished = !this.module.isFinished()
             if (notFinished && this.module.context.state === 'running') {
-                this.clock.click() 
+                this.clock.clock() 
             } else {
                 this.clock.stop()
             }
-
+        }
+        if (event.data.isTimeListTime) {
+            this.clock.click()
         }
         
+    }
+
+    setTimeList(timeList) {
+        this.port.postMessage({
+            message: 'timeList',
+            timeList: timeList
+        });
     }
 
     setClock(clock) {

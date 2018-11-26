@@ -1,13 +1,18 @@
 export class Clock {
     constructor() {
-        this.event = new Event('Clock')
+        this.eventClock = new Event('Clock')
+        this.eventClick = new Event('Click')
+    }
+
+    clock() {
+        dispatchEvent(this.eventClock)
     }
 
     click() {
-        dispatchEvent(this.event)
+        dispatchEvent(this.eventClick)
     }
 
     stop() {
-        this.event.stopPropagation();
+        this.eventClock.stopPropagation();
     }
 }

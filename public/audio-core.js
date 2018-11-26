@@ -83,7 +83,6 @@ export function setStressOnly(bool) {
 }
 
 export function setStressOneInterval(number) {
-    // stressOne.stressInterval = number
     stressOneInterval = number
     if (portWorkletNode!==null) {
         portWorkletNode.stresser.getStressOne().stressInterval = number
@@ -92,7 +91,6 @@ export function setStressOneInterval(number) {
 }
 
 export function setStressTwoInterval(number) {
-    // stressTwo.stressInterval = number
     stressTwoInterval = number
     if (portWorkletNode!==null) {
         portWorkletNode.stresser.getStressTwo().stressInterval = number
@@ -191,7 +189,6 @@ export function getBeats() {
 
 export function setTimeLimit (segundos) {
     timeLimit = segundos
-    // counter = 1
 }
 
 export function getTimeLimit() {

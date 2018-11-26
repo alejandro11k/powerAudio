@@ -3,9 +3,10 @@
 
     <md-content class="metronome">
 
-      <div v-bind:style="bgc" v-on:input="bgc.backgroundColor = $event.target.value">.</div>
+      <div style="margin-bottom: 3px" v-bind:style="bgc" v-on:input="bgc.backgroundColor = $event.target.value">.</div>
       <div> {{ stressOneCounter }} | {{ clockShow }} | {{ stressTwoCounter }} </div>
       
+
       <md-button class="md-fab" @click="onOff">
           <md-icon v-if="stoped">▹</md-icon> <!--▸▹►-->
           <md-icon v-else style="color: red;"> ■ </md-icon>
@@ -240,7 +241,6 @@ export default {
       return color;
     },
     setSound (value) {
-      console.log(value)
       this.$store.commit('setSoundSelect', value)
       // eslint-disable-next-line
       StateNodes.setSound(getSounds().get(this.$store.state.soundSelect))

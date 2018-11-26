@@ -10,11 +10,19 @@ class PortProcessor extends AudioWorkletProcessor {
         this._lastUpdate = currentTime;
         this._lastUpdateClock = currentTime;
         this.port.onmessage = this.handleMessage.bind(this);
+        this.timeList = []
     }
   
     handleMessage(event) {
-      console.log('[Processor:Received] "' + event.data.message +
-                  '" (' + event.data.timeStamp + ')');
+        /*
+        console.log('[Processor:Received] "' + event.data.message +
+                    '" (' + event.data.timeStamp + ')' + event.data.timeList);
+        */
+        if (event.data.message==='timeList') {
+            let timeList = event.data.timeList
+            timeList.reverse()
+            this.timeList = timeList
+        }
     }
 
     process(inputs, outputs, parameters){
@@ -23,21 +31,28 @@ class PortProcessor extends AudioWorkletProcessor {
         let processCurrentTime = currentTime
         let isClickTime = processCurrentTime - this._lastUpdate > bpmInSeconds
         let isClockTime = processCurrentTime - this._lastUpdateClock > 1
-
-        // console.log(isSecondTime, isBpmTime)
-
-        if (isClickTime || isClockTime) {
+        let length = this.timeList.length
+        let isTimeListTime = false
+        if (length!==0) {
+            let lastElement = this.timeList[length-1]
+            isTimeListTime = processCurrentTime > lastElement - 0.01 && processCurrentTime < lastElement + 0.01
+        }
+        if (isClickTime || isClockTime || isTimeListTime) {
             this.port.postMessage({
             message: 'processorMsj',
             timeStamp: currentTime,
             isClick: isClickTime,
-            isClock: isClockTime
+            isClock: isClockTime,
+            isTimeListTime: isTimeListTime
             });
             if (isClickTime) {
                 this._lastUpdate = currentTime;
             }
             if (isClockTime) {
                 this._lastUpdateClock = currentTime;
+            }
+            if (isTimeListTime) {
+                this.timeList.pop()
             }
         }
 

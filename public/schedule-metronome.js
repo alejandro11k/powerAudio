@@ -20,11 +20,9 @@ export class ScheduleModule {
     suspendResume(schedules) {
         if(this.context !== null && this.context.state === 'running' && !this.isFinished()) {
             this.context.suspend().then(function() {
-            // return 'Suspending context';
           });
         } else if(this.context !== null && this.context.state === 'suspended') {
             this.context.resume().then(function() {
-            // return 'Resuming context';
           });  
         } else if (schedules.length > 0) {
             this.playScheduleNodes(schedules)
@@ -67,10 +65,10 @@ export class ScheduleModule {
                 this.contextGainNode(this.clockWorkletNode, 80)
                 this.clockWorkletNode.setClock(this.clock)
                 this.clockWorkletNode.setModule(this)
-                this.scheduleNode.execute(this.context)
+                this.scheduleNode.execute(this.context, this.clockWorkletNode, [])
             })
         } else {
-            this.scheduleNode.execute(this.context)
+            this.scheduleNode.execute(this.context, this.clockWorkletNode, [])
         }
         
     }
@@ -137,7 +135,7 @@ export class Schedule {
     }
 
     // To use with Schedules without Sound Library
-    // or when no sound setted
+    // or when no sound setted, need an update?
     simplePlayBeat (time, audioContext) {
         var startTime = time //audioContext.currentTime + delay
         var endTime = time + 0.1
@@ -210,12 +208,17 @@ export class ScheduleNode {
         }
     }
 
-    execute(audioNode) {
+    execute(audioNode, clockWorkletNode, timeList) {
         this.schedule.execute(audioNode)
-        console.log('beats to play', this.schedule.timeList.length, 'sound', this.schedule.sound)
+        this.schedule.timeList.forEach((e)=>{
+            timeList.push(e)
+        })
         if(!this.lastScheduleNode()){
             this.nextScheduleNode.schedule.reInitialize(this.schedule.getLastBeat())
-            this.nextScheduleNode.execute(audioNode)
+            this.nextScheduleNode.execute(audioNode, clockWorkletNode, timeList)
+        }
+        if(this.lastScheduleNode){
+            clockWorkletNode.setTimeList(timeList)
         }
     }
 

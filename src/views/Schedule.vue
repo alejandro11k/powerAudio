@@ -2,9 +2,10 @@
   <div class="schedule">
     <md-content class="main">
     
+      <div style="margin-bottom: 3px" v-bind:style="bgc" v-on:input="bgc.backgroundColor = $event.target.value">.</div>
       <md-progress-bar class="md-accent" md-mode="determinate" :md-value="amountFwd"></md-progress-bar>
       <md-progress-bar md-mode="determinate" :md-value="amountFwd"></md-progress-bar>
-    
+
       <div> {{ countUpInMinutes }} </div>
 
       <md-button class="md-fab" v-longpress="removeAll" @click="add">
@@ -81,8 +82,8 @@ export default {
         amountFwd: 0,
         clock: 0,
         countup: 0,
-        stoped: true
-        // bgc: { backgroundColor: '' },
+        stoped: true,
+        bgc: { backgroundColor: '' },
     }
   },
   computed: {
@@ -136,6 +137,7 @@ export default {
       this.stoped = true
       this.countup = 0
       this.amountFwd = 0
+      this.bgc.backgroundColor = '#FFFAFA'
     },
     deleteChip(pos) {
       if (this.stoped) {
@@ -192,9 +194,11 @@ export default {
         this.stoped = !this.stoped
         
         window.addEventListener('Clock', () => { 
-          console.log('Clock')
-          // this.bgc.backgroundColor = this.getRandomColor()
           this.clock++
+        }, false);
+
+        window.addEventListener('Click', () => {
+          this.bgc.backgroundColor = this.getRandomColor()
         }, false);
         
         // eslint-disable-next-line
