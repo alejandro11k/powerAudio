@@ -222,4 +222,10 @@ export function resetCounter() {
     counter = 1
 }
 
+export function resetActualBeat() {
+    if (portWorkletNode!==null) {
+        portWorkletNode.resetActualBeat()
+    }
+}
+
 

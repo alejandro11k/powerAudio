@@ -167,16 +167,12 @@ export default {
       StateNodes.setStressOnly(this.$store.state.stressOnly)
     },
     stressOne: function (value) {
-      // eslint-disable-next-line
-      // stressOneInterval(value)
       this.$store.commit('setStressOne', value)
       // eslint-disable-next-line
       StateNodes.setStressOne(this.$store.state.stressOne)
       this.fixWhenRunning()
     },
     stressTwo: function (value) {
-      // eslint-disable-next-line
-      // stressTwoInterval(value)
       this.$store.commit('setStressTwo', value)
       // eslint-disable-next-line
       StateNodes.setStressTwo(this.$store.state.stressTwo)
@@ -269,11 +265,16 @@ export default {
       this.$store.commit('setTimeLimitEnable', value)
       // eslint-disable-next-line
       setTimeLimitEnable(this.$store.state.timeLimitEnable)
-      this.fixWhenRunning()
       this.clock = 0
       this.countDown = this.$store.state.timeLimit
+      // eslint-disable-next-line
+      resetCounter() // fix
+      // eslint-disable-next-line
+      resetActualBeat() // fix
+      this.fixWhenRunning()
     },
     timerLogic() {
+      // timer use deprecated
       const timer = this.$store.state.timer
       if (!timer.isRunning()) {
         this.stoped = false
