@@ -115,16 +115,26 @@ export default {
       // timerValue: this.$store.state.timer.getTimeValues().toString(),
       // click: false,
       bgc: { backgroundColor: '' },
+      stoped: true,
+      
       stressOnly: false,
       stressOne: 0,
       stressTwo: 0,
-      stoped: true,
       clock: 0,
       countDown: 0,
       clock1: 0,
       clock2: 0,
       stressOneCounter: 0,
       stressTwoCounter: 0,
+
+      // stressOne: this.$store.state.stressOne,
+      // stressTwo: this.$store.state.stressTwo,
+      // clock: this.$store.state.clock,
+      // countDown: this.$store.state.countDown,
+      // clock1: this.$store.state.clock1,
+      // clock2: this.$store.state.clock2,
+      // stressOneCounter: this.$store.state.stressOneCounter,
+      // stressTwoCounter: this.$store.state.stressTwoCounter,
     }
   },
   watch: {

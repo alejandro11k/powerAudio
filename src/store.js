@@ -14,20 +14,37 @@ export default new Vuex.Store({
     timeLimit: 10,
     timeLimitEnable: false,
     timer: timer,
+    
+    stressOne: 0,
+    stressTwo: 0,
+    stressOnly: false,
+    clock: 0,
+    countDown: 0,
+    clock1: 0,
+    clock2: 0,
+    stressOneCounter: 0,
+    stressTwoCounter: 0,
+    
     scheduleProperties: {
       bpm: 60,
       timeLimit: 10,
       soundSelected: 'beeper'
     },
     scheduleTempList: [],
-    stressOne: 0,
-    stressTwo: 0,
-    stressOnly: false
+    
   },
   mutations: {
     setStressOne (state, value) { state.stressOne = value },
     setStressTwo (state, value) { state.stressTwo = value },
     setStressOnly (state, value) { state.stressOnly = value },
+    setClock (state, value) { state.clock = value },
+    setCountDown (state, value) { state.countDown = value },
+    setClock1 (state, value) { state.clock1 = value },
+    setClock2 (state, value) { state.clock2 = value },
+    setStressOneCounter (state, value) { state.stressOneCounter = value },
+    setStressTwoCounter (state, value) { state.stressTwoCounter = value },
+
+
     setBpm (state, value) { state.bpm = value },
     setVolume (state, value) { state.volume = value },
     setSoundSelect (state, value) { state.soundSelect = value },
