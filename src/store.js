@@ -13,17 +13,10 @@ export default new Vuex.Store({
     soundSelect: 'beeper',
     timeLimit: 10,
     timeLimitEnable: false,
+    stressOnly: false,
     timer: timer,
-    
     stressOne: 0,
     stressTwo: 0,
-    stressOnly: false,
-    clock: 0,
-    countDown: 0,
-    clock1: 0,
-    clock2: 0,
-    stressOneCounter: 0,
-    stressTwoCounter: 0,
     
     scheduleProperties: {
       bpm: 60,
@@ -31,6 +24,13 @@ export default new Vuex.Store({
       soundSelected: 'beeper'
     },
     scheduleTempList: [],
+    
+    clock: 0,
+    countDown: 0,
+    clock1: 0,
+    clock2: 0,
+    stressOneCounter: 0,
+    stressTwoCounter: 0,
     
   },
   mutations: {

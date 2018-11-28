@@ -112,12 +112,12 @@ export default {
       bpm: this.$store.state.bpm,
       volume: this.$store.state.volume,
       timeLimitEnable: this.$store.state.timeLimitEnable,
+      stressOnly: this.$store.state.stressOnly,
       // timerValue: this.$store.state.timer.getTimeValues().toString(),
       // click: false,
       bgc: { backgroundColor: '' },
       stoped: true,
       
-      stressOnly: false,
       // stressOne: 0,
       // stressTwo: 0,
       clock: 0,
