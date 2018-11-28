@@ -118,8 +118,8 @@ export default {
       stoped: true,
       
       stressOnly: false,
-      stressOne: 0,
-      stressTwo: 0,
+      // stressOne: 0,
+      // stressTwo: 0,
       clock: 0,
       countDown: 0,
       clock1: 0,
@@ -127,8 +127,6 @@ export default {
       stressOneCounter: 0,
       stressTwoCounter: 0,
 
-      // stressOne: this.$store.state.stressOne,
-      // stressTwo: this.$store.state.stressTwo,
       // clock: this.$store.state.clock,
       // countDown: this.$store.state.countDown,
       // clock1: this.$store.state.clock1,
@@ -153,17 +151,19 @@ export default {
       
     },
     clock1: function (value) {
-      if (value<=this.stressOne){
+      const stressValue = this.$store.state.stressOne
+      if (value<=stressValue){
         this.stressOneCounter = value
-      } else if (this.stressOne!=0){
+      } else if (stressValue!=0){
         this.stressOneCounter = 1
         this.clock1 = 1
       }
     },
     clock2: function (value) {
-      if (value<=this.stressTwo){
+      const stressValue = this.$store.state.stressTwo
+      if (value<=stressValue){
         this.stressTwoCounter = value
-      } else if (this.stressTwo!=0){
+      } else if (stressValue!=0){
         this.stressTwoCounter = 1
         this.clock2 = 1
       }
@@ -191,19 +191,23 @@ export default {
   },
   methods: {
     addStressOne() {
-      this.stressOne++
+      // this.stressOne++
+      this.$store.commit('setStressOne', this.$store.state.stressOne+1)
       this.fixWhenRunning()
     },
     subStressOne() {
-      this.stressOne>0? this.stressOne-- : this.stressOne = 0
+      // this.stressOne>0? this.stressOne-- : this.stressOne = 0
+      this.stressOne>0? this.$store.commit('setStressOne', this.$store.state.stressOne-1) : this.$store.commit('setStressOne', 0) 
       this.fixWhenRunning()
     },
     addStressTwo() {
-      this.stressTwo++
+      // this.stressTwo++
+      this.$store.commit('setStressTwo', this.$store.state.stressTwo+1)
       this.fixWhenRunning()
     },
     subStressTwo() {
-      this.stressTwo>0? this.stressTwo-- : this.subStressTwo = 0
+      // this.stressTwo>0? this.stressTwo-- : this.subStressTwo = 0
+      this.stressTwo>0? this.$store.commit('setStressTwo', this.$store.state.stressTwo-1) : this.$store.commit('setStressTwo', 0) 
       this.fixWhenRunning()
     },
     fixWhenRunning() {
@@ -314,6 +318,8 @@ export default {
     }
   },
   computed: {
+    stressOne: function() { return this.$store.state.stressOne },
+    stressTwo: function() { return this.$store.state.stressTwo },
     clockShow() {
       let actualLimit = this.timeLimitEnable? this.countDown : this.clock
       let value = 0
