@@ -210,6 +210,11 @@ export default {
     },
     onOff () {
       // eslint-disable-next-line
+      resetCounter() // fix
+      // eslint-disable-next-line
+      resetActualBeat() // fix
+
+      // eslint-disable-next-line
       StateNodes.onOff()
       // this.timerLogic() // old external timer
       if (this.stoped) {
