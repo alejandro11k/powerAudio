@@ -35,7 +35,7 @@ class PortProcessor extends AudioWorkletProcessor {
         let isTimeListTime = false
         if (length!==0) {
             let lastElement = this.timeList[length-1]
-            isTimeListTime = processCurrentTime > lastElement - 0.01 && processCurrentTime < lastElement + 0.01
+            isTimeListTime = isTimeListTime = processCurrentTime >= lastElement
         }
         if (isClickTime || isClockTime || isTimeListTime) {
             this.port.postMessage({
