@@ -1,8 +1,10 @@
 <template>
   <div id="app">
     <div id="nav"> |
-      <router-link to="/">Home</router-link> |
-      <router-link to="/schedule">Schedule</router-link> |
+      <router-link v-if="scheduleStoped" to="/">Home</router-link>
+      <router-link event="" v-else to="/">Home</router-link> |
+      <router-link v-if="metronomeStoped" to="/schedule">Schedule</router-link>
+      <router-link event="" style="color:#2c3e50;" v-else to="/">Schedule</router-link> |
       <div v-if="!detectAudioWorklet" style="color:red;"> You won't hear anything, get <a target="_blank" style="color:red;" href="https://www.google.com/chrome/">Chrome Browser</a></div>
     </div>
     <router-view/>
@@ -18,6 +20,12 @@ export default {
         return Boolean(
           context.audioWorklet &&
           typeof context.audioWorklet.addModule === 'function');
+    },
+    metronomeStoped() {
+      return this.$store.state.metronomeStoped
+    },
+    scheduleStoped() {
+      return this.$store.state.scheduleStoped
     }
   }
 }

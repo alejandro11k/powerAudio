@@ -115,7 +115,7 @@ export default {
       stressOnly: this.$store.state.stressOnly,
       // click: false,
       bgc: { backgroundColor: '' },
-      stoped: true,
+      stoped: this.$store.state.metronomeStoped, //true,
       
       // stressOne: 0,
       // stressTwo: 0,
@@ -135,6 +135,9 @@ export default {
     }
   },
   watch: {
+    stoped: function(value) {
+      this.$store.commit('setMetronomeStoped', value)
+    },
     clock: function(value) {
       const timeLimit = this.$store.state.timeLimit
       if (this.timeLimitEnable && value===timeLimit) {

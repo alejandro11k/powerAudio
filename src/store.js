@@ -5,6 +5,9 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    metronomeStoped: true,
+    scheduleStoped: true,
+
     stateNodes: null,
     bpm: 60,
     volume: 80,
@@ -31,6 +34,9 @@ export default new Vuex.Store({
     
   },
   mutations: {
+    setMetronomeStoped (state, value) { state.metronomeStoped = value },
+    setScheduleStoped (state, value) { state.scheduleStoped = value },
+
     setStressOne (state, value) { state.stressOne = value },
     setStressTwo (state, value) { state.stressTwo = value },
     setStressOnly (state, value) { state.stressOnly = value },

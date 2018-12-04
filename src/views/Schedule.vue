@@ -82,7 +82,7 @@ export default {
         amountFwd: 0,
         clock: 0,
         countup: 0,
-        stoped: true,
+        stoped: this.$store.state.scheduleStoped, //true,
         bgc: { backgroundColor: '' },
     }
   },
@@ -114,6 +114,9 @@ export default {
     }
   },
   watch: {
+    stoped: function(value) {
+      this.$store.commit('setScheduleStoped', value)
+    },
     bpm: function (value) { this.updateBpm(value) },
     timeLimit: function (value) { this.updateTimeLimit(value) },
     clock: function () { 
