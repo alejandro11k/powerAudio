@@ -27,36 +27,21 @@ export class StateNodes {
     }
 
     getSounds() {
-        this.state.getSounds()
-    }
-}
-
-class NullNodes {
-    constructor() {
-
+        this.state.getSounds() // ??
     }
 
-    onOff(context) {
-       // SetNewState
-       // context.setState(new ContextAndGainNodes())
+    setStressOne(value) {
+        this.state.setStressOne(value)
     }
 
-    setBpm(value) {
-        // guardar el valor para darselo al proximo estado
+    setStressTwo(value) {
+        this.state.setStressTwo(value)
     }
 
-    setSound(value) {
-        // guardar el valor para darselo al proximo estado
+    setStressOnly(value) {
+        this.state.setStressOnly(value)
     }
 
-    setGain(value) {
-        // guardar el valor para darselo al proximo estado
-    }
-
-    getSounds() {
-        // ??
-    }
-    
 }
 
 class ContextAndGainNodes {
@@ -87,17 +72,35 @@ class ContextAndGainNodes {
         return AudioCore.getSounds()
     }
     
+    setTimeLimit(value) {
+        AudioCore.setBeats(value)
+    }
+
+    seconds2Beats(value) {
+        return value / 60
+    }
+
+    setStressOne(value) {
+        AudioCore.setStressOneInterval(value)
+    }
+
+    setStressTwo(value) {
+        AudioCore.setStressTwoInterval(value)
+    }
+
+    setStressOnly(value) {
+        AudioCore.setStressOnly(value)
+    }
+
 }
 
 class AllNodes {
     constructor() {
         AudioCore.init()
-        console.log('start', AudioCore.getCurrentTime())
     }
 
     onOff() {
         AudioCore.suspendResume()
-        console.log('start/end', AudioCore.getCurrentTime())
     }
 
     setBpm (value) {
@@ -106,6 +109,7 @@ class AllNodes {
 
     setSound(value) {
         AudioCore.setSound(value)
+        AudioCore.selectStressersSounds()
     }
 
     setGain(value) {
@@ -116,4 +120,53 @@ class AllNodes {
         AudioCore.getSounds()
     }
 
+    setTimeLimit(value) {
+        AudioCore.setBeats(value)
+    }
+
+    seconds2Beats(value) {
+        return value / 60
+    }
+
+    setStressOne(value) {
+        AudioCore.setStressOneInterval(value)
+    }
+
+    setStressTwo(value) {
+        AudioCore.setStressTwoInterval(value)
+    }
+
+    setStressOnly(value) {
+        AudioCore.setStressOnly(value)
+    }
+
 }
+/*
+class NullNodes {
+    constructor() {
+
+    }
+
+    onOff(context) {
+       // SetNewState
+       // context.setState(new ContextAndGainNodes())
+    }
+
+    setBpm(value) {
+        // guardar el valor para darselo al proximo estado
+    }
+
+    setSound(value) {
+        // guardar el valor para darselo al proximo estado
+    }
+
+    setGain(value) {
+        // guardar el valor para darselo al proximo estado
+    }
+
+    getSounds() {
+        // ??
+    }
+    
+}
+*/

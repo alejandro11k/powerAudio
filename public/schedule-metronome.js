@@ -1,74 +1,170 @@
-export class ScheduleMetronome {
+import { Sound, Beeper, Kicker } from "./sound.js"
+import { ClockWorkletNode } from './port-worklet-node.js'
+import { Clock } from './clock.js'
+
+export class ScheduleModule {
     constructor() {
-        let audioContext = null
-        let list = []
-        let lastBeat = 0
+        this.context = null
+        this.gainNode = null
+        this.sounds = new Map()
+        this.scheduleNode = null
+        this.played = false
+        this.clock = new Clock()
+        this.clockWorkletNode = null
     }
 
-    setLastBeat() {
-        this.lastBeat = 0
+    isFinished() {
+        return (this.scheduleNode.getLastBeat() + 0.2 < this.context.currentTime)
     }
 
-    setlist() {
-        this.list = []
-    }
-
-    test() {
-        this.setlist()
-        this.setLastBeat()
-        this.add(90,0.1)
-        this.add(120,0.1)
-        this.add(180,0.1)
-        this.playList()
-    }
-
-    add(bpm, minutes) {
-        this.list.push({ 'bpm':bpm, 'minutes':minutes})
-    }
-
-    playList() {
-        let audioContext = new AudioContext()
-        audioContext.audioWorklet.addModule('./processor.js').then(() => {
-            this.list.forEach(element => {
-                this.playBeats(element.bpm, element.minutes, audioContext)
-            });
-            this.lastBeat = 0
-        })
-    }
-    
-    playBeats(bpm, minutes, audioContext) {
-        let interval = 1
-        const delay = this.bpm2seg(bpm)
-        let beats = this.minutes2Beats(minutes, delay)
-        let beat = this.lastBeat
-        console.log('delay', delay, 'beats', beats, 'beat', beat)
-        
-        for (let times = 1; times < beats+1; times++) {
-            beat = beat + delay
-            this.playBeat(beat, 3, 0.1, audioContext)
-            // console.log('pulso: ', beat, 'iteracion: ', times)
+    suspendResume(schedules) {
+        if(this.context !== null && this.context.state === 'running' && !this.isFinished()) {
+            this.context.suspend().then(function() {
+          });
+        } else if(this.context !== null && this.context.state === 'suspended') {
+            this.context.resume().then(function() {
+          });  
+        } else if (schedules.length > 0) {
+            this.playScheduleNodes(schedules)
+        } else {
+            return 0;
         }
 
-        this.lastBeat = beat + interval
-        this.audioContext = audioContext
-        
-    }
-
-    playBeat (delay, pitch, duration, audioContext) {
-      var startTime = audioContext.currentTime + delay
-      var endTime = startTime + duration
-      
-      var oscillator = audioContext.createOscillator()
-      oscillator.connect(audioContext.destination)
-      
-      oscillator.frequency.setValueAtTime(pitch * 220, startTime)
-      
-      oscillator.start(startTime)
-      oscillator.stop(endTime)
+        return this.context.currentTime
     }
 
     stop() {
-        this.audioContext.suspend()
+        this.played = false
+        this.context.suspend().then( () => {
+            this.context = null
+        })
+    }
+
+    playScheduleNodes(schedules) {
+        this.createContextAndGainNode()
+        this.initSounds()
+        const firstSchedule = schedules[0]
+        this.scheduleNode = new ScheduleNode(
+            new Schedule(
+                firstSchedule[0],
+                firstSchedule[1],
+                this.sounds.get(firstSchedule[2])
+            ))
+        schedules.splice(0,1)
+        schedules.forEach((schedule)=>{
+            this.scheduleNode.addNext(new Schedule(schedule[0],schedule[1],this.sounds.get(schedule[2])))
+        })
+        this.play()
+    }
+
+    play() {
+        if (!this.played) {
+            this.played = true
+            this.context.audioWorklet.addModule('./processor.js').then(() => {
+                this.clockWorkletNode = new ClockWorkletNode(this.context)
+                this.contextGainNode(this.clockWorkletNode, 80)
+                this.clockWorkletNode.setClock(this.clock)
+                this.clockWorkletNode.setModule(this)
+                this.scheduleNode.execute(this.context, this.clockWorkletNode, [])
+            })
+        } else {
+            this.scheduleNode.execute(this.context, this.clockWorkletNode, [])
+        }
+        
+    }
+
+    contextGainNode(portWorkletNode, lastGainNodeValue) {
+        portWorkletNode.connect(this.gainNode);
+        this.gainNode.connect(this.context.destination);
+        this.gainNode.gain.value = this.input2GainValue(lastGainNodeValue) //0.09
+    }
+
+    input2GainValue(value) {
+        const gainValue = (value * 1.2) / 100
+        console.log('input', value, 'gainValue', gainValue)
+        return gainValue
+    }
+
+    initSounds() {
+        const beeper = new Beeper(new Sound(this.context))
+        const kicker = new Kicker(new Sound(this.context))
+        this.sounds.set('beeper', beeper)
+        this.sounds.set('kicker', kicker)
+    }
+
+    createContextAndGainNode() {
+        this.context = new AudioContext()
+        this.gainNode = this.context.createGain()
+    }
+
+}
+
+export class Schedule {
+    constructor(bpm, seconds, sound) {
+        this.bpm = bpm
+        this.seconds = seconds
+        // sound is an optional parameter
+        this.sound = sound || null
+        this.lastBeat = 0
+        this.start = 0
+        this.timeList = this.calculateTimeList(bpm, seconds, this.start)
+    }
+
+    reInitialize(start) {
+        this.setStart(start)
+        this.timeList = this.calculateTimeList(this.bpm, this.seconds, start)
+    }
+
+    setStart(start) {
+        this.start = start
+    }
+
+    getLastBeat() {
+        return this.lastBeat
+    }
+
+    execute(audioNode) {
+        const playSimple = (this.sound===null)
+        this.timeList.forEach(time => {
+            if (playSimple) {
+                this.simplePlayBeat(time, audioNode)
+            } else {
+                this.sound.executeAt(time,audioNode)
+            }
+        });
+    }
+
+    // To use with Schedules without Sound Library
+    // or when no sound setted, need an update?
+    simplePlayBeat (time, audioContext) {
+        var startTime = time //audioContext.currentTime + delay
+        var endTime = time + 0.1
+        var pitch = 2
+        
+        var oscillator = audioContext.createOscillator()
+        oscillator.connect(audioContext.destination)
+        
+        oscillator.frequency.setValueAtTime(pitch * 220, startTime)
+        
+        oscillator.start(startTime)
+        oscillator.stop(endTime)
+    }
+
+    calculateTimeList(bpm, seconds) {
+        const timeList = []
+
+        const delay = this.bpm2seg(bpm)
+        const beats = this.seconds2Beats(seconds, delay)
+        let beat = this.start - delay
+        
+        for (let times = 1; times < beats+1; times++) {
+            beat = beat + delay
+            timeList.push(beat)
+        }
+
+        this.lastBeat = beat + delay
+
+        return timeList
     }
 
     bpm2seg(bpm) {
@@ -82,4 +178,51 @@ export class ScheduleMetronome {
         return times 
     }
 
+    seconds2Beats(seconds, delay) {
+        const times = seconds / delay
+        return times 
+    }
+}
+
+
+export class ScheduleNode {
+    constructor(schedule) {
+        this.schedule = schedule
+        this.nextScheduleNode = null
+    }
+
+    getLastSchedule() {
+        return this.lastScheduleNode() ? this.schedule : this.nextScheduleNode.getLastSchedule()
+    }
+
+    getLastBeat() {
+        const lastSchedule = this.getLastSchedule()
+        return lastSchedule.lastBeat
+    }
+
+    addNext(schedule) {
+        if(this.lastScheduleNode()){
+          this.nextScheduleNode = new ScheduleNode(schedule)
+        } else {
+            this.nextScheduleNode.addNext(schedule)
+        }
+    }
+
+    execute(audioNode, clockWorkletNode, timeList) {
+        this.schedule.execute(audioNode)
+        this.schedule.timeList.forEach((e)=>{
+            timeList.push(e)
+        })
+        if(!this.lastScheduleNode()){
+            this.nextScheduleNode.schedule.reInitialize(this.schedule.getLastBeat())
+            this.nextScheduleNode.execute(audioNode, clockWorkletNode, timeList)
+        }
+        if(this.lastScheduleNode){
+            clockWorkletNode.setTimeList(timeList)
+        }
+    }
+
+    lastScheduleNode() {
+        return this.nextScheduleNode===null
+    }
 }

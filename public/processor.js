@@ -8,23 +8,52 @@ class PortProcessor extends AudioWorkletProcessor {
     constructor() {
         super();
         this._lastUpdate = currentTime;
+        this._lastUpdateClock = currentTime;
         this.port.onmessage = this.handleMessage.bind(this);
+        this.timeList = []
     }
   
     handleMessage(event) {
-      console.log('[Processor:Received] "' + event.data.message +
-                  '" (' + event.data.timeStamp + ')');
+        /*
+        console.log('[Processor:Received] "' + event.data.message +
+                    '" (' + event.data.timeStamp + ')' + event.data.timeList);
+        */
+        if (event.data.message==='timeList') {
+            let timeList = event.data.timeList
+            timeList.reverse()
+            this.timeList = timeList
+        }
     }
 
     process(inputs, outputs, parameters){
-        // Post a message to the node for every 1 second.
-        let second = (60 / parameters.bpm[0]);
-        if (currentTime - this._lastUpdate > second) {
+        let bpmInSeconds = (60 / parameters.bpm[0]);
+
+        let processCurrentTime = currentTime
+        let isClickTime = processCurrentTime - this._lastUpdate > bpmInSeconds
+        let isClockTime = processCurrentTime - this._lastUpdateClock > 1
+        let length = this.timeList.length
+        let isTimeListTime = false
+        if (length!==0) {
+            let lastElement = this.timeList[length-1]
+            isTimeListTime = isTimeListTime = processCurrentTime >= lastElement
+        }
+        if (isClickTime || isClockTime || isTimeListTime) {
             this.port.postMessage({
-            message: 'Process is called.',
+            message: 'processorMsj',
             timeStamp: currentTime,
+            isClick: isClickTime,
+            isClock: isClockTime,
+            isTimeListTime: isTimeListTime
             });
-            this._lastUpdate = currentTime;
+            if (isClickTime) {
+                this._lastUpdate = currentTime;
+            }
+            if (isClockTime) {
+                this._lastUpdateClock = currentTime;
+            }
+            if (isTimeListTime) {
+                this.timeList.pop()
+            }
         }
 
         /* process audio */
