@@ -3,11 +3,25 @@
     <div id="nav"> |
       <router-link to="/">Home</router-link> |
       <router-link to="/schedule">Schedule</router-link> |
-      <!--router-link to="/test">Test</router-link-->
+      <div v-if="!detectAudioWorklet" style="color:red;"> You won't hear anything, get <a target="_blank" style="color:red;" href="https://www.google.com/chrome/">Chrome Browser</a></div>
     </div>
     <router-view/>
   </div>
 </template>
+
+<script>
+export default {
+  name:'app',
+  computed: {
+    detectAudioWorklet() {
+      let context = new OfflineAudioContext(1, 1, 44100);
+        return Boolean(
+          context.audioWorklet &&
+          typeof context.audioWorklet.addModule === 'function');
+    }
+  }
+}
+</script>
 
 <style>
 #app {

@@ -1,7 +1,5 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import Timer from 'easytimer.js/dist/easytimer.min.js'
-const timer = new Timer()
 
 Vue.use(Vuex)
 
@@ -14,7 +12,6 @@ export default new Vuex.Store({
     timeLimit: 10,
     timeLimitEnable: false,
     stressOnly: false,
-    timer: timer,
     stressOne: 0,
     stressTwo: 0,
     
@@ -50,7 +47,6 @@ export default new Vuex.Store({
     setSoundSelect (state, value) { state.soundSelect = value },
     setTimeLimit (state, value) { state.timeLimit = value },
     setTimeLimitEnable (state, value) { state.timeLimitEnable = value },
-    setTimer (state, value) { state.timer = value },
     setScheduleProperties (state, value) { state.scheduleProperties = value },
     setScheduleBpm (state, value) { state.scheduleProperties.bpm = value },
     setScheduleTimeLimit (state, value) { state.scheduleProperties.timeLimit = value },

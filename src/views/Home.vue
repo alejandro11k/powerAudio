@@ -7,7 +7,7 @@
       <div> {{ stressOneCounter }} | {{ clockShow }} | {{ stressTwoCounter }} </div>
       
 
-      <md-button class="md-fab" @click="onOff">
+      <md-button :disabled="!detectAudioWorklet" class="md-fab" @click="onOff">
           <md-icon v-if="stoped">▹</md-icon> <!--▸▹►-->
           <md-icon v-else style="color: red;"> ■ </md-icon>
       </md-button>
@@ -113,7 +113,6 @@ export default {
       volume: this.$store.state.volume,
       timeLimitEnable: this.$store.state.timeLimitEnable,
       stressOnly: this.$store.state.stressOnly,
-      // timerValue: this.$store.state.timer.getTimeValues().toString(),
       // click: false,
       bgc: { backgroundColor: '' },
       stoped: true,
@@ -227,10 +226,8 @@ export default {
       resetCounter() // fix
       // eslint-disable-next-line
       resetActualBeat() // fix
-
       // eslint-disable-next-line
       StateNodes.onOff()
-      // this.timerLogic() // old external timer
       if (this.stoped) {
         this.clock = 0
         this.countDown = this.$store.state.timeLimit
@@ -292,30 +289,6 @@ export default {
       resetActualBeat() // fix
       this.fixWhenRunning()
     },
-    timerLogic() {
-      // timer use deprecated
-      const timer = this.$store.state.timer
-      if (!timer.isRunning()) {
-        this.stoped = false
-        if (this.timeLimitEnable) {
-          timer.start({countdown: true, startValues: {seconds: this.$store.state.timeLimit}});
-          timer.addEventListener('targetAchieved', () => {
-            this.timerValue = 'Well Done!'
-            this.stoped = true
-          });
-        } else {
-          timer.start();
-        }
-        this.timerValue = timer.getTimeValues().toString()
-        timer.addEventListener('secondsUpdated', (e) => {
-          this.timerValue = e.detail.timer.getTimeValues().toString()
-        });
-      } else {
-        timer.stop();
-        this.stoped = true
-        this.bgc.backgroundColor = '#FFFAFA'
-      }
-    }
   },
   computed: {
     stressOne: function() { return this.$store.state.stressOne },
@@ -340,6 +313,12 @@ export default {
         value = minutos + segundos + ' minute'
       }
       return value
+    },
+    detectAudioWorklet() {
+      let context = new OfflineAudioContext(1, 1, 44100);
+        return Boolean(
+          context.audioWorklet &&
+          typeof context.audioWorklet.addModule === 'function');
     }
   },
   mounted() {

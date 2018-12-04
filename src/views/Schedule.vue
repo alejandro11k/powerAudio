@@ -11,7 +11,7 @@
       <md-button class="md-fab" v-longpress="removeAll" @click="add">
           <md-icon> + </md-icon>
       </md-button>
-      <md-button class="md-fab" @click="play"> <!--v-longpress="stop"-->
+      <md-button :disabled="!detectAudioWorklet" class="md-fab" @click="play"> <!--v-longpress="stop"-->
           <md-icon v-if="stoped">▹</md-icon>
           <md-icon v-else style="color: red;"> ■ </md-icon>  <!--▐ ▌-->
       </md-button>
@@ -105,6 +105,12 @@ export default {
         value = minutos + segundos + ' minute'
       }
       return value
+    },
+    detectAudioWorklet() {
+      let context = new OfflineAudioContext(1, 1, 44100);
+        return Boolean(
+          context.audioWorklet &&
+          typeof context.audioWorklet.addModule === 'function');
     }
   },
   watch: {
