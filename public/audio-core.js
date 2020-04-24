@@ -22,6 +22,8 @@ let stressOneInterval = 0
 let stressTwoInterval = 0
 let stressOnly = false
 
+// let firstTime = true
+
 export function createContextAndGainNode() {
     context = new AudioContext()
     gainNode = context.createGain()
@@ -141,18 +143,28 @@ function input2GainValue(value) {
 }
 
 export function suspendResume() {
+    console.log("context.state", context.state)
     if(context.state === 'running') {
-        portWorkletNode.resetCounter();
+        isRunning();
+    } else if(context.state === 'suspended') {
+        // firstTime = false;
+        isSuspend();
+    }
+}
+
+function isRunning(){
+    portWorkletNode.resetCounter();
         context.suspend().then(function() {
             return 'Resume context';
       });
-    } else if(context.state === 'suspended') {
-        setBeats()
+}
+
+function isSuspend(){
+    setBeats()
         resetCounter()
         context.resume().then(function() {
             return 'Suspend context';
       });  
-    }
 }
 
 export function setBpm(value) {
