@@ -116,6 +116,7 @@ export default {
       // click: false,
       bgc: { backgroundColor: '' },
       stoped: this.$store.state.metronomeStoped, //true,
+      firstTime: this.$store.state.firstTime,
       
       // stressOne: 0,
       // stressTwo: 0,
@@ -224,7 +225,15 @@ export default {
       StateNodes.setBpm(this.$store.state.bpm)
       this.resetClockAndCounters()
     },
-    onOff () {
+    onOff() {
+      if (this.firstTime){
+        this.onOffFix()
+        this.stoped = !this.stoped
+        this.firstTime = !this.firstTime
+      }
+      this.onOffFix()
+    },
+    onOffFix () {
       // eslint-disable-next-line
       resetCounter() // fix
       // eslint-disable-next-line

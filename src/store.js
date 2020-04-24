@@ -5,6 +5,8 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+
+    firstTime: true,
     metronomeStoped: true,
     scheduleStoped: true,
 
@@ -34,6 +36,7 @@ export default new Vuex.Store({
     
   },
   mutations: {
+    setFirstTime (state, value) { state.firstTime = value },
     setMetronomeStoped (state, value) { state.metronomeStoped = value },
     setScheduleStoped (state, value) { state.scheduleStoped = value },
 
